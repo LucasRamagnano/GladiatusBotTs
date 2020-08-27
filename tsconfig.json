@@ -1,0 +1,12 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "outDir": "bot",
+      "rootDir": "./src",
+      "allowJs": true,
+      "types": ["jquery","jqueryui","sizzle","chrome","filesystem","filewriter","har-format"]
+    },
+  "include": ["src/**/*"]
+}

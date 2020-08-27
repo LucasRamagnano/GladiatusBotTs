@@ -1,0 +1,67 @@
+<div id='fs_body'> 
+    <div id="izquierda" class="mostrame">
+        <div class="topic">
+            <input id='armas_cb' class='filtro_cb' type="checkbox" value="armas"> <label>Armas</label>
+        </div>
+        <div class="topic">
+            <input id='escudos_cb' class='filtro_cb' type="checkbox" value="escudos"> <label>Escudos</label>
+        </div>
+        <div class="topic">
+            <input id='armadura_cb' class='filtro_cb' type="checkbox" value="armaduras"> <label>Armaduras</label>
+        </div>
+        <div class="topic">
+            <input id='cascos_cb' class='filtro_cb' type="checkbox" value="cascos"> <label>Cascos</label>
+        </div>
+        <div class="topic">
+            <input id='guantes_cb' class='filtro_cb' type="checkbox" value="guantes"> <label>Guantes</label>
+        </div>
+        <div class="topic">
+            <input id='zapatos_cb' class='filtro_cb' type="checkbox" value="zapatos"> <label>Zapatos</label>
+        </div>
+        <div class="topic">
+            <input id='anillos_cb' class='filtro_cb' type="checkbox" value="anillos"> <label>Anillos</label>
+        </div>
+        <div class="topic">
+            <input id='amuleto_cb' class='filtro_cb' type="checkbox" value="amuletos"> <label>Amuletos</label>
+        </div>
+        <div class="topic">
+            <input id='mercenario_cb' class='filtro_cb' type="checkbox" value="mercenarios"> <label>Mercenario</label>
+        </div>
+    </div>
+    <div id="derecha" class="mostrame">
+        <div id="colores" class="mostrame">
+            <div class="topic">
+                <input class='filtro_color_cb' type="checkbox" value="item-i-white" checked> <label>Blanco</label>
+            </div>
+            <div class="topic">
+                <input class='filtro_color_cb' type="checkbox" value="item-i-green" checked> <label>Verde</label>
+            </div>
+            <div class="topic">
+                <input class='filtro_color_cb' type="checkbox" value="item-i-blue" checked> <label>Azul</label>
+            </div>
+            <div class="topic">
+                <input class='filtro_color_cb' type="checkbox" value="item-i-purple" checked> <label>Violeta</label>
+            </div>
+        </div>
+
+        <div class="forms">A partir de: 
+                <input type="number" id="nivelpick" step="1">
+        </div>
+        <div class="forms">
+            <p>Palabras: </p>
+            <textarea type="text" id="palabras" step="1"></textarea>
+        </div>
+    </div>
+    <div id="ucfooter">
+        <div class="boton_ctn">
+            <button id="todo">Todo</button>
+        </div>
+        <div class="boton_ctn">
+            <button id="nada">Nada</button>
+        </div>
+        <div class="boton_ctn">
+            <button id="filtrar">Filtrar</button>
+        </div>
+        <p id="resultados"></p>
+    </div>
+</div>

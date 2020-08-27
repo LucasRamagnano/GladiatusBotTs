@@ -1,0 +1,88 @@
+#fs_body {
+    position: fixed;
+    top: 20%;
+    right: 7%;
+    width: 400px;
+    border-color: transparent;
+    background-color:transparent;
+    border-radius: 5px;
+    z-index: 1000;
+    display: flex;
+    flex-flow: row wrap;
+    color: #513f2c;
+    font-weight: bold;
+}
+
+#izquierda, #derecha, #ucfooter {
+    background-color: #dbcba5;
+    border-top-color: #876e3e;
+    border-bottom-color: #af8e50;
+    border-left-color: #876e3e;
+    border-right-color: #af8e50;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+}
+
+#fs_body .topic  {
+    margin: 5px;
+}
+
+.centrador {
+	display:block;
+	text-align:center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+/*
+.mostrame {
+	border-style: solid;
+	border-width: 2px;
+}*/
+
+#colores {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+#colores .topic {
+    width: 74px;
+    border-bottom-color: #af8e50;
+}
+
+#fs_body > div {
+    flex: 1 48%;
+}
+
+#ucfooter {
+    display: flex;
+    width: 50%;
+}
+
+.boton_ctn {
+    margin: 5px;
+}
+
+.boton_ctn button {
+    width: 70px;
+    height: 35px;
+    border-color: red;
+}
+
+.forms {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#nivelpick {
+    width: 70px;
+}
+
+#palabras {
+    width: 170px;
+    height: 60px;
+}
+
+.forms p {
+    margin-bottom: 1px;
+} 

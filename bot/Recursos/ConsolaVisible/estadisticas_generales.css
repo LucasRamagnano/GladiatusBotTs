@@ -1,0 +1,54 @@
+.divucgb {
+    z-index: 1000;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: black;
+    color: whitesmoke;
+    overflow: auto;
+}
+
+.h3ucgb {
+    text-align: center;
+    margin-top: 2px;
+}
+
+#container {
+    position: fixed;
+    display: flex;
+    bottom: 10%;
+    left: 20%;
+    border-color: transparent;
+}
+
+#container div {
+    margin-left: 3px;
+}
+
+#bot_cb {
+    width: 200px;
+    height: 150px;
+    background: rgb(192, 106, 25);
+}
+
+#paquete {
+    width: 200px;
+    height: 150px;
+    background: rgb(192, 106, 25);
+}
+
+#estado_paquete span {
+    font-size: smaller;
+    font-style: italic;
+}
+
+#paquete_desc {
+    word-break: break-all;
+    font-size: smaller;
+}
+
+.pucgb {
+    margin: 2px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
