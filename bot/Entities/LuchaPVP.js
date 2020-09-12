@@ -39,7 +39,7 @@ class LuchaPVP {
     }
     seCancela() {
         return (!globalConfig.modulos.correrArena && this.sosArena()) ||
-            (!globalConfig.modulos.correrMazmorra && !this.sosArena()) ||
+            (!globalConfig.modulos.correrTurma && !this.sosArena()) ||
             (this.sosArena() && getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar);
     }
     sosArena() {

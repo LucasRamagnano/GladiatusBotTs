@@ -114,7 +114,7 @@ class ControladorDePaquetes {
     }
     ponerALaVenta(resolve) {
         $('#preis')[0].value = this.paqueteComprado.precio.toString();
-        $('#dauer')[0].value = '2';
+        $('#dauer')[0].value = '3';
         this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
         window.setTimeout(() => { resolve($('#market_sell_box .awesome-button')[0]); }, 500);
     }

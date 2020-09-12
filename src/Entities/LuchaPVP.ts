@@ -49,7 +49,7 @@ class LuchaPVP implements Tarea {
 
     seCancela(): boolean {
         return (!globalConfig.modulos.correrArena && this.sosArena()) ||
-                (!globalConfig.modulos.correrMazmorra && !this.sosArena()) ||
+                (!globalConfig.modulos.correrTurma && !this.sosArena()) ||
                 (this.sosArena() && getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar);
     }
 

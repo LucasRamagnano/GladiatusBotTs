@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="" />
+    <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +22,9 @@
         <option value="TypeScript File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1gSXVKVn9uMpEVnX4plaSGc5KyV" />
   <component name="ProjectViewState">
@@ -49,7 +58,17 @@
       <workItem from="1598393033170" duration="747000" />
       <workItem from="1598393810929" duration="9273000" />
       <workItem from="1598444227443" duration="19134000" />
-      <workItem from="1598528271405" duration="694000" />
+      <workItem from="1598528271405" duration="695000" />
+      <workItem from="1598542928622" duration="32000" />
+      <workItem from="1599048239905" duration="1142000" />
+      <workItem from="1599055536253" duration="5000" />
+      <workItem from="1599056950865" duration="2000" />
+      <workItem from="1599061438088" duration="12000" />
+      <workItem from="1599075684320" duration="8000" />
+      <workItem from="1599173964270" duration="233000" />
+      <workItem from="1599218926169" duration="1629000" />
+      <workItem from="1599250099032" duration="28000" />
+      <workItem from="1599505316032" duration="7000" />
     </task>
     <servers />
   </component>
