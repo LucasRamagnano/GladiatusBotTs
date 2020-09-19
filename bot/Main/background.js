@@ -8,7 +8,7 @@ var estados = [estadoTurma, estadoArena, estadoExpedicion, estadoMazmorra, estad
 var tabId = -1;
 var oroJugador = 0;
 var datos;
-var estadoEjecucionBjs = { hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR };
+var estadoEjecucionBjs = { hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR, intestosPaquetes: 0 };
 var resultadoSubasta = new SubastaResultado([], new Date());
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
@@ -81,6 +81,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             break;
         case MensajeHeader.ANALIZAR_SUBASTA:
             datos.modulos.analizarSubasta = true;
+            break;
+        case MensajeHeader.CAMBIO_INTENTO_PAQUETES:
+            estadoEjecucionBjs.intestosPaquetes = request.intentos;
             break;
         default:
             break;

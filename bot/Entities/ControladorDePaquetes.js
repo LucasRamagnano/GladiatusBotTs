@@ -40,8 +40,7 @@ class ControladorDePaquetes {
         return todosLosPaquetes.find(elem => elem.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
     }
     buscarPaqueteCompradoEnInventario() {
-        //PONER HOJA 4
-        let todosLosPaquetes = $('.ui-droppable').toArray();
+        let todosLosPaquetes = $('#inv .ui-droppable').toArray();
         return todosLosPaquetes.filter(elem => elem.getAttribute('data-tooltip') != null).find(elem => elem.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
     }
     comprar() {
@@ -71,22 +70,32 @@ class ControladorDePaquetes {
             return Promise.resolve($('#menue_packages')[0]);
         }
         else {
-            console.log(this.paqueteComprado);
             let paqueteAMover = this.buscarPaqueteComprado();
-            console.log(paqueteAMover);
             if (paqueteAMover == null) {
-                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-                this.estado = tareaEstado.finalizada;
+                this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_AGARRE);
                 return Promise.resolve($('#menue_packages')[0]);
             }
             else {
                 $(paqueteAMover).simulate("drag-n-drop", { dragTarget: $("#sstat_gold_val") });
                 return new Promise((resolve) => window.setTimeout(() => {
-                    this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
+                    this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_AGARRE);
                     $(paqueteAMover).simulate("drag-n-drop", { dragTarget: $("#inv > div:nth-child(9)") });
-                    window.setTimeout(() => { resolve($(".icon.market-icon")[0]); }, 1000);
+                    window.setTimeout(() => { resolve($('#menue_packages')[0]); }, 1000);
                 }, 1500));
             }
+        }
+    }
+    verificarAgarre() {
+        let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+        if (estaEnELInventario) {
+            this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
+            estadoEjecucion.intestosPaquetes = 0;
+            return Promise.resolve($(".icon.market-icon")[0]);
+        }
+        else {
+            this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_COMPRA);
+            estadoEjecucion.intestosPaquetes = estadoEjecucion.intestosPaquetes + 1;
+            return Promise.resolve($('#menue_packages')[0]);
         }
     }
     devolver() {
@@ -95,20 +104,40 @@ class ControladorDePaquetes {
         }
         else {
             let itemAVender = this.buscarPaqueteCompradoEnInventario();
-            if (itemAVender == null) {
+            /*
+            Ak llega siempre con paquete o por lo menos deberia ser asi.
+            if(itemAVender == null) {
                 this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
                 this.estado = tareaEstado.finalizada;
                 return Promise.resolve($('#menue_packages')[0]);
-            }
-            else if (this.paqueteComprado.precio * 0.04 > this.getOroActual()) {
+            }else */
+            if (this.paqueteComprado.precio * 0.04 > this.getOroActual()) {
                 this.actualizarEstadoPaquete(paquete_estados.JUNTAR_PLATA);
-                this.estado = tareaEstado.cancelada;
-                return Promise.resolve($('#menue_packages')[0]);
+                this.estado = tareaEstado.toTheEnd;
+                return Promise.resolve($('a[title=\'Panteón\']')[0]);
             }
             else {
                 $(itemAVender).simulate("drag-n-drop", { dragTarget: $("#market_sell") });
-                this.estado = tareaEstado.finalizada;
+                this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_DEVOLUCION);
                 return new Promise((resolve) => window.setTimeout(() => { this.ponerALaVenta(resolve); }, 1000));
+            }
+        }
+    }
+    verificarDevolucion() {
+        if (!this.estamosEnMercado()) {
+            return Promise.resolve($(".icon.market-icon")[0]);
+        }
+        else {
+            let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+            if (estaEnELInventario) {
+                this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
+                estadoEjecucion.intestosPaquetes = estadoEjecucion.intestosPaquetes + 1;
+                return Promise.resolve($(".icon.market-icon")[0]);
+            }
+            else {
+                this.estado = tareaEstado.finalizada;
+                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
+                return Promise.resolve($(".icon.market-icon")[0]);
             }
         }
     }
@@ -124,22 +153,46 @@ class ControladorDePaquetes {
     }
     getProximoClick() {
         let hoja = 1; //cero es la primera
+        let resultado;
         let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
         if (jQueryResult.length >= hoja + 1)
             jQueryResult[hoja].click();
+        this.paqueteComprado = estadoEjecucion.paquete;
+        this.estadoPaquete = estadoEjecucion.paqueteEstado;
         if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
-            return this.comprar();
+            estadoEjecucion.intestosPaquetes = 0;
+            resultado = this.comprar();
+        }
+        else if (estadoEjecucion.intestosPaquetes == 5) {
+            this.estado = tareaEstado.cancelada;
+            this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
+            console.log("REVISAR PAQUETES.");
+            resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
         }
         else if (this.estadoPaquete === paquete_estados.VERIFICAR_COMPRA) {
-            return this.agarrarPaquete();
+            resultado = this.agarrarPaquete();
         }
         else if (this.estadoPaquete === paquete_estados.DEVOLVER) {
-            return this.devolver();
+            resultado = this.devolver();
+        }
+        else if (this.estadoPaquete === paquete_estados.JUNTAR_PLATA || this.estadoPaquete === paquete_estados.NO_HAY_DISPONIBLES) {
+            this.estado = tareaEstado.toTheEnd;
+            resultado = Promise.resolve($('a[title=\'Panteón\']')[0]);
+        }
+        else if (this.estadoPaquete === paquete_estados.VERIFICAR_AGARRE) {
+            resultado = this.verificarAgarre();
+        }
+        else if (this.estadoPaquete === paquete_estados.VERIFICAR_DEVOLUCION) {
+            resultado = this.verificarDevolucion();
         }
         else {
             this.estado = tareaEstado.cancelada;
-            return Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
+            this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
+            resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
         }
+        console.log(estadoEjecucion);
+        mandarMensajeBackground({ header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes });
+        return resultado;
     }
     seCancela() {
         return !globalConfig.modulos.correrPaquetes;

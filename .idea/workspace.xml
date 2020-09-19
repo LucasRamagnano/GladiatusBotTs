@@ -3,13 +3,42 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/PaqueteEstados.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/PaqueteEstados.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/PaqueteEstados.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/PaqueteEstados.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PopUp/popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/popup.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,11 +98,26 @@
       <workItem from="1599218926169" duration="1629000" />
       <workItem from="1599250099032" duration="28000" />
       <workItem from="1599505316032" duration="7000" />
+      <workItem from="1600259396491" duration="710000" />
+      <workItem from="1600260810052" duration="15026000" />
+      <workItem from="1600350131966" duration="5938000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598115637204">

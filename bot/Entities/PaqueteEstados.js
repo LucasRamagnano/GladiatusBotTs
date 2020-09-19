@@ -6,4 +6,6 @@ var paquete_estados;
     paquete_estados["NO_HAY_DISPONIBLES"] = "NO_HAY_DISPONIBLES";
     paquete_estados["COMPRANDO"] = "COMPRANDO";
     paquete_estados["VERIFICAR_COMPRA"] = "VERIFICAR_COMPRA";
+    paquete_estados["VERIFICAR_AGARRE"] = "VERIFICAR_AGARRE";
+    paquete_estados["VERIFICAR_DEVOLUCION"] = "VERIFICAR_DEVOLUCION";
 })(paquete_estados || (paquete_estados = {}));

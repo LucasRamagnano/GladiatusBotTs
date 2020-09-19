@@ -82,7 +82,10 @@ function initIzquierda() {
 	toInputArray($('#misiones_cb'))[0].checked = configuracionDuplicada.modulos.correrMisiones;
 	toInputArray($('#paquetes_cb'))[0].checked = configuracionDuplicada.modulos.correrPaquetes;
 	$('#debugear').on('click',debuguear);
-	$('#activar').on('click',() => {mandarMensajeBackground({header:MensajeHeader.ACTIVAR_AK})});
+	$('#activar').on('click',() => {
+		mandarMensajeBackground({header:MensajeHeader.ACTIVAR_AK});
+		chrome.tabs.reload();
+	});
 	if(tabToFocus === -1) {
 		//(<HTMLInputElement><any>$('#update'))[0].disabled = true;
 		(<HTMLInputElement><any>$('#focus'))[0].disabled = true;

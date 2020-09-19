@@ -16,4 +16,5 @@ var MensajeHeader;
     MensajeHeader["RESPUESTA"] = "RESPUESTA";
     MensajeHeader["ANALIZAR_SUBASTA"] = "ANALIZAR_SUBASTA";
     MensajeHeader["RESULTADO_SUBASTA"] = "RESULTADO_SUBASTA";
+    MensajeHeader["CAMBIO_INTENTO_PAQUETES"] = "CAMBIO_INTENTO_PAQUETES";
 })(MensajeHeader || (MensajeHeader = {}));

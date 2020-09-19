@@ -18,18 +18,16 @@ class ControladorTareas {
         let clickeableElement;
         let delayClick = 1000;
         if (this.tareas.length == 0) {
-            window.setTimeout(() => {
-                ($('#mainmenu > div:nth-child(1) a')[0]).click();
-            }, delayClick);
+            clickeableElement = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
         }
         else {
             clickeableElement = this.tareas[0].getProximoClick();
-            clickeableElement
-                .then((e) => this.guardarTareas(e))
-                .then((click) => {
-                window.setTimeout(() => click.click(), delayClick);
-            });
         }
+        clickeableElement
+            .then((e) => this.guardarTareas(e))
+            .then((click) => {
+            window.setTimeout(() => click.click(), delayClick);
+        });
     }
     guardarTareas(elemento) {
         let toSave = {};

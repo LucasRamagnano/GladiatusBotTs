@@ -2,7 +2,7 @@ var correrDeNuevo = true;
 var ejecutarReload = true;
 //var tareasCtrl: ControladorTareas;
 var globalConfig: ConfiguracionStruct = backgroundConfig;
-var estadoEjecucion: EjecucionEstado = {hayComida: false, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR};
+var estadoEjecucion: EjecucionEstado = {hayComida: false, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR, intestosPaquetes: 0};
 var relojes = {
 	relojArena: new Reloj('cooldown_bar_text_arena'),
 	relojTurma: new Reloj('cooldown_bar_text_ct'),
@@ -13,33 +13,13 @@ var tareasControlador;
 
 
 function tomarDecision() {
-	/*
-	if(backUpServer()) {
-		console.log('Hay BackUP');
-		if(ejecutarReload) {
-			console.log('Reload programado');
-			window.setTimeout(()=>{$('section input.awesome-button.big')[0].click()},50000);
-			window.setTimeout(()=>{window.location.reload()},60000);
-			ejecutarReload = false;
-		}
-	} else if($('#joinGame').length > 0){
-		correrDeNuevo = false;
-		window.setTimeout(()=>{$('#joinGame button')[1].click()},200);
-		chrome.runtime.sendMessage({tipoMensaje: MensajeHeader.LOG_IN});
-	}
-	*/
-
-	/*
-	if(correrDeNuevo) {
-		actualizarOroFB();
-		window.setTimeout(tomarDecision,1500);
-	}
-	*/
 	actualizarOroFB();
 	ControladorTareas.loadTareas().then(ctrl => {
 		let temp = calcularTareas(ctrl);
+		console.log('Pre-Tareas: ')
+		console.log(ctrl.tareas[0]);
 		temp.preprocesarTareas();
-		console.log('Tareas: ')
+		console.log('Post-Tareas: ')
 		console.log(ctrl.tareas);
 		temp.correrTareaActual();
 	})
@@ -48,7 +28,7 @@ function tomarDecision() {
 function calcularTareas(tareasCtrl: ControladorTareas) {
 	tareasControlador = tareasCtrl;
 	if(hacerPaquete()) {
-		tareasCtrl.appendTarea(new ControladorDePaquetes(estadoEjecucion.paqueteEstado, estadoEjecucion.paquete));
+		tareasCtrl.appendTarea(new ControladorDePaquetes(paquete_estados.COMPRAR, null));
 	}
 	if(hayQueCurar()){
 		tareasCtrl.ponerTareaPrimera(new Inventario());
@@ -91,10 +71,7 @@ function hacerMisiones() {
 function hacerPaquete() {
 	let configInicial = estadoEjecucion.paqueteEstado === paquete_estados.COMPRAR &&
 		getOroActualFB() > globalConfig.personaje.oroBaseParaPaquete;
-	let paqueteIniciado = 	estadoEjecucion.paqueteEstado !== paquete_estados.COMPRAR &&
-		estadoEjecucion.paqueteEstado !== paquete_estados.JUNTAR_PLATA &&
-		estadoEjecucion.paqueteEstado !== paquete_estados.NO_HAY_DISPONIBLES;
-	return globalConfig.modulos.correrPaquetes &&  (configInicial || paqueteIniciado) &&
+	return globalConfig.modulos.correrPaquetes &&  configInicial &&
 			!tareasControlador.tiene(new ControladorDePaquetes())
 }
 

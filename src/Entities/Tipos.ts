@@ -10,7 +10,8 @@ interface ConfiguracionStruct {
 interface EjecucionEstado {
     paqueteEstado: paquete_estados,
     hayComida: boolean,
-    paquete: Paquete
+    paquete: Paquete,
+    intestosPaquetes: number
 }
 
 interface ModulosEstados {
