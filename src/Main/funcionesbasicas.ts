@@ -14,15 +14,27 @@ var tareasControlador;
 
 function tomarDecision() {
 	actualizarOroFB();
-	ControladorTareas.loadTareas().then(ctrl => {
-		let temp = calcularTareas(ctrl);
-		console.log('Pre-Tareas: ')
-		console.log(ctrl.tareas[0]);
-		temp.preprocesarTareas();
-		console.log('Post-Tareas: ')
-		console.log(ctrl.tareas);
-		temp.correrTareaActual();
-	})
+	if(hayPopUp()) {
+		cerrarPopUps();
+	} else {
+		ControladorTareas.loadTareas().then(ctrl => {
+			let temp = calcularTareas(ctrl);
+			console.log('Pre-Tareas: ')
+			console.log(ctrl.tareas[0]);
+			temp.preprocesarTareas();
+			console.log('Post-Tareas: ')
+			console.log(ctrl.tareas);
+			temp.correrTareaActual();
+		})
+	}
+}
+
+function cerrarPopUps() {
+	$('#linkbod')[0].click()
+}
+
+function hayPopUp() {
+	return $('#blackoutDialogbod.cancel_confirm[style*="display: block"]').length > 0
 }
 
 function calcularTareas(tareasCtrl: ControladorTareas) {
@@ -40,7 +52,12 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 		tareasCtrl.appendTarea(new LuchaMazmorra(globalConfig.mazmorra.dificultad, globalConfig.mazmorra.vencerBoss, globalConfig.mazmorra.calabozo));
 	}
 	if(sePuedeCorrerArena()) {
-		tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput,'#cooldown_bar_arena .cooldown_bar_link'));
+		if(tareasControlador.tiene(new Inventario())) {
+			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
+		}else {
+			//tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
+			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
+		}
 	}
 	if(sePuedeCorrerTurma()) {
 		tareasCtrl.appendTarea(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));

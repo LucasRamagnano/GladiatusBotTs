@@ -26,7 +26,19 @@ class ControladorTareas {
         clickeableElement
             .then((e) => this.guardarTareas(e))
             .then((click) => {
-            window.setTimeout(() => click.click(), delayClick);
+            return new Promise((res) => {
+                window.setTimeout(() => {
+                    click.click();
+                    res();
+                }, delayClick);
+            });
+        })
+            .then(() => {
+            window.setTimeout(() => {
+                if (hayPopUp()) {
+                    cerrarPopUps();
+                }
+            }, 1500);
         });
     }
     guardarTareas(elemento) {

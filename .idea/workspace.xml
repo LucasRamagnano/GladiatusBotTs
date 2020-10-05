@@ -23,22 +23,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot.rar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/PaqueteEstados.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/PaqueteEstados.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/PaqueteEstados.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/PaqueteEstados.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PopUp/popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/popup.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,17 +47,22 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1gSXVKVn9uMpEVnX4plaSGc5KyV" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -101,6 +97,11 @@
       <workItem from="1600259396491" duration="710000" />
       <workItem from="1600260810052" duration="15026000" />
       <workItem from="1600350131966" duration="5938000" />
+      <workItem from="1601641807981" duration="145000" />
+      <workItem from="1601672128497" duration="1317000" />
+      <workItem from="1601730261871" duration="5332000" />
+      <workItem from="1601904426169" duration="201000" />
+      <workItem from="1601904747116" duration="43000" />
     </task>
     <servers />
   </component>
@@ -119,6 +120,9 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598115637204">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -128,6 +132,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1598471790802" />
+    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1601904458694">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824@0.0.1536.824" timestamp="1601904458694" />
     <state x="461" y="165" key="SettingsEditor" timestamp="1598117813202">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
