@@ -16,7 +16,7 @@ class ControladorTareas {
     }
     correrTareaActual() {
         let clickeableElement;
-        let delayClick = 1000;
+        let delayClick = 500;
         if (this.tareas.length == 0) {
             clickeableElement = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
         }

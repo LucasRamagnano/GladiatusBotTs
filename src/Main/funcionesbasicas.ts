@@ -55,12 +55,12 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 		if(tareasControlador.tiene(new Inventario())) {
 			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
 		}else {
-			//tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
-			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
+			tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
+			//tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
 		}
 	}
 	if(sePuedeCorrerTurma()) {
-		tareasCtrl.appendTarea(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
+		tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
 	}
 	if(hacerMisiones()) {
 		tareasCtrl.ponerTareaPrimera(new ControladorDeMisiones());
@@ -156,13 +156,17 @@ function injectBot(ans: BotInjectMensaje) {
 		globalConfig = ans.configuracionToSend;
 		estadoEjecucion = ans.estadoEjecucion;
 		injectPagina();
-		window.setTimeout(tomarDecision,1000);
-		window.setTimeout(()=>$('#mainmenu > div:nth-child(1) a')[0].click(),180000);
+		window.setTimeout(tomarDecision,500);
+		window.setTimeout(()=>reloadPag(),10000);
 	}
 	/*if(ponerFiltroSubasta()) {
 		console.log('insert filtro')
 		injectSubasta();
 	}*/
+}
+
+function reloadPag() {
+	location.reload();
 }
 
 function injectPagina() {
