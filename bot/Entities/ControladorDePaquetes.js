@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 class ControladorDePaquetes {
     constructor(estadoPaquete, paqueteComprado) {
         this.tipo_class = 'ControladorDePaquetes';
@@ -144,7 +153,6 @@ class ControladorDePaquetes {
     ponerALaVenta(resolve) {
         $('#preis')[0].value = this.paqueteComprado.precio.toString();
         $('#dauer')[0].value = '3';
-        this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
         window.setTimeout(() => { resolve($('#market_sell_box .awesome-button')[0]); }, 500);
     }
     actualizarEstadoPaquete(estadoNuevo) {
@@ -152,52 +160,59 @@ class ControladorDePaquetes {
         mandarMensajeBackground({ header: MensajeHeader.CONTENT_SCRIPT_CAMBIO_PKT, estadoPaquete: estadoNuevo });
     }
     getProximoClick() {
-        let hoja = 1; //cero es la primera
-        let resultado;
-        let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
-        if (jQueryResult.length >= hoja + 1)
-            jQueryResult[hoja].click();
-        this.paqueteComprado = estadoEjecucion.paquete;
-        this.estadoPaquete = estadoEjecucion.paqueteEstado;
-        if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
-            estadoEjecucion.intestosPaquetes = 0;
-            resultado = this.comprar();
-        }
-        else if (estadoEjecucion.intestosPaquetes == 5) {
-            this.estado = tareaEstado.cancelada;
-            this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-            console.log("REVISAR PAQUETES.");
-            resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
-        }
-        else if (this.estadoPaquete === paquete_estados.VERIFICAR_COMPRA) {
-            resultado = this.agarrarPaquete();
-        }
-        else if (this.estadoPaquete === paquete_estados.DEVOLVER) {
-            resultado = this.devolver();
-        }
-        else if (this.estadoPaquete === paquete_estados.JUNTAR_PLATA || this.estadoPaquete === paquete_estados.NO_HAY_DISPONIBLES) {
-            this.estado = tareaEstado.toTheEnd;
-            resultado = Promise.resolve($('a[title=\'Panteón\']')[0]);
-        }
-        else if (this.estadoPaquete === paquete_estados.VERIFICAR_AGARRE) {
-            resultado = this.verificarAgarre();
-        }
-        else if (this.estadoPaquete === paquete_estados.VERIFICAR_DEVOLUCION) {
-            resultado = this.verificarDevolucion();
-        }
-        else {
-            this.estado = tareaEstado.cancelada;
-            this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-            resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
-        }
-        console.log(estadoEjecucion);
-        mandarMensajeBackground({ header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes });
-        return resultado;
+        return __awaiter(this, void 0, void 0, function* () {
+            let hoja = 1; //cero es la primera
+            let resultado;
+            let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
+            if (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current')) {
+                jQueryResult[hoja].click();
+                yield this.wait(2000);
+            }
+            this.paqueteComprado = estadoEjecucion.paquete;
+            this.estadoPaquete = estadoEjecucion.paqueteEstado;
+            if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
+                estadoEjecucion.intestosPaquetes = 0;
+                resultado = this.comprar();
+            }
+            else if (estadoEjecucion.intestosPaquetes == 5) {
+                this.estado = tareaEstado.cancelada;
+                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
+                console.log("REVISAR PAQUETES.");
+                resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
+            }
+            else if (this.estadoPaquete === paquete_estados.VERIFICAR_COMPRA) {
+                resultado = this.agarrarPaquete();
+            }
+            else if (this.estadoPaquete === paquete_estados.DEVOLVER) {
+                resultado = this.devolver();
+            }
+            else if (this.estadoPaquete === paquete_estados.JUNTAR_PLATA || this.estadoPaquete === paquete_estados.NO_HAY_DISPONIBLES) {
+                this.estado = tareaEstado.toTheEnd;
+                resultado = Promise.resolve($('a[title=\'Panteón\']')[0]);
+            }
+            else if (this.estadoPaquete === paquete_estados.VERIFICAR_AGARRE) {
+                resultado = this.verificarAgarre();
+            }
+            else if (this.estadoPaquete === paquete_estados.VERIFICAR_DEVOLUCION) {
+                resultado = this.verificarDevolucion();
+            }
+            else {
+                this.estado = tareaEstado.cancelada;
+                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
+                resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
+            }
+            console.log(estadoEjecucion);
+            mandarMensajeBackground({ header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes });
+            return resultado;
+        });
     }
     seCancela() {
         return !globalConfig.modulos.correrPaquetes;
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;
+    }
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

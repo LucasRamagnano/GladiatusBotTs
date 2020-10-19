@@ -59,11 +59,11 @@ class Mision {
         }else if(this.tipo === 'Expedicion') {
             return this.analizarTextMision(globalConfig.expedicion) && globalConfig.modulos.correrExpedicion && this.daElTiempoParaHacerla();
         }else if(this.tipo === 'Arena'){
-            return globalConfig.modulos.correrArena && this.daElTiempoParaHacerla();
+            return globalConfig.modulos.correrArena && this.daElTiempoParaHacerla() && !this.seNecesitaConsecutividad;
         }else if(this.tipo === 'Turma'){
-            return globalConfig.modulos.correrTurma && this.daElTiempoParaHacerla();
+            return globalConfig.modulos.correrTurma && this.daElTiempoParaHacerla() && !this.seNecesitaConsecutividad;
         }else {
-            return true;
+            return !this.seNecesitaConsecutividad;
         }
     }
 

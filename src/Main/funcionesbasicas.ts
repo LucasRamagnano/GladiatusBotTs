@@ -52,7 +52,7 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 		tareasCtrl.appendTarea(new LuchaMazmorra(globalConfig.mazmorra.dificultad, globalConfig.mazmorra.vencerBoss, globalConfig.mazmorra.calabozo));
 	}
 	if(sePuedeCorrerArena()) {
-		if(tareasControlador.tiene(new Inventario())) {
+		if(tareasControlador.tiene(new Inventario()) || hayPaqueteEnCurso()) {
 			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
 		}else {
 			tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
@@ -60,7 +60,11 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 		}
 	}
 	if(sePuedeCorrerTurma()) {
-		tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
+		if(hayPaqueteEnCurso()) {
+			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
+		}else {
+			tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
+		}
 	}
 	if(hacerMisiones()) {
 		tareasCtrl.ponerTareaPrimera(new ControladorDeMisiones());
@@ -234,4 +238,10 @@ function injectSubasta() {
 		$(data).appendTo('body');
 		window.setTimeout(() => {console.log('iniciado');inicializarFiltros();}, 300)
 	});
+}
+
+function hayPaqueteEnCurso() {
+	return this.estadoEjecucion.paqueteEstado != paquete_estados.COMPRAR &&
+		this.estadoEjecucion.paqueteEstado != paquete_estados.NO_HAY_DISPONIBLES &&
+		this.tareasControlador.tiene(new ControladorDePaquetes())
 }

@@ -157,7 +157,6 @@ class ControladorDePaquetes implements Tarea{
     ponerALaVenta(resolve) {
         (<HTMLInputElement[]><unknown>$('#preis'))[0].value = this.paqueteComprado.precio.toString();
         (<HTMLInputElement[]><unknown>$('#dauer'))[0].value = '3';
-        this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
         window.setTimeout(()=>{resolve($('#market_sell_box .awesome-button')[0])},500)
     }
 
@@ -167,12 +166,14 @@ class ControladorDePaquetes implements Tarea{
         mandarMensajeBackground({header: MensajeHeader.CONTENT_SCRIPT_CAMBIO_PKT, estadoPaquete: estadoNuevo});
     }
 
-    getProximoClick(): Promise<HTMLElement> {
+    async getProximoClick(): Promise<HTMLElement> {
         let hoja = 1; //cero es la primera
         let resultado : Promise<HTMLElement> ;
         let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
-        if (jQueryResult.length >= hoja + 1)
+        if (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current')) {
             jQueryResult[hoja].click();
+            await this.wait(2000);
+        }
 
         this.paqueteComprado = estadoEjecucion.paquete;
         this.estadoPaquete = estadoEjecucion.paqueteEstado;
@@ -214,5 +215,8 @@ class ControladorDePaquetes implements Tarea{
         return t.tipo_class == this.tipo_class;
     }
 
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
 }
