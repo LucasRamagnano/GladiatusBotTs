@@ -25,8 +25,6 @@ class ControladorSubastas implements Tarea{
         return false;
     }
 
-
-
     constructor() {
         this.link =  (<any>$('#submenu1 a').toArray().find(e=>e.textContent == 'Edificio de subastas')).href
         this.aBuscar = [new AuctionKey('Ichorus'),new AuctionKey('Antonius'), new AuctionKey('Taliths'),

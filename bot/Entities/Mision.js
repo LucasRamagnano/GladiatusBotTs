@@ -17,10 +17,12 @@ class Mision {
         return basicos + otros;
     }
     puntajeTiempo() {
-        return (this.esPorTiempo) ? -2 : 0;
+        //return (this.esPorTiempo) ? -2 : 0;
+        return (this.esPorTiempo) ? 0 : 0;
     }
     puntajeSeguidas() {
-        return (this.seNecesitaConsecutividad) ? -5 : 0;
+        //return (this.seNecesitaConsecutividad) ? -5 : 0;
+        return (this.seNecesitaConsecutividad) ? 0 : 0;
     }
     puntajeTieneItem() {
         return (this.tieneItem) ? 1 : 0;
@@ -31,16 +33,16 @@ class Mision {
             return false;
         }
         else if (this.tipo === 'Expedicion') {
-            return this.analizarTextMision(globalConfig.expedicion) && globalConfig.modulos.correrExpedicion && this.daElTiempoParaHacerla();
+            return this.analizarTextMision(globalConfig.expedicion) && globalConfig.modulos.correrExpedicion && this.daElTiempoParaHacerla() && false;
         }
         else if (this.tipo === 'Arena') {
-            return globalConfig.modulos.correrArena && this.daElTiempoParaHacerla() && !this.seNecesitaConsecutividad;
+            return globalConfig.modulos.correrArena;
         }
         else if (this.tipo === 'Turma') {
-            return globalConfig.modulos.correrTurma && this.daElTiempoParaHacerla() && !this.seNecesitaConsecutividad;
+            return globalConfig.modulos.correrTurma;
         }
         else {
-            return !this.seNecesitaConsecutividad;
+            return true;
         }
     }
     aceptarButton() {

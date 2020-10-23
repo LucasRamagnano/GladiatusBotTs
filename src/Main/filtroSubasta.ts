@@ -1,4 +1,4 @@
-    function filtrar(evento){
+function filtrar(evento){
     var valoresAMostrar = [];
     $('.filtro_cb:checkbox:checked').toArray().forEach(e=>{
         valoresAMostrar = valoresAMostrar.concat(nombreData[(<HTMLInputElement>e).value]);

@@ -14,11 +14,12 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["https://s29-ar.gladiatus.gameforge.com/*","https://s30-ar.gladiatus.gameforge.com/*", "https://lobby.gladiatus.gameforge.com/es_AR/hub"],
+			"matches": ["https://*.gladiatus.gameforge.com/*","https://lobby.gladiatus.gameforge.com/es_AR/hub"],
 			"js": ["LibreriasExternas/JQuery/jquery-3.5.1.min.js", "LibreriasExternas/JQuery/jquery.simulate.js", 
 				   "LibreriasExternas/JQuery/jquery.simulate.ext.js", "LibreriasExternas/JQuery/jquery.simulate.drag-n-drop.js",
 				   "LibreriasExternas/JQuery/jquery-ui.min.js", "Entities/Tipos.js","Entities/KeysEnum.js",
-				   "Entities/Adapters.js",
+				   "Entities/Adapters.js","Entities/ArenaPlayer.js","Entities/ArenaEnemigoPicker.js",
+				   "Entities/TurmaPlayer.js","Entities/TurmaTeam.js","Entities/TurmaEnemigoPicker.js",
 				   "Entities/Mision.js", "Entities/Reloj.js", "Entities/Inventario.js","Entities/Conversor.js",
 				   "Entities/ControladorDeMisiones.js", "Entities/LuchaMazmorra.js", "Entities/LuchaPVP.js",
 				   "Entities/LuchaExpedicion.js", "Entities/Mensajes.js","Entities/ControladorDePaquetes.js", 

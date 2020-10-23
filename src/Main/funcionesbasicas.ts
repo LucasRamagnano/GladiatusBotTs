@@ -161,7 +161,7 @@ function injectBot(ans: BotInjectMensaje) {
 		estadoEjecucion = ans.estadoEjecucion;
 		injectPagina();
 		window.setTimeout(tomarDecision,500);
-		window.setTimeout(()=>reloadPag(),10000);
+		window.setTimeout(()=>reloadPag(),20000);
 	}
 	/*if(ponerFiltroSubasta()) {
 		console.log('insert filtro')

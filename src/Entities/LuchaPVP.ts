@@ -33,7 +33,24 @@ class LuchaPVP implements Tarea {
         if(this.estamosEnTuLugar()){
             mandarMensajeBackground({header: MensajeHeader.HAY_COMIDA});
             this.estado = tareaEstado.finalizada;
-            return Promise.resolve(this.atacar());
+            let resultado;
+            if(this.sosArena()) {
+                return new ArenaEnemigoPicker().correrTodo().then(e =>{
+                    if(e.puntaje > 500)
+                        return e.toClick;
+                    else
+                        return $('form .button1')[0];
+                });
+                //return Promise.resolve(this.atacar());
+            }else {
+                return new TurmaEnemigoPicker().correrTodo().then(e => {
+                    if(e.puntaje > 500)
+                        return e.boton;
+                    else
+                        return $('form .button1')[0];
+                });
+                //return Promise.resolve(this.atacar());
+            }
         }else {
             return Promise.resolve(this.irATuLugar());
         }
