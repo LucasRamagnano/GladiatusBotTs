@@ -1,15 +1,15 @@
 class ArenaEnemigoPicker {
     enemigos: ArenaPlayer[] = [];
     pesos = {
-        difHabilidad: 2.4,
-        difAgilidad: 2.25,
+        difHabilidad: 1.9,
+        difAgilidad: 1.7,
         difFuerza: 0.3,
-        difCarisma: 1.5,
-        difInteligencia: 1.7,
-        difArmadura: 3.3,
-        difDanio: 3.3,
+        difCarisma: 1.3,
+        difInteligencia: 1.5,
+        difArmadura: 4.2,
+        difDanio: 4.2,
         difCritico: 3.5,
-        difBloqueo: 2.3
+        difBloqueo: 2.5
     }
 //$('')
     async cargarDatos() {
@@ -27,7 +27,8 @@ class ArenaEnemigoPicker {
     }
 
     async elegirMasFacil(): Promise<ArenaPlayer> {
-        let miJugador = new ArenaPlayer('https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=player&doll=1&p=15850',null);
+        let link = this.insertInString(perfil,'&doll=1',perfil.indexOf('&'))
+        let miJugador = new ArenaPlayer(link,null);
         await miJugador.loadData();
         let mejorEnemigo: ArenaPlayer;
         let mejorPuntaje: number = null;

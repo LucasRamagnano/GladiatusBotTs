@@ -23,28 +23,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/Entities/ArenaEnemigoPicker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/Entities/ArenaPlayer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPicker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/Entities/TurmaPlayer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/Entities/TurmaTeam.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/ArenaEnemigoPicker.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/ArenaPlayer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/TurmaPlayer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/TurmaTeam.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot.rar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ArenaEnemigoPicker.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ArenaEnemigoPicker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Mision.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mision.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPicker.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPicker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ArenaEnemigoPicker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ArenaEnemigoPicker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Mision.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mision.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/filtroSubasta.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/filtroSubasta.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +119,11 @@
       <workItem from="1603283831385" duration="21003000" />
       <workItem from="1603340959564" duration="9000" />
       <workItem from="1603370428908" duration="9027000" />
+      <workItem from="1603654912142" duration="617000" />
+      <workItem from="1603810997724" duration="337000" />
+      <workItem from="1603815129327" duration="2923000" />
+      <workItem from="1603850777646" duration="135000" />
+      <workItem from="1604003167750" duration="91000" />
     </task>
     <servers />
   </component>

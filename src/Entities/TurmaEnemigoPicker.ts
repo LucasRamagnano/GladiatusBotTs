@@ -27,7 +27,7 @@ class TurmaEnemigoPicker {
     }
 
     async elegirMasFacil(): Promise<TurmaTeam> {
-        this.miTeam = new TurmaTeam(null,'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15850',null);
+        this.miTeam = new TurmaTeam(null,perfil,null);
         await this.miTeam.cargarEquipo();
         let mejorEnemigo: TurmaTeam;
         let mejorPuntaje: number = null;

@@ -38,7 +38,7 @@ class TurmaEnemigoPicker {
     }
     elegirMasFacil() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.miTeam = new TurmaTeam(null, 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15850', null);
+            this.miTeam = new TurmaTeam(null, perfil, null);
             yield this.miTeam.cargarEquipo();
             let mejorEnemigo;
             let mejorPuntaje = null;

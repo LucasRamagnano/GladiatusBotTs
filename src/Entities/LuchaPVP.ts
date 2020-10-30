@@ -44,7 +44,7 @@ class LuchaPVP implements Tarea {
                 //return Promise.resolve(this.atacar());
             }else {
                 return new TurmaEnemigoPicker().correrTodo().then(e => {
-                    if(e.puntaje > 500)
+                    if(e.puntaje > 800)
                         return e.boton;
                     else
                         return $('form .button1')[0];

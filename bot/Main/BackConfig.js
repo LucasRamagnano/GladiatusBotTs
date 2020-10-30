@@ -32,3 +32,4 @@ const backgroundConfig = {
     arenaTipoInput: 'Arena Provinciarum',
     circoTipoInput: 'Circo Provinciarum'
 };
+const perfil = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15850';
