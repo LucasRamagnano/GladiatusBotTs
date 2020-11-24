@@ -87,5 +87,7 @@ class LuchaMazmorra implements Tarea {
         return this.tipo_class == t.tipo_class;
     }
 
-
+    getHomeClick(): HTMLElement {
+        return $('#submenu2 a.menuitem')[this.indiceLugar];
+    }
 }

@@ -84,5 +84,7 @@ class Inventario implements Tarea{
         return t.tipo_class == this.tipo_class;
     }
 
-
+    getHomeClick(): HTMLElement {
+        return $('#mainmenu > div:nth-child(1) a')[0];
+    }
 }

@@ -11,7 +11,10 @@ interface EjecucionEstado {
     paqueteEstado: paquete_estados,
     hayComida: boolean,
     paquete: Paquete,
-    intestosPaquetes: number
+    intestosPaquetes: number,
+    indiceArenaProximo: ResultadoAnalisisPvP,
+    indiceTurmaProximo: ResultadoAnalisisPvP,
+    analisisInicial: boolean
 }
 
 interface ModulosEstados {
@@ -44,11 +47,17 @@ interface PersonajeStruct {
     porcentajeMinimoParaCurar: number
 }
 
+interface ResultadoAnalisisPvP {
+    nombre: string,
+    puntaje: number
+}
+
 interface Tarea extends Guardable {
     estado: tareaEstado,
     getProximoClick(): Promise<HTMLElement>,
     seCancela(): boolean,
-    equals(t: Tarea): boolean
+    equals(t: Tarea): boolean,
+    getHomeClick(): HTMLElement
 }
 
 class Guardable {

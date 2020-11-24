@@ -104,4 +104,10 @@ class ControladorDeMisiones implements Tarea{
     equals(t: Tarea): boolean {
         return t.tipo_class == this.tipo_class;
     }
+
+    getHomeClick(): HTMLElement {
+        return $('a[title=\'Panteón\']')[0];
+    }
+
+
 }

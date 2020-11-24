@@ -67,5 +67,9 @@ class ControladorSubastas implements Tarea{
         //console.log(this.aBuscar);
     }
 
+    getHomeClick(): HTMLElement {
+        return undefined;
+    }
+
 
 }

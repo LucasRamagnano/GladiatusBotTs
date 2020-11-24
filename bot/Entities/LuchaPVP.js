@@ -1,5 +1,6 @@
 class LuchaPVP {
     constructor(lugar, selectorBoton) {
+        this.analizar_proxima = false;
         this.tipo_class = 'LuchaPVP';
         this.lugar = lugar;
         this.selectorBoton = selectorBoton;
@@ -21,28 +22,51 @@ class LuchaPVP {
         return returnValue;
     }
     getProximoClick() {
-        if (this.estamosEnTuLugar()) {
+        if (this.estamosEnTuLugar() && !this.analizar_proxima) {
             mandarMensajeBackground({ header: MensajeHeader.HAY_COMIDA });
-            this.estado = tareaEstado.finalizada;
+            this.analizar_proxima = true;
             let resultado;
             if (this.sosArena()) {
-                return new ArenaEnemigoPicker().correrTodo().then(e => {
-                    if (e.puntaje > 500)
-                        return e.toClick;
-                    else
-                        return $('form .button1')[0];
-                });
-                //return Promise.resolve(this.atacar());
+                if (estadoEjecucion.indiceArenaProximo.puntaje > 500) {
+                    let indiceToAttack;
+                    $('#own2 a').toArray().forEach((e, index) => {
+                        if (e.textContent.trim() == estadoEjecucion.indiceArenaProximo.nombre)
+                            indiceToAttack = index;
+                    });
+                    return Promise.resolve($('#own2 .attack')[indiceToAttack]);
+                }
+                else
+                    return Promise.resolve($('form .button1')[0]);
             }
             else {
-                return new TurmaEnemigoPicker().correrTodo().then(e => {
-                    if (e.puntaje > 800)
-                        return e.boton;
-                    else
-                        return $('form .button1')[0];
-                });
+                if (estadoEjecucion.indiceTurmaProximo.puntaje > 800) {
+                    let indiceToAttack;
+                    $('#own3 a').toArray().forEach((e, index) => {
+                        if (e.textContent.trim() == estadoEjecucion.indiceTurmaProximo.nombre)
+                            indiceToAttack = index;
+                    });
+                    return Promise.resolve($('#own3 .attack')[indiceToAttack]);
+                }
+                else
+                    return Promise.resolve($('form .button1')[0]);
                 //return Promise.resolve(this.atacar());
             }
+        }
+        else if (this.analizar_proxima) {
+            this.estado = tareaEstado.finalizada;
+            if (this.sosArena()) {
+                //pedir que analize arena
+                //pedir proximo click
+                let link = $('#cooldown_bar_arena a').attr('href');
+                mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_ARENA, link: link });
+            }
+            else {
+                //pedir que analize turma
+                //pedir proximo click
+                let link = $('#cooldown_bar_ct a').attr('href');
+                mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_TURMA, linkTurma: link });
+            }
+            return Promise.resolve(tareasControlador.getPronosticoClick());
         }
         else {
             return Promise.resolve(this.irATuLugar());
@@ -53,6 +77,7 @@ class LuchaPVP {
         this.selectorBoton = jsonGuardado.selectorBoton;
         this.estado = jsonGuardado.estado;
         this.tipo_class = jsonGuardado.tipo_class;
+        this.analizar_proxima = jsonGuardado.analizar_proxima;
         return this;
     }
     seCancela() {
@@ -65,5 +90,8 @@ class LuchaPVP {
     }
     equals(t) {
         return t.tipo_class == this.tipo_class && this.lugar == t.lugar;
+    }
+    getHomeClick() {
+        return $(this.selectorBoton)[0];
     }
 }

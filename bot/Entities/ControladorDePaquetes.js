@@ -215,4 +215,7 @@ class ControladorDePaquetes {
     wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+    getHomeClick() {
+        return $(".icon.market-icon")[0];
+    }
 }

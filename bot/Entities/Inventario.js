@@ -77,4 +77,7 @@ class Inventario {
     equals(t) {
         return t.tipo_class == this.tipo_class;
     }
+    getHomeClick() {
+        return $('#mainmenu > div:nth-child(1) a')[0];
+    }
 }

@@ -67,4 +67,7 @@ class ControladorSubastas {
             //console.log(this.aBuscar);
         });
     }
+    getHomeClick() {
+        return undefined;
+    }
 }

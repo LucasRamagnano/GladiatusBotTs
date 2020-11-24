@@ -8,6 +8,14 @@ class ControladorTareas {
         this.tareas = tareas;
     }
 
+    getPronosticoClick() {
+        if(this.tareas.length >= 2) {
+            return this.tareas[0].getHomeClick();
+        }else {
+            return $('#mainmenu > div:nth-child(1) a')[0];
+        }
+    }
+
     appendTarea(tarea: Tarea): void {
         tarea.estado = tareaEstado.enEspera;
         this.tareas.push(tarea);

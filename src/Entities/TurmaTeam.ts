@@ -21,7 +21,7 @@ class TurmaTeam {
             toLoad.push(personaje.loadData());
         }
         await Promise.all(toLoad);
-        console.log('Equipo cargado');
+        //console.log('Equipo cargado');
     }
 
     insertInString(stringBase, stringAPoner, posicion) {

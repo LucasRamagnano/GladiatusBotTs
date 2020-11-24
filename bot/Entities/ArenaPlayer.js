@@ -8,9 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 class ArenaPlayer {
-    constructor(linkPlayer, toClick) {
+    constructor(linkPlayer, toClick, indice) {
         this.linkPlayer = linkPlayer;
         this.toClick = toClick;
+        this.indice = indice;
     }
     loadData() {
         return __awaiter(this, void 0, void 0, function* () {

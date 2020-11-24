@@ -70,4 +70,7 @@ class LuchaMazmorra {
     equals(t) {
         return this.tipo_class == t.tipo_class;
     }
+    getHomeClick() {
+        return $('#submenu2 a.menuitem')[this.indiceLugar];
+    }
 }

@@ -1,5 +1,6 @@
-class ArenaEnemigoPicker {
+class ArenaEnemigoPickerBackground {
     enemigos: ArenaPlayer[] = [];
+    linkArena: string;
     pesos = {
         difHabilidad: 1.9,
         difAgilidad: 1.7,
@@ -12,8 +13,15 @@ class ArenaEnemigoPicker {
         difBloqueo: 2.5
     }
 //$('')
+
+    constructor(linkArena: string) {
+        this.linkArena = linkArena;
+    }
+
     async cargarDatos() {
-        $('#own2 a').toArray().forEach((e,index)=>{
+        let response = await fetch(this.linkArena);
+        let paginaPlayer = await response.text();
+        $(paginaPlayer).find('#own2 a').toArray().forEach((e,index)=>{
             let link = $(e).attr('href');
             link =  this.insertInString(link,'&doll=1',link.indexOf('&'))
             this.enemigos.push(new ArenaPlayer('http://localhost:8080/' +  link,$('.attack')[index],index))
@@ -23,7 +31,7 @@ class ArenaEnemigoPicker {
             toDo.push(e.loadData());
         }
         await Promise.all(toDo);
-        console.log('Datos cargados.');
+        //console.log('Datos cargados.');
     }
 
     async elegirMasFacil(): Promise<ArenaPlayer> {
@@ -35,15 +43,14 @@ class ArenaEnemigoPicker {
         for (const enemigo of this.enemigos) {
             let puntajeCalculado = this.enfrentar(miJugador, enemigo);
 
-            console.log(enemigo.nombre +': '+ puntajeCalculado);
+            //console.log(enemigo.nombre +': '+ puntajeCalculado + ' Indice: ' + enemigo.indice);
             enemigo.puntaje = puntajeCalculado;
             if(mejorPuntaje===null || mejorPuntaje < puntajeCalculado) {
                 mejorPuntaje = puntajeCalculado;
                 mejorEnemigo = enemigo;
             }
         }
-        console.log('---------------------------');
-        console.log('Pick: ' + mejorEnemigo.nombre +': '+ mejorPuntaje);
+        console.log('Pick Arena: ' + mejorEnemigo.nombre +': '+ mejorPuntaje);
         return mejorEnemigo;
     }
 

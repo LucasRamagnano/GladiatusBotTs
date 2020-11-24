@@ -1,5 +1,6 @@
 class ArenaPlayer {
     linkPlayer: string;
+    indice: number;
     nombre: string;
     nivel: number;
     fuerza: number;
@@ -18,9 +19,10 @@ class ArenaPlayer {
     puntaje: number;
     toClick: HTMLElement;
 
-    constructor(linkPlayer: string, toClick: HTMLElement) {
+    constructor(linkPlayer: string, toClick: HTMLElement, indice: number) {
         this.linkPlayer = linkPlayer;
         this.toClick = toClick;
+        this.indice = indice;
     }
 
     async loadData() {

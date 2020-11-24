@@ -2,7 +2,9 @@ var correrDeNuevo = true;
 var ejecutarReload = true;
 //var tareasCtrl: ControladorTareas;
 var globalConfig: ConfiguracionStruct = backgroundConfig;
-var estadoEjecucion: EjecucionEstado = {hayComida: false, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR, intestosPaquetes: 0};
+var estadoEjecucion: EjecucionEstado = {hayComida: false, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
+	intestosPaquetes: 0, indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
+	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999}, analisisInicial : false};
 var relojes = {
 	relojArena: new Reloj('cooldown_bar_text_arena'),
 	relojTurma: new Reloj('cooldown_bar_text_ct'),
@@ -14,6 +16,13 @@ var tareasControlador;
 
 function tomarDecision() {
 	actualizarOroFB();
+	if(estadoEjecucion.analisisInicial) {
+		let linkArena = $('#cooldown_bar_arena a').attr('href');
+		let linkTurma = $('#cooldown_bar_ct a').attr('href');
+		mandarMensajeBackground({header: MensajeHeader.ANALIZAR_ARENA, link: linkArena })
+		mandarMensajeBackground({header: MensajeHeader.ANALIZAR_TURMA, linkTurma })
+		mandarMensajeBackground({header: MensajeHeader.ANALISIS_INICIAL_MANDADO})
+	}
 	if(hayPopUp()) {
 		cerrarPopUps();
 	} else {
@@ -107,7 +116,8 @@ function sePuedeCorrerArena(): boolean {
 	return globalConfig.modulos.correrArena &&
 		!relojes.relojArena.estasEnCooldDown() &&
 		getPorcentajeVida()>=globalConfig.personaje.porcentajeMinimoParaCurar &&
-		!tareasControlador.tiene(new LuchaPVP(globalConfig.arenaTipoInput,'#cooldown_bar_arena .cooldown_bar_link'))
+		!tareasControlador.tiene(new LuchaPVP(globalConfig.arenaTipoInput,'#cooldown_bar_arena .cooldown_bar_link')) &&
+		estadoEjecucion.indiceArenaProximo.puntaje != 999999
 }
 
 function sePuedeCorrerMazmorra(): boolean {
@@ -119,7 +129,8 @@ function sePuedeCorrerMazmorra(): boolean {
 function sePuedeCorrerTurma(): boolean {
 	return globalConfig.modulos.correrTurma  &&
 		!relojes.relojTurma.estasEnCooldDown() &&
-		!tareasControlador.tiene(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'))
+		!tareasControlador.tiene(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link')) &&
+		estadoEjecucion.indiceTurmaProximo.puntaje != 999999
 }
 
 function estaEnVisionGeneral() {
@@ -161,7 +172,7 @@ function injectBot(ans: BotInjectMensaje) {
 		estadoEjecucion = ans.estadoEjecucion;
 		injectPagina();
 		window.setTimeout(tomarDecision,500);
-		window.setTimeout(()=>reloadPag(),20000);
+		window.setTimeout(()=>reloadPag(),5000);
 	}
 	/*if(ponerFiltroSubasta()) {
 		console.log('insert filtro')

@@ -219,4 +219,9 @@ class ControladorDePaquetes implements Tarea{
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    getHomeClick(): HTMLElement {
+        return $(".icon.market-icon")[0];
+    }
+
+
 }

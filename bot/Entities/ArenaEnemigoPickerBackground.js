@@ -7,8 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-class ArenaEnemigoPicker {
-    constructor() {
+class ArenaEnemigoPickerBackground {
+    //$('')
+    constructor(linkArena) {
         this.enemigos = [];
         this.pesos = {
             difHabilidad: 1.9,
@@ -21,11 +22,13 @@ class ArenaEnemigoPicker {
             difCritico: 3.5,
             difBloqueo: 2.5
         };
+        this.linkArena = linkArena;
     }
-    //$('')
     cargarDatos() {
         return __awaiter(this, void 0, void 0, function* () {
-            $('#own2 a').toArray().forEach((e, index) => {
+            let response = yield fetch(this.linkArena);
+            let paginaPlayer = yield response.text();
+            $(paginaPlayer).find('#own2 a').toArray().forEach((e, index) => {
                 let link = $(e).attr('href');
                 link = this.insertInString(link, '&doll=1', link.indexOf('&'));
                 this.enemigos.push(new ArenaPlayer('http://localhost:8080/' + link, $('.attack')[index], index));
@@ -35,7 +38,7 @@ class ArenaEnemigoPicker {
                 toDo.push(e.loadData());
             }
             yield Promise.all(toDo);
-            console.log('Datos cargados.');
+            //console.log('Datos cargados.');
         });
     }
     elegirMasFacil() {
@@ -47,15 +50,14 @@ class ArenaEnemigoPicker {
             let mejorPuntaje = null;
             for (const enemigo of this.enemigos) {
                 let puntajeCalculado = this.enfrentar(miJugador, enemigo);
-                console.log(enemigo.nombre + ': ' + puntajeCalculado);
+                //console.log(enemigo.nombre +': '+ puntajeCalculado + ' Indice: ' + enemigo.indice);
                 enemigo.puntaje = puntajeCalculado;
                 if (mejorPuntaje === null || mejorPuntaje < puntajeCalculado) {
                     mejorPuntaje = puntajeCalculado;
                     mejorEnemigo = enemigo;
                 }
             }
-            console.log('---------------------------');
-            console.log('Pick: ' + mejorEnemigo.nombre + ': ' + mejorPuntaje);
+            console.log('Pick Arena: ' + mejorEnemigo.nombre + ': ' + mejorPuntaje);
             return mejorEnemigo;
         });
     }

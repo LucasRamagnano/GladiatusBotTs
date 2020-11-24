@@ -59,4 +59,7 @@ class LuchaExpedicion {
     equals(t) {
         return t.tipo_class == this.tipo_class;
     }
+    getHomeClick() {
+        return $('#submenu2 a.menuitem')[this.indiceLugar];
+    }
 }

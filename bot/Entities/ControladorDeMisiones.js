@@ -94,4 +94,7 @@ class ControladorDeMisiones {
     equals(t) {
         return t.tipo_class == this.tipo_class;
     }
+    getHomeClick() {
+        return $('a[title=\'Panteón\']')[0];
+    }
 }

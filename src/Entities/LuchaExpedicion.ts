@@ -74,5 +74,9 @@ class LuchaExpedicion implements Tarea{
         return t.tipo_class == this.tipo_class;
     }
 
+    getHomeClick(): HTMLElement {
+        return $('#submenu2 a.menuitem')[this.indiceLugar];
+    }
+
 
 }

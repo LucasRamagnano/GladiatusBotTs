@@ -17,4 +17,7 @@ var MensajeHeader;
     MensajeHeader["ANALIZAR_SUBASTA"] = "ANALIZAR_SUBASTA";
     MensajeHeader["RESULTADO_SUBASTA"] = "RESULTADO_SUBASTA";
     MensajeHeader["CAMBIO_INTENTO_PAQUETES"] = "CAMBIO_INTENTO_PAQUETES";
+    MensajeHeader["ANALIZAR_ARENA"] = "ANALIZAR_ARENA";
+    MensajeHeader["ANALIZAR_TURMA"] = "ANALIZAR_TURMA";
+    MensajeHeader["ANALISIS_INICIAL_MANDADO"] = "ANALISIS_INICIAL_MANDADO";
 })(MensajeHeader || (MensajeHeader = {}));

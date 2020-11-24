@@ -8,15 +8,19 @@ var estados = [estadoTurma, estadoArena, estadoExpedicion, estadoMazmorra, estad
 var tabId = -1;
 var oroJugador = 0;
 var datos;
-var estadoEjecucionBjs = { hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR, intestosPaquetes: 0 };
+var estadoEjecucionBjs = { hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
+    intestosPaquetes: 0, indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
+    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false };
 var resultadoSubasta = new SubastaResultado([], new Date());
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 chrome.runtime.onInstalled.addListener(function () {
     loadLastConfig();
 });
+chrome.runtime.onStartup.addListener(function () {
+    loadLastConfig();
+});
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log(request.header);
     switch (request.header) {
         case MensajeHeader.POP_UP_SEABRIO:
             sendResponse({ datos: datos, tabIdActiva: tabId, subasta: resultadoSubasta });
@@ -58,6 +62,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             break;
         case MensajeHeader.ACTIVAR_AK:
             setTabId();
+            estadoEjecucionBjs.analisisInicial = true;
             if (tabId == -1) {
                 let toSave = {};
                 toSave[Keys.TAREAS] = [];
@@ -85,10 +90,49 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         case MensajeHeader.CAMBIO_INTENTO_PAQUETES:
             estadoEjecucionBjs.intestosPaquetes = request.intentos;
             break;
+        case MensajeHeader.ANALIZAR_ARENA:
+            //console.log(request.header);
+            let a = request.link;
+            let sh = a.split('=')[a.split('=').length - 1];
+            //console.log(sh);
+            let link = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=2&sh=' + sh;
+            analizarArena(link);
+            break;
+        case MensajeHeader.ANALIZAR_TURMA:
+            //console.log(request.header);
+            let b = request.linkTurma;
+            let shb = b.split('=')[b.split('=').length - 1];
+            //console.log(shb);
+            let linkTurma = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=3&sh=' + shb;
+            analizarTurma(linkTurma);
+            break;
+        case MensajeHeader.ANALISIS_INICIAL_MANDADO:
+            estadoEjecucionBjs.analisisInicial = false;
+            break;
         default:
             break;
     }
 });
+function analizarTurma(link) {
+    //console.log(link)
+    estadoEjecucionBjs.indiceTurmaProximo = { nombre: 'nada', puntaje: 999999 };
+    let picker = new TurmaEnemigoPickerBackground(link);
+    picker.correrTodo().then(e => {
+        estadoEjecucionBjs.indiceTurmaProximo.nombre = e.nombre;
+        estadoEjecucionBjs.indiceTurmaProximo.puntaje = e.puntaje;
+        //console.log('Turma' + estadoEjecucionBjs.indiceTurmaProximo)
+    });
+}
+function analizarArena(link) {
+    //console.log(link)
+    estadoEjecucionBjs.indiceArenaProximo = { nombre: 'nada', puntaje: 999999 };
+    let picker = new ArenaEnemigoPickerBackground(link);
+    picker.correrTodo().then(e => {
+        estadoEjecucionBjs.indiceArenaProximo.nombre = e.nombre;
+        estadoEjecucionBjs.indiceArenaProximo.puntaje = e.puntaje;
+        //console.log('Arena: ' + estadoEjecucionBjs.indiceArenaProximo)
+    });
+}
 function actualizarTabId() {
     let pestaniaActual = {
         currentWindow: true,
