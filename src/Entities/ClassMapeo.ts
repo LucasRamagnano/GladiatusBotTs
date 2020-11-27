@@ -7,3 +7,4 @@ guardables['ControladorDeMisiones'] = ControladorDeMisiones;
 guardables['ControladorDePaquetes'] = ControladorDePaquetes;
 guardables['Inventario'] = Inventario;
 guardables['ControladorSubastas'] = ControladorSubastas;
+guardables['LuchaEvento'] = LuchaEvento;

@@ -115,23 +115,35 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 function analizarTurma(link) {
     //console.log(link)
-    estadoEjecucionBjs.indiceTurmaProximo = { nombre: 'nada', puntaje: 999999 };
-    let picker = new TurmaEnemigoPickerBackground(link);
-    picker.correrTodo().then(e => {
-        estadoEjecucionBjs.indiceTurmaProximo.nombre = e.nombre;
-        estadoEjecucionBjs.indiceTurmaProximo.puntaje = e.puntaje;
-        //console.log('Turma' + estadoEjecucionBjs.indiceTurmaProximo)
-    });
+    try {
+        estadoEjecucionBjs.indiceTurmaProximo = { nombre: 'nada', puntaje: 999999 };
+        let picker = new TurmaEnemigoPickerBackground(link);
+        picker.correrTodo().then(e => {
+            estadoEjecucionBjs.indiceTurmaProximo.nombre = e.nombre;
+            estadoEjecucionBjs.indiceTurmaProximo.puntaje = e.puntaje;
+            //console.log('Turma' + estadoEjecucionBjs.indiceTurmaProximo)
+        });
+    }
+    catch (e) {
+        console.log('Error Turma: Analizando de nuevo.');
+        window.setTimeout(analizarTurma, 3000, link);
+    }
 }
 function analizarArena(link) {
     //console.log(link)
-    estadoEjecucionBjs.indiceArenaProximo = { nombre: 'nada', puntaje: 999999 };
-    let picker = new ArenaEnemigoPickerBackground(link);
-    picker.correrTodo().then(e => {
-        estadoEjecucionBjs.indiceArenaProximo.nombre = e.nombre;
-        estadoEjecucionBjs.indiceArenaProximo.puntaje = e.puntaje;
-        //console.log('Arena: ' + estadoEjecucionBjs.indiceArenaProximo)
-    });
+    try {
+        estadoEjecucionBjs.indiceArenaProximo = { nombre: 'nada', puntaje: 999999 };
+        let picker = new ArenaEnemigoPickerBackground(link);
+        picker.correrTodo().then(e => {
+            estadoEjecucionBjs.indiceArenaProximo.nombre = e.nombre;
+            estadoEjecucionBjs.indiceArenaProximo.puntaje = e.puntaje;
+            //console.log('Arena: ' + estadoEjecucionBjs.indiceArenaProximo)
+        });
+    }
+    catch (e) {
+        console.log('Error Arena: Analizando de nuevo.');
+        window.setTimeout(analizarArena, 3000, link);
+    }
 }
 function actualizarTabId() {
     let pestaniaActual = {

@@ -1,6 +1,6 @@
 var Keys;
 (function (Keys) {
-    Keys["CONFIGURACION"] = "configuracion-refactor-1.1";
+    Keys["CONFIGURACION"] = "configuracion-refactor-1.2";
     Keys["PAQUETES"] = "paquetes";
     Keys["TAREAS"] = "tareas";
     Keys["TAREAS_FINALIZADAS"] = "tareas_finalizadas";
@@ -9,3 +9,4 @@ var Keys;
 })(Keys || (Keys = {}));
 //1.0 init
 //1.1 se agrega, modulos.analizarSubasta a CONFIGURACION
+//1.2 se agrega evento

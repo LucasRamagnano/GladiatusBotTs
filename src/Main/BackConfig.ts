@@ -25,7 +25,8 @@ const moduloInfo: ModulosEstados = {
     correrMisiones: false,
     correrPaquetes: false,
     correrTurma: false,
-    analizarSubasta: true
+    correrEvento: false,
+    analizarSubasta: false
 }
 
 const backgroundConfig: ConfiguracionStruct = {

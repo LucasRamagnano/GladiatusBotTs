@@ -60,6 +60,9 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 	if(sePuedeCorrerMazmorra()) {
 		tareasCtrl.appendTarea(new LuchaMazmorra(globalConfig.mazmorra.dificultad, globalConfig.mazmorra.vencerBoss, globalConfig.mazmorra.calabozo));
 	}
+	if(sePuedeCorrerEvento()) {
+		tareasCtrl.appendTarea(new LuchaEvento());
+	}
 	if(sePuedeCorrerArena()) {
 		if(tareasControlador.tiene(new Inventario()) || hayPaqueteEnCurso()) {
 			tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
@@ -131,6 +134,12 @@ function sePuedeCorrerTurma(): boolean {
 		!relojes.relojTurma.estasEnCooldDown() &&
 		!tareasControlador.tiene(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link')) &&
 		estadoEjecucion.indiceTurmaProximo.puntaje != 999999
+}
+
+function sePuedeCorrerEvento(): boolean {
+	return globalConfig.modulos.correrEvento  &&
+		!LuchaEvento.estasEnCooldown() &&
+		!tareasControlador.tiene(new LuchaEvento())
 }
 
 function estaEnVisionGeneral() {

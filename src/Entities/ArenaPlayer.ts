@@ -26,7 +26,7 @@ class ArenaPlayer {
     }
 
     async loadData() {
-        let response = await fetch(this.linkPlayer);
+        let response = await fetch(this.linkPlayer, {cache: 'no-store'});
         let paginaPlayer = await response.text();
         if($(paginaPlayer).find('.playername_achievement').length > 0)
             this.nombre = $(paginaPlayer).find('.playername_achievement')[0].textContent.trim();

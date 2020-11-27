@@ -22,7 +22,8 @@ const moduloInfo = {
     correrMisiones: false,
     correrPaquetes: false,
     correrTurma: false,
-    analizarSubasta: true
+    correrEvento: false,
+    analizarSubasta: false
 };
 const backgroundConfig = {
     personaje: personajeInfo,

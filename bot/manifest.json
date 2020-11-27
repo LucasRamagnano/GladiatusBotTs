@@ -28,7 +28,7 @@
 				   "Entities/LuchaExpedicion.js", "Entities/Mensajes.js","Entities/ControladorDePaquetes.js", 
 				   "Entities/Paquete.js", "Builder/PaqueteBuilder.js","Entities/PaqueteEstados.js",
 				   "Entities/ControladorTareas.js","Entities/Conversor.js","Entities/TareaEstado.js",
-				   "Entities/ControladorSubastas.js","Entities/ClassMapeo.js",
+				   "Entities/ControladorSubastas.js", "Entities/LuchaEvento.js","Entities/ClassMapeo.js",
 				   "Entities/TipoMisiones.js", "Entities/ControladorDePaquetes.js","Entities/ControladorDeEstado.js",
 				   "Recursos/config.js",
 				   "Main/filtroSubasta.js", "Main/BackConfig.js", "Main/funcionesbasicas.js"],

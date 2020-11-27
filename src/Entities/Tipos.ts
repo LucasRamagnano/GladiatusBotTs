@@ -24,6 +24,7 @@ interface ModulosEstados {
     correrArena: boolean,
     correrTurma: boolean,
     correrMisiones: boolean,
+    correrEvento: boolean,
     analizarSubasta: boolean
 }
 

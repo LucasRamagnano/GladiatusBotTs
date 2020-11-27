@@ -56,6 +56,9 @@ function calcularTareas(tareasCtrl) {
     if (sePuedeCorrerMazmorra()) {
         tareasCtrl.appendTarea(new LuchaMazmorra(globalConfig.mazmorra.dificultad, globalConfig.mazmorra.vencerBoss, globalConfig.mazmorra.calabozo));
     }
+    if (sePuedeCorrerEvento()) {
+        tareasCtrl.appendTarea(new LuchaEvento());
+    }
     if (sePuedeCorrerArena()) {
         if (tareasControlador.tiene(new Inventario()) || hayPaqueteEnCurso()) {
             tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
@@ -121,6 +124,11 @@ function sePuedeCorrerTurma() {
         !relojes.relojTurma.estasEnCooldDown() &&
         !tareasControlador.tiene(new LuchaPVP(globalConfig.circoTipoInput, '#cooldown_bar_ct .cooldown_bar_link')) &&
         estadoEjecucion.indiceTurmaProximo.puntaje != 999999;
+}
+function sePuedeCorrerEvento() {
+    return globalConfig.modulos.correrEvento &&
+        !LuchaEvento.estasEnCooldown() &&
+        !tareasControlador.tiene(new LuchaEvento());
 }
 function estaEnVisionGeneral() {
     return $('#overviewPage #avatar').length == 1;

@@ -11,6 +11,7 @@ function actualizar() {
     configuracionDuplicada.modulos.correrArena = toInputArray($('#arena_cb'))[0].checked;
     configuracionDuplicada.modulos.correrTurma = toInputArray($('#turma_cb'))[0].checked;
     configuracionDuplicada.modulos.correrMisiones = toInputArray($('#misiones_cb'))[0].checked;
+    configuracionDuplicada.modulos.correrEvento = toInputArray($('#evento_cb'))[0].checked;
     configuracionDuplicada.modulos.correrPaquetes = toInputArray($('#paquetes_cb'))[0].checked;
     //Derecha
     configuracionDuplicada.personaje.nombre = toInputArray($('#nombre_input'))[0].value;
@@ -20,7 +21,7 @@ function actualizar() {
     configuracionDuplicada.expedicion.enemigoNu = Number.parseInt(toInputArray($('#enemigo_input'))[0].value);
     configuracionDuplicada.mazmorra.calabozo = Number.parseInt(toInputArray($('#calabazo_input'))[0].value);
     configuracionDuplicada.mazmorra.dificultad = toInputArray($('#dificultad_calabozo_input'))[0].value;
-    configuracionDuplicada.mazmorra.vencerBoss = toInputArray($('#vencer_boss_input'))[0].value === "true" ? true : false;
+    configuracionDuplicada.mazmorra.vencerBoss = toInputArray($('#vencer_boss_input'))[0].value === "true";
     configuracionDuplicada.arenaTipoInput = toInputArray($('#tipo_arena_input'))[0].value;
     configuracionDuplicada.circoTipoInput = toInputArray($('#tipo_circo_input'))[0].value;
     let mensaje = {
@@ -72,6 +73,7 @@ function initIzquierda() {
     toInputArray($('#turma_cb'))[0].checked = configuracionDuplicada.modulos.correrTurma;
     toInputArray($('#misiones_cb'))[0].checked = configuracionDuplicada.modulos.correrMisiones;
     toInputArray($('#paquetes_cb'))[0].checked = configuracionDuplicada.modulos.correrPaquetes;
+    toInputArray($('#evento_cb'))[0].checked = configuracionDuplicada.modulos.correrEvento;
     $('#debugear').on('click', debuguear);
     $('#activar').on('click', () => {
         mandarMensajeBackground({ header: MensajeHeader.ACTIVAR_AK });
