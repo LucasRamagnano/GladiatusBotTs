@@ -10,7 +10,7 @@ class ControladorTareas {
 
     getPronosticoClick() {
         if(this.tareas.length >= 2) {
-            return this.tareas[0].getHomeClick();
+            return this.tareas[1].getHomeClick();
         }else {
             return $('#mainmenu > div:nth-child(1) a')[0];
         }
