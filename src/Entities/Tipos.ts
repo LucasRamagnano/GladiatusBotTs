@@ -2,9 +2,21 @@ interface ConfiguracionStruct {
     personaje: PersonajeStruct,
     expedicion: ExpedicionStruct,
     mazmorra: CalabazoStruct,
+    prioridades: PrioridadesConfig,
     arenaTipoInput: string,
     circoTipoInput: string,
     modulos: ModulosEstados
+}
+
+interface PrioridadesConfig {
+    curar: tareaPrioridad,
+    misiones: tareaPrioridad,
+    arena: tareaPrioridad,
+    turma: tareaPrioridad,
+    expedicion: tareaPrioridad,
+    calabozo: tareaPrioridad,
+    paquete: tareaPrioridad,
+    evento: tareaPrioridad
 }
 
 interface EjecucionEstado {
@@ -55,6 +67,7 @@ interface ResultadoAnalisisPvP {
 
 interface Tarea extends Guardable {
     estado: tareaEstado,
+    prioridad: tareaPrioridad,
     getProximoClick(): Promise<HTMLElement>,
     seCancela(): boolean,
     equals(t: Tarea): boolean,

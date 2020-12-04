@@ -1,5 +1,6 @@
 class LuchaMazmorra {
     constructor(dificultad, hacerBoss, indiceLugar) {
+        this.prioridad = globalConfig.prioridades.calabozo;
         this.tipo_class = 'LuchaMazmorra';
         this.dificultad = dificultad;
         this.hacerBoss = hacerBoss;

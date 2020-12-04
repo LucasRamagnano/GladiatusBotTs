@@ -1,4 +1,5 @@
 class Inventario implements Tarea{
+    prioridad : tareaPrioridad = globalConfig.prioridades.curar;
     estado: tareaEstado;
     tipo_class: string = 'Inventario';
     vecesABuscar: number = 10;

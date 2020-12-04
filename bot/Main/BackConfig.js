@@ -25,11 +25,22 @@ const moduloInfo = {
     correrEvento: false,
     analizarSubasta: false
 };
+const prioridadesInfo = {
+    arena: tareaPrioridad.ALTA,
+    calabozo: tareaPrioridad.NORMAL,
+    curar: tareaPrioridad.MUY_ALTA,
+    expedicion: tareaPrioridad.NORMAL,
+    misiones: tareaPrioridad.BAJA,
+    turma: tareaPrioridad.ALTA,
+    paquete: tareaPrioridad.ALTA,
+    evento: tareaPrioridad.NORMAL
+};
 const backgroundConfig = {
     personaje: personajeInfo,
     expedicion: expedicionInfo,
     mazmorra: calabozoInfo,
     modulos: moduloInfo,
+    prioridades: prioridadesInfo,
     arenaTipoInput: 'Arena Provinciarum',
     circoTipoInput: 'Circo Provinciarum'
 };

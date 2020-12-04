@@ -9,9 +9,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/bot/Entities/TareaPrioridad.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/TareaPrioridad.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Inventario.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Inventario.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Inventario.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Inventario.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +71,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Entities" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -119,6 +146,7 @@
       <workItem from="1606572877526" duration="704000" />
       <workItem from="1606579231259" duration="638000" />
       <workItem from="1606583724927" duration="1397000" />
+      <workItem from="1607119477974" duration="4874000" />
     </task>
     <servers />
   </component>
@@ -171,15 +199,11 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598115637204">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1598115637204" />
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1606422935769">
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1607121599208">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="612" y="187" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1606085300588" />
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1606422935769" />
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1607121599208" />
     <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1606572908324">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -190,17 +214,5 @@
     </state>
     <state x="369" y="115" key="SettingsEditor/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1606085373832" />
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1606429508343" />
-    <state x="183" y="277" width="1543" height="1027" key="dock-window-1" timestamp="1598121928933">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="183" y="277" width="1543" height="1027" key="dock-window-1/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1598121928933" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1598470643994">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1598470643994" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598199797746">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1598199797746" />
   </component>
 </project>

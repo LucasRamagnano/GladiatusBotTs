@@ -1,6 +1,7 @@
 class ControladorDeMisiones {
     constructor() {
         this.estado = tareaEstado.corriendo;
+        this.prioridad = globalConfig.prioridades.misiones;
         this.tipo_class = 'ControladorDeMisiones';
     }
     cargarMisiones(tipo, id) {

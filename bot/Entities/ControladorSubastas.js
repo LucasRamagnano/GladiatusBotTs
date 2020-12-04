@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class ControladorSubastas {
     constructor() {
+        this.prioridad = tareaPrioridad.BAJA;
         this.tipo_class = 'ControladorSubastas';
         this.link = $('#submenu1 a').toArray().find(e => e.textContent == 'Edificio de subastas').href;
         this.aBuscar = [new AuctionKey('Ichorus'), new AuctionKey('Antonius'), new AuctionKey('Taliths'),

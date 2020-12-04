@@ -1,5 +1,6 @@
 class LuchaExpedicion {
     constructor(indiceLugar, indiceEnemigo) {
+        this.prioridad = globalConfig.prioridades.expedicion;
         this.tipo_class = 'LuchaExpedicion';
         this.indiceEnemigo = indiceEnemigo;
         this.indiceLugar = indiceLugar;

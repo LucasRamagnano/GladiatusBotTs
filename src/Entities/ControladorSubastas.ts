@@ -1,5 +1,5 @@
 class ControladorSubastas implements Tarea{
-
+    prioridad : tareaPrioridad = tareaPrioridad.BAJA;
     link: string;
     tds: JQuery<HTMLElement>;
     aBuscar: AuctionKey[];

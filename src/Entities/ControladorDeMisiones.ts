@@ -1,5 +1,6 @@
 class ControladorDeMisiones implements Tarea{
     estado: tareaEstado = tareaEstado.corriendo;
+    prioridad : tareaPrioridad = globalConfig.prioridades.misiones;
     tipo_class: string = 'ControladorDeMisiones';
 
     cargarMisiones(tipo, id): Mision[] {

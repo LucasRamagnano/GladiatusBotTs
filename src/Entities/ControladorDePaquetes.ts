@@ -1,5 +1,5 @@
 class ControladorDePaquetes implements Tarea{
-
+    prioridad : tareaPrioridad = globalConfig.prioridades.paquete;
     estadoPaquete: paquete_estados;
     paqueteComprado: Paquete;
     estado: tareaEstado;

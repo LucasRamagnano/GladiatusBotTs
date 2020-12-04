@@ -1,5 +1,6 @@
 class LuchaEvento implements Tarea{
     estado: tareaEstado;
+    prioridad : tareaPrioridad = globalConfig.prioridades.evento;
     tipo_class: string = 'LuchaEvento';
 
     getHomeClick(): HTMLElement {

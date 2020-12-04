@@ -1,4 +1,5 @@
 class LuchaExpedicion implements Tarea{
+    prioridad : tareaPrioridad = globalConfig.prioridades.expedicion;
     indiceLugar: number;
     indiceEnemigo: number;
     estado: tareaEstado;

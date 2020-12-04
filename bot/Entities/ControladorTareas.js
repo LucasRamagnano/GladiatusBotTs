@@ -68,6 +68,7 @@ class ControladorTareas {
         this.tareasCanceladas = this.tareasCanceladas.concat(tareasACancelar);
         this.tareasFinalizadas = this.tareasFinalizadas.concat(tareasFinalizada);
         this.tareas = tareaCorriendo.concat(tareasEnEspera).concat(tareasToTheEnd);
+        this.ordenarTareas();
         if (this.tareas.length != 0)
             this.tareas[0].estado = tareaEstado.corriendo;
     }
@@ -91,5 +92,12 @@ class ControladorTareas {
                 resolve(controladorTareas);
             });
         });
+    }
+    ordenarTareas() {
+        let tareasPrioridadMuyAlta = this.tareas.filter(e => e.prioridad == tareaPrioridad.MUY_ALTA);
+        let tareasPrioridadAlta = this.tareas.filter(e => e.prioridad == tareaPrioridad.ALTA);
+        let tareasPrioridadNormal = this.tareas.filter(e => e.prioridad == tareaPrioridad.NORMAL);
+        let tareasPrioridadBaja = this.tareas.filter(e => e.prioridad == tareaPrioridad.BAJA);
+        this.tareas = tareasPrioridadMuyAlta.concat(tareasPrioridadAlta).concat(tareasPrioridadNormal).concat(tareasPrioridadBaja);
     }
 }

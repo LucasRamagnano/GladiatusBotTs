@@ -1,5 +1,5 @@
 enum Keys {
-    CONFIGURACION = 'configuracion-refactor-1.2',
+    CONFIGURACION = 'configuracion-refactor-1.3',
     PAQUETES = 'paquetes',
     TAREAS = 'tareas',
     TAREAS_FINALIZADAS = 'tareas_finalizadas',

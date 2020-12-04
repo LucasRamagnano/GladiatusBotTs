@@ -1,4 +1,5 @@
 class LuchaPVP implements Tarea {
+    prioridad : tareaPrioridad = globalConfig.prioridades.arena;
     lugar: string;
     selectorBoton: string;
     estado: tareaEstado;

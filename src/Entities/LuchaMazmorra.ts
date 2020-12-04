@@ -1,4 +1,5 @@
 class LuchaMazmorra implements Tarea {
+    prioridad : tareaPrioridad = globalConfig.prioridades.calabozo;
     dificultad : string;
     hacerBoss: boolean;
     indiceLugar : number;

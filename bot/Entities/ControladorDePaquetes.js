@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class ControladorDePaquetes {
     constructor(estadoPaquete, paqueteComprado) {
+        this.prioridad = globalConfig.prioridades.paquete;
         this.tipo_class = 'ControladorDePaquetes';
         this.estadoPaquete = estadoPaquete;
         this.paqueteComprado = paqueteComprado;

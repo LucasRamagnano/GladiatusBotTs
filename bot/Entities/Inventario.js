@@ -1,5 +1,6 @@
 class Inventario {
     constructor() {
+        this.prioridad = globalConfig.prioridades.curar;
         this.tipo_class = 'Inventario';
         this.vecesABuscar = 10;
     }

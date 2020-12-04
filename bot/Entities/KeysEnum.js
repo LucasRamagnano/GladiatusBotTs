@@ -1,6 +1,6 @@
 var Keys;
 (function (Keys) {
-    Keys["CONFIGURACION"] = "configuracion-refactor-1.2";
+    Keys["CONFIGURACION"] = "configuracion-refactor-1.3";
     Keys["PAQUETES"] = "paquetes";
     Keys["TAREAS"] = "tareas";
     Keys["TAREAS_FINALIZADAS"] = "tareas_finalizadas";

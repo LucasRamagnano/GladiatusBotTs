@@ -1,5 +1,6 @@
 class LuchaEvento {
     constructor() {
+        this.prioridad = globalConfig.prioridades.evento;
         this.tipo_class = 'LuchaEvento';
     }
     getHomeClick() {

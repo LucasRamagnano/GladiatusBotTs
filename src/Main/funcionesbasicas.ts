@@ -110,9 +110,9 @@ function hacerPaquete() {
 
 function sePuedeCorrerExpedicion(): boolean {
 	return globalConfig.modulos.correrExpedicion &&
-			!relojes.relojExpediciones.estasEnCooldDown() &&
-			getPorcentajeVida()>=globalConfig.personaje.porcentajeMinimoParaCurar &&
-			!tareasControlador.tiene(new LuchaExpedicion())
+		!relojes.relojExpediciones.estasEnCooldDown() &&
+		getPorcentajeVida()>=globalConfig.personaje.porcentajeMinimoParaCurar &&
+		!tareasControlador.tiene(new LuchaExpedicion())
 }
 
 function sePuedeCorrerArena(): boolean {

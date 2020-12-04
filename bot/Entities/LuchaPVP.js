@@ -1,5 +1,6 @@
 class LuchaPVP {
     constructor(lugar, selectorBoton) {
+        this.prioridad = globalConfig.prioridades.arena;
         this.analizar_proxima = false;
         this.tipo_class = 'LuchaPVP';
         this.lugar = lugar;
