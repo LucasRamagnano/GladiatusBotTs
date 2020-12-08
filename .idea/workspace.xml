@@ -9,36 +9,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/Entities/TareaPrioridad.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/TareaPrioridad.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Inventario.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Inventario.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Inventario.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Inventario.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +44,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Entities" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -147,6 +120,7 @@
       <workItem from="1606579231259" duration="638000" />
       <workItem from="1606583724927" duration="1397000" />
       <workItem from="1607119477974" duration="4874000" />
+      <workItem from="1607131148420" duration="788000" />
     </task>
     <servers />
   </component>

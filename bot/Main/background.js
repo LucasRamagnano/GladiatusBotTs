@@ -121,7 +121,7 @@ function analizarTurma(link) {
         estadoEjecucionBjs.indiceTurmaProximo.puntaje = e.puntaje;
     }).catch(() => {
         console.log('Error Turma: Analizando de nuevo.');
-        window.setTimeout(analizarArena, 3000, link);
+        window.setTimeout(analizarTurma, 3000, link);
     });
 }
 function analizarArena(link) {
