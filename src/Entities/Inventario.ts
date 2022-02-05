@@ -88,4 +88,6 @@ class Inventario implements Tarea{
     getHomeClick(): HTMLElement {
         return $('#mainmenu > div:nth-child(1) a')[0];
     }
+
+
 }

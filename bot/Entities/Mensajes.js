@@ -20,4 +20,7 @@ var MensajeHeader;
     MensajeHeader["ANALIZAR_ARENA"] = "ANALIZAR_ARENA";
     MensajeHeader["ANALIZAR_TURMA"] = "ANALIZAR_TURMA";
     MensajeHeader["ANALISIS_INICIAL_MANDADO"] = "ANALISIS_INICIAL_MANDADO";
+    MensajeHeader["STOP"] = "STOP";
+    MensajeHeader["AUTOOFFER"] = "AUTOOFFER";
+    MensajeHeader["LINK_SUBASTA"] = "LINK_SUBASTA";
 })(MensajeHeader || (MensajeHeader = {}));

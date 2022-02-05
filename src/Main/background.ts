@@ -6,13 +6,18 @@ var estadoMisiones = {valor: false, tipo: 'misiones'};
 var estadoPaquetes = {valor: false, tipo: 'paquetes'};
 var estados = [estadoTurma, estadoArena, estadoExpedicion,estadoMazmorra, estadoMisiones, estadoPaquetes];
 var tabId = -1;
+let intentoArena = 0;
+let intentoTurma = 0;
+let intentosMaximosPvp = 3;
+let continuar_analizando = false;
 var oroJugador = 0;
 var datos: ConfiguracionStruct ;
 var estadoEjecucionBjs: EjecucionEstado = {hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
 			intestosPaquetes: 0, indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
 			indiceTurmaProximo:{ nombre: 'nada', puntaje: 999999}, analisisInicial: false};
 var resultadoSubasta: SubastaResultado = new SubastaResultado([],new Date());
-
+let auctionItems: AuctionItem[] = [];
+let link_subasta;
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 chrome.runtime.onInstalled.addListener(function() {
@@ -71,7 +76,19 @@ chrome.runtime.onMessage.addListener(
 					let toSave = {};
 					toSave[Keys.TAREAS] = [];
 					chrome.storage.local.set(toSave);
+					AuctionItem.loadAuctionItems().then((e) => {
+						auctionItems = e;
+						window.setTimeout(runAnalisisSubasta,5000);
+					});
+					continuar_analizando = true;
 				}
+				break;
+			case MensajeHeader.STOP:
+				let toSave = {};
+				toSave[Keys.TAREAS] = [];
+				tabId = -1
+				continuar_analizando = false;
+				chrome.storage.local.set(toSave);
 				break;
 			case MensajeHeader.ACTUALIZAR_EXPEDICION:
 				datos.expedicion.lugar = request.lugar;
@@ -99,19 +116,23 @@ chrome.runtime.onMessage.addListener(
 				let a = request.link;
 				let sh = a.split('=')[a.split('=').length-1]
 				//console.log(sh);
-				let link = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=2&sh='+sh;
+				let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=2&sh='+sh;
 				analizarArena(link);
 				break;
 			case MensajeHeader.ANALIZAR_TURMA:
-				//console.log(request.header);
 				let b = request.linkTurma;
 				let shb = b.split('=')[b.split('=').length-1]
-				//console.log(shb);
-				let linkTurma = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=3&sh='+shb;
+				let linkTurma = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=3&sh='+shb;
 				analizarTurma(linkTurma);
+				break;
+			case MensajeHeader.AUTOOFFER:
+				AuctionItem.loadAuctionItems().then((e) => auctionItems = e);
 				break;
 			case MensajeHeader.ANALISIS_INICIAL_MANDADO:
 				estadoEjecucionBjs.analisisInicial = false;
+				break;
+			case MensajeHeader.LINK_SUBASTA:
+				link_subasta = request.subasta_link;
 				break;
 			default:
 				break;
@@ -125,9 +146,15 @@ function analizarTurma(link: string) {
 	picker.correrTodo().then(e => {
 		estadoEjecucionBjs.indiceTurmaProximo.nombre = e.nombre;
 		estadoEjecucionBjs.indiceTurmaProximo.puntaje = e.puntaje;
+		intentoTurma = 0;
 	}).catch(() => {
-		console.log('Error Turma: Analizando de nuevo.')
-		window.setTimeout(analizarArena,3000,link);
+		if(intentosMaximosPvp >= intentoTurma) {
+			intentoTurma++;
+			window.setTimeout(analizarTurma, 3000, link);
+		}else {
+			window.setTimeout(analizarTurma, 30000, link);
+			intentoTurma = 0;
+		}
 	});
 }
 
@@ -137,8 +164,15 @@ function analizarArena(link: string) {
 	picker.correrTodo().then(e => {
 		estadoEjecucionBjs.indiceArenaProximo.nombre = e.nombre;
 		estadoEjecucionBjs.indiceArenaProximo.puntaje = e.puntaje;
+		intentoArena = 0;
 	}).catch(() => {
-		console.log('Error Arena: Analizando de nuevo.');
+		if(intentosMaximosPvp >= intentoArena) {
+			intentoArena++;
+			window.setTimeout(analizarArena, 3000, link);
+		}else {
+			window.setTimeout(analizarArena, 30000, link);
+			intentoArena = 0;
+		}
 		window.setTimeout(analizarArena,3000,link);
 	});
 }
@@ -219,4 +253,79 @@ function loadLastConfig(): void {
 			console.log('Se cargo la ultima info.! :)')
 		}
 	});
+}
+
+async function runAnalisisSubasta() {
+	let time = 1000;
+	try {
+		time = await subastaAnalizar();
+	}catch (e) {
+		console.log(e);
+		console.log("Error analizyng auction");
+	}finally {
+		if(continuar_analizando)
+			window.setTimeout(runAnalisisSubasta, time);
+	}
+}
+
+async function subastaAnalizar() {
+	let allItemsLink = 	'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&sh=' + link_subasta.split('=')[link_subasta.split('=').length-1];
+	let response = await fetch(allItemsLink)
+	let subastaHTML = await response.text()
+	let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
+	let oroActual = 0;
+	let jQueryResult = $(subastaHTML).find('#sstat_gold_val');
+	if(jQueryResult.length === 0)
+		oroActual = 0;
+	else {
+		let oroHtml = jQueryResult.html();
+		oroActual = Number.parseInt(oroHtml.replace(/\./g, ''));
+	}
+
+	if(remainingTime == 'muy corto') {
+		auctionItems.forEach(e =>
+			{
+				if($(subastaHTML).find('#auctionForm'+e.auctionIds).length != 0) {//item still on auction
+					//4 estados: no apostado, apostado por random, yo, alianza, estos dos ultimos no se subasta => estaApostado || apostadoXRandom
+					//Ya hay pujas existentes.
+					let noEstaApostado = $(subastaHTML)
+						.find('#auctionForm'+e.auctionIds)
+						.parents('td')
+						.find('.auction_bid_div > div')[0].textContent.search('No hay pujas') != -1;
+
+					let apostadoXRandom = $(subastaHTML)
+						.find('#auctionForm'+e.auctionIds)
+						.parents('td')
+						.find('.auction_bid_div > div')[0].textContent.search('existentes') != -1;
+
+					if(noEstaApostado || apostadoXRandom) {
+						//apostar
+						let oroStringApostar = (<HTMLInputElement>$(subastaHTML).find('#auctionForm'+e.auctionIds).parents('td').find('input[name="bid_amount"]')[0]).value;
+						let oroNumberApostar = parseInt(oroStringApostar)+100;
+						if(oroActual >= oroNumberApostar) {
+							console.log('Subastar: ' + e.name);
+							e.subastar(oroNumberApostar);
+						}else {
+							console.log('No hay oro ('+oroNumberApostar+') para: ' + e.name);
+						}
+					}
+				}
+			}
+		)
+	}
+
+	if(auctionItems.some(e=>$(subastaHTML).find('#auctionForm'+e.auctionIds).length == 0)){
+		console.log('Removing items')
+		let toSave = {};
+		toSave[Keys.AUCTION_ITEMS] = [];
+		chrome.storage.local.set(toSave);
+		auctionItems = [];
+	}
+
+	if (remainingTime == 'muy corto')
+		return Promise.resolve(500);
+	else if (remainingTime == 'corto')
+		return Promise.resolve(2000);
+	else
+		return Promise.resolve(5000);
 }

@@ -9,36 +9,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/Entities/TareaPrioridad.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/TareaPrioridad.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/res1.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/res2.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/res3.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/res4.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/ui/blackoutDialog/icon_hint.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/ui/blackoutDialog/icon_question.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Recursos/AutoOfertar/auto_offer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/AuctionItem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/9379/img/npc/2/0_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/9379/img/ui/blackoutDialog/icon_hint.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/9379/img/ui/blackoutDialog/icon_question.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ClassMapeo.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ClassMapeo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Inventario.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Inventario.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ClassMapeo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ClassMapeo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Inventario.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Inventario.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPickerBackground.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPickerBackground.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PopUp/popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/popup.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,12 +67,16 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="CSS File" />
         <option value="TypeScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="1gSXVKVn9uMpEVnX4plaSGc5KyV" />
   <component name="ProjectLevelVcsManager">
@@ -66,17 +89,22 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Entities" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2021.3.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Ezequiel\IdeaProjects\GladiatusBotTs\src\Entities" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\bot\Recursos\AutoOfertar" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -147,6 +175,18 @@
       <workItem from="1606579231259" duration="638000" />
       <workItem from="1606583724927" duration="1397000" />
       <workItem from="1607119477974" duration="4874000" />
+      <workItem from="1608940425073" duration="20000" />
+      <workItem from="1643563425015" duration="17365000" />
+      <workItem from="1643654088575" duration="10863000" />
+      <workItem from="1643729471092" duration="3423000" />
+      <workItem from="1643744150731" duration="14200000" />
+      <workItem from="1643807735631" duration="22898000" />
+      <workItem from="1643911917546" duration="12221000" />
+      <workItem from="1644004525920" duration="546000" />
+      <workItem from="1644005331074" duration="595000" />
+      <workItem from="1644074726290" duration="2058000" />
+      <workItem from="1644077125419" duration="174000" />
+      <workItem from="1644077659434" duration="333000" />
     </task>
     <servers />
   </component>
@@ -193,26 +233,8 @@
         <entry key="1" value="TOOL_WINDOW" />
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1607121599208">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="612" y="187" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1606085300588" />
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1607121599208" />
-    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1606572908324">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1606572908324" />
-    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824@0.0.1536.824" timestamp="1601904458694" />
-    <state x="461" y="165" key="SettingsEditor" timestamp="1606429508343">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="369" y="115" key="SettingsEditor/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1606085373832" />
-    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1606429508343" />
   </component>
 </project>

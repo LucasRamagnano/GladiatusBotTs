@@ -37,7 +37,7 @@ class LuchaPVP implements Tarea {
             this.analizar_proxima = true;
             let resultado;
             if(this.sosArena()) {
-                if(estadoEjecucion.indiceArenaProximo.puntaje > 500) {
+                if(estadoEjecucion.indiceArenaProximo.puntaje > 90) {
                     let indiceToAttack;
                     $('#own2 a').toArray().forEach((e, index)=>{
                         if(e.textContent.trim() == estadoEjecucion.indiceArenaProximo.nombre)
@@ -48,7 +48,7 @@ class LuchaPVP implements Tarea {
                 else
                     return Promise.resolve($('form .button1')[0]);
             }else {
-                if(estadoEjecucion.indiceTurmaProximo.puntaje > 800) {
+                if(estadoEjecucion.indiceTurmaProximo.puntaje > 80) {
                     let indiceToAttack;
                     $('#own3 a').toArray().forEach((e, index)=>{
                         if(e.textContent.trim() == estadoEjecucion.indiceTurmaProximo.nombre)

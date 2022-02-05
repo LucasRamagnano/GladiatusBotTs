@@ -56,7 +56,7 @@ class ControladorSubastas implements Tarea{
         let resultado: SubastaResultado = new SubastaResultado();
         resultado.busquedas = this.aBuscar.map(e=>{return {key: e.key, contador: e.contador}})
         resultado.busquedaFecha = new Date();
-        let aClickear = await  new Promise(resolve => {mandarMensajeBackground({header:MensajeHeader.RESULTADO_SUBASTA, resultado: resultado},()=> resolve() )})
+        let aClickear = await  new Promise<void>(resolve => {mandarMensajeBackground({header:MensajeHeader.RESULTADO_SUBASTA, resultado: resultado},()=> resolve() )})
                                     .then((e) => Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]))
                                     .catch((e) => Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]))
         //los vacio para no llenar de data el local storage

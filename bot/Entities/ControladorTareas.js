@@ -67,8 +67,8 @@ class ControladorTareas {
         tareasToTheEnd.map(e => e.estado = tareaEstado.enEspera);
         this.tareasCanceladas = this.tareasCanceladas.concat(tareasACancelar);
         this.tareasFinalizadas = this.tareasFinalizadas.concat(tareasFinalizada);
-        this.tareas = tareaCorriendo.concat(tareasEnEspera).concat(tareasToTheEnd);
         this.ordenarTareas();
+        this.tareas = tareaCorriendo.concat(tareasEnEspera).concat(tareasToTheEnd);
         if (this.tareas.length != 0)
             this.tareas[0].estado = tareaEstado.corriendo;
     }

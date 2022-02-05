@@ -7,7 +7,7 @@
 		"scripts": ["LibreriasExternas/JQuery/jquery-3.5.1.min.js",
 			"Entities/ArenaPlayer.js","Entities/ArenaEnemigoPickerBackground.js","Entities/TareaPrioridad.js",
 			"Entities/TurmaPlayer.js","Entities/TurmaTeam.js","Entities/TurmaEnemigoPickerBackground.js",
-			"Entities/Tipos.js","Entities/ControladorSubastas.js","Entities/Adapters.js","Entities/KeysEnum.js","Entities/Conversor.js","Main/BackConfig.js","Entities/PaqueteEstados.js","Entities/Mensajes.js","Main/background.js"]
+			"Entities/Tipos.js","Entities/AuctionItem.js","Entities/ControladorSubastas.js","Entities/Adapters.js","Entities/KeysEnum.js","Entities/Conversor.js","Main/BackConfig.js","Entities/PaqueteEstados.js","Entities/Mensajes.js","Main/background.js"]
 	},
 	"permissions": ["tabs","storage"],
 	"browser_action": {
@@ -28,7 +28,7 @@
 				   "Entities/LuchaExpedicion.js", "Entities/Mensajes.js","Entities/ControladorDePaquetes.js", 
 				   "Entities/Paquete.js", "Builder/PaqueteBuilder.js","Entities/PaqueteEstados.js",
 				   "Entities/ControladorTareas.js","Entities/Conversor.js","Entities/TareaEstado.js",
-				   "Entities/ControladorSubastas.js", "Entities/LuchaEvento.js","Entities/ClassMapeo.js",
+				   "Entities/ControladorSubastas.js", "Entities/LuchaEvento.js","Entities/AuctionItem.js","Entities/ClassMapeo.js",
 				   "Entities/TipoMisiones.js", "Entities/ControladorDePaquetes.js","Entities/ControladorDeEstado.js",
 				   "Recursos/config.js",
 				   "Main/filtroSubasta.js", "Main/BackConfig.js", "Main/funcionesbasicas.js"],
@@ -37,5 +37,5 @@
 	],
 	"web_accessible_resources": ["Recursos/ConsolaVisible/estadisticas_generales.html",
 								 "Recursos/FiltroSubasta/filtro_subasta.html",
-								 "Recursos/FiltroSubasta/filtro_subasta.css"]
+								 "Recursos/FiltroSubasta/filtro_subasta.css","Recursos/AutoOfertar/auto_offer.css"]
 }

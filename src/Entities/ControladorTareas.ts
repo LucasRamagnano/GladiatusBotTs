@@ -38,7 +38,7 @@ class ControladorTareas {
         clickeableElement
             .then((e) => this.guardarTareas(e))
             .then((click) => {
-                return new Promise((res) => {
+                return new Promise<void>((res) => {
                     window.setTimeout(() => {
                         click.click();
                         res();
@@ -73,8 +73,8 @@ class ControladorTareas {
         tareasToTheEnd.map(e=>e.estado = tareaEstado.enEspera);
         this.tareasCanceladas = this.tareasCanceladas.concat(tareasACancelar);
         this.tareasFinalizadas = this.tareasFinalizadas.concat(tareasFinalizada);
-        this.tareas = tareaCorriendo.concat(tareasEnEspera).concat(tareasToTheEnd);
         this.ordenarTareas();
+        this.tareas = tareaCorriendo.concat(tareasEnEspera).concat(tareasToTheEnd);
         if(this.tareas.length != 0)
             this.tareas[0].estado = tareaEstado.corriendo;
     }

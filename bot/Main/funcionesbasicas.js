@@ -18,7 +18,7 @@ function tomarDecision() {
         let linkArena = $('#cooldown_bar_arena a').attr('href');
         let linkTurma = $('#cooldown_bar_ct a').attr('href');
         mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_ARENA, link: linkArena });
-        mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_TURMA, linkTurma });
+        mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_TURMA, linkTurma: linkTurma });
         mandarMensajeBackground({ header: MensajeHeader.ANALISIS_INICIAL_MANDADO });
     }
     if (hayPopUp()) {
@@ -28,7 +28,7 @@ function tomarDecision() {
         ControladorTareas.loadTareas().then(ctrl => {
             let temp = calcularTareas(ctrl);
             console.log('Pre-Tareas: ');
-            console.log(ctrl.tareas[0]);
+            console.log(ctrl.tareas);
             temp.preprocesarTareas();
             console.log('Post-Tareas: ');
             console.log(ctrl.tareas);
@@ -162,8 +162,12 @@ function injectBot(ans) {
         globalConfig = ans.configuracionToSend;
         estadoEjecucion = ans.estadoEjecucion;
         injectPagina();
+        window.setTimeout(mandarMensajeBackground, 100, { header: MensajeHeader.LINK_SUBASTA, subasta_link: $('#submenu1 a').toArray().find(e => e.textContent == 'Edificio de subastas').href });
         window.setTimeout(tomarDecision, 500);
         window.setTimeout(() => reloadPag(), 5000);
+    }
+    if (estamosEnSubasta()) {
+        injectAutoOffer();
     }
     /*if(ponerFiltroSubasta()) {
         console.log('insert filtro')
@@ -220,6 +224,9 @@ function backUpServer() {
 function ponerFiltroSubasta() {
     return $('#auctionPage').length > 0 && toInputArray($('select'))[1].value == '0';
 }
+function estamosEnSubasta() {
+    return $('#auctionPage').length > 0;
+}
 function injectSubasta() {
     let path = chrome.extension.getURL('Recursos/FiltroSubasta/filtro_subasta.css');
     $('head').append($('<link>')
@@ -231,8 +238,41 @@ function injectSubasta() {
         window.setTimeout(() => { console.log('iniciado'); inicializarFiltros(); }, 300);
     });
 }
+function injectAutoOffer() {
+    let path = chrome.extension.getURL('Recursos/AutoOfertar/auto_offer.css');
+    $('head').append($('<link>')
+        .attr("rel", "stylesheet")
+        .attr("type", "text/css")
+        .attr("href", path));
+    $('.awesome-button[value=Ofertar]').each(function () {
+        let boton = document.createElement("input");
+        boton.type = 'button';
+        boton.value = 'Auto Bid';
+        boton.classList.add("awesome-button");
+        boton.classList.add("auto-offer-button");
+        boton.onclick = autoOfferItem;
+        $(boton).insertAfter(this);
+    });
+    AuctionItem.loadAuctionItems().then((e) => {
+        e.forEach(item => {
+            let elem = $('#auctionForm' + item.auctionIds).parents('td').find('.auto-offer-button')[0];
+            elem.classList.add("disable-ao");
+        });
+    });
+}
 function hayPaqueteEnCurso() {
     return this.estadoEjecucion.paqueteEstado != paquete_estados.COMPRAR &&
         this.estadoEjecucion.paqueteEstado != paquete_estados.NO_HAY_DISPONIBLES &&
         this.tareasControlador.tiene(new ControladorDePaquetes());
+}
+function autoOfferItem(ev) {
+    let botonClick = ev.target;
+    botonClick.classList.add("disable-ao");
+    let tdBid = $(botonClick).parents('td')[0];
+    let itemName = $(tdBid).find('.section-header form').attr('data-item_name');
+    let itemUrl = $(tdBid).find('.section-header form').attr('action');
+    let inputs = $(tdBid).find('.section-header form input').toArray().map(elem => elem);
+    let item = new AuctionItem();
+    item.inicializar(itemName, inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value, inputs[5].value, inputs[7].value, itemUrl);
+    item.guardate().then(() => mandarMensajeBackground({ header: MensajeHeader.AUTOOFFER }));
 }

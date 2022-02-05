@@ -31,12 +31,15 @@
 		<div class="centrador">
 			<button id="debugear">Debug</button>
 		</div>
+		<div class="centrador">
+			<button id="stop">STOP!</button>
+		</div>
 		<div class="centrador" id="tabId">
 			235
 		</div>
 	</div>
 
-	<div id="derecha">
+	<div id="centro">
 		<div class="form_option">Name: 
 			<div class="config_form">
 			<input type="text" id="nombre_input">
@@ -109,6 +112,33 @@
 		</div>
 		<div class="centrador boludo_warning">No chequeo nada, no le erres!!!</div>
 	</div>
+	<div id="derecha">
+		<div id="auction_title">
+			<h5>Auto Subasta Items</h5>
+		</div>
+		<div id="item_container">
+			<div class="item">
+				<p class="item_name">No items selected</p>
+				<p class="extra_info">NS:XX|TG:XXXXXX</p>
+			</div>
+			<div class="item">
+				<p class="item_name">No items selected</p>
+				<p class="extra_info">NS:XX|TG:XXXXXX</p>
+			</div>
+			<div class="item">
+				<p class="item_name">No items selected</p>
+				<p class="extra_info">NS:XX|TG:XXXXXX</p>
+			</div>
+			<div class="item">
+				<p class="item_name">No items selected</p>
+				<p class="extra_info">NS:XX|TG:XXXXXX</p>
+			</div>
+			<div class="item">
+				<p class="item_name">No items selected</p>
+				<p class="extra_info">NS:XX|TG:XXXXXX</p>
+			</div>
+		</div>
+	</div>
 	<div id="subasta">
 		<h3>Subasta data</h3>
 		<!--
@@ -131,8 +161,10 @@
 
 -->
 <script src="../LibreriasExternas/JQuery/jquery-3.5.1.min.js"></script>
+<script src="../Entities/KeysEnum.js"></script>
 <script src="../Entities/Tipos.js"></script>
 <script src="../Entities/Adapters.js"></script>
 <script src="../Entities/Mensajes.js"></script>
 <script src="../Entities/Conversor.js"></script>
+<script src="../Entities/AuctionItem.js"></script>
 <script src="popup.js"></script>

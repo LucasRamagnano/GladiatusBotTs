@@ -32,7 +32,7 @@ class ControladorDePaquetes {
         $('#market_item_table tr').each(function () {
             if ($(this).find('th').length == 0) {
                 let paquete = crearPackDesdeTr(this);
-                if (paquete.precio > oroActual || paquete.precio < 50000 || paquete.origen === globalConfig.personaje.nombre) {
+                if (paquete.precio > oroActual || paquete.precio < 20000 || paquete.origen === globalConfig.personaje.nombre) {
                     //nada
                 }
                 else if (mejorPaquete === null) {
@@ -162,7 +162,7 @@ class ControladorDePaquetes {
     }
     getProximoClick() {
         return __awaiter(this, void 0, void 0, function* () {
-            let hoja = 1; //cero es la primera
+            let hoja = 3; //cero es la primera
             let resultado;
             let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
             if (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current')) {

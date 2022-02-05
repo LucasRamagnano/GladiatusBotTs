@@ -6,6 +6,7 @@ var Keys;
     Keys["TAREAS_FINALIZADAS"] = "tareas_finalizadas";
     Keys["TAREAS_CANCELADAS"] = "tareas_canceladas";
     Keys["TURMA_HISTORY"] = "turma_enemigos_historia";
+    Keys["AUCTION_ITEMS"] = "auction_items";
 })(Keys || (Keys = {}));
 //1.0 init
 //1.1 se agrega, modulos.analizarSubasta a CONFIGURACION

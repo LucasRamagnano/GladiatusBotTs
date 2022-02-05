@@ -30,13 +30,13 @@ const moduloInfo: ModulosEstados = {
 }
 
 const prioridadesInfo: PrioridadesConfig = {
-    arena: tareaPrioridad.ALTA,
+    arena: tareaPrioridad.NORMAL,
     calabozo: tareaPrioridad.NORMAL,
     curar: tareaPrioridad.MUY_ALTA,
     expedicion: tareaPrioridad.NORMAL,
     misiones: tareaPrioridad.BAJA,
-    turma: tareaPrioridad.ALTA,
-    paquete: tareaPrioridad.ALTA,
+    turma: tareaPrioridad.NORMAL,
+    paquete: tareaPrioridad.NORMAL,
     evento: tareaPrioridad.NORMAL
 }
 
@@ -50,4 +50,4 @@ const backgroundConfig: ConfiguracionStruct = {
     circoTipoInput: 'Circo Provinciarum'
 }
 
-const perfil: string = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15850';
+const perfil: string = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15855';

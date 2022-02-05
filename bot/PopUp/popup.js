@@ -1,8 +1,21 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 let tabToFocus = -1;
 let configuracionDuplicada;
 function debuguear(evento) {
     //chrome.runtime.sendMessage({tipoMensaje: mensajes.DEBUGUEAR});
-    imprimirPaquetes();
+    //imprimirPaquetes();
+    let toSave = {};
+    toSave[Keys.AUCTION_ITEMS] = [];
+    chrome.storage.local.set(toSave);
+    console.log('items deleted');
 }
 function actualizar() {
     //Izquierda
@@ -13,7 +26,7 @@ function actualizar() {
     configuracionDuplicada.modulos.correrMisiones = toInputArray($('#misiones_cb'))[0].checked;
     configuracionDuplicada.modulos.correrEvento = toInputArray($('#evento_cb'))[0].checked;
     configuracionDuplicada.modulos.correrPaquetes = toInputArray($('#paquetes_cb'))[0].checked;
-    //Derecha
+    //Centro
     configuracionDuplicada.personaje.nombre = toInputArray($('#nombre_input'))[0].value;
     configuracionDuplicada.personaje.oroBaseParaPaquete = Number.parseInt(toInputArray($('#oro_input'))[0].value);
     configuracionDuplicada.personaje.porcentajeMinimoParaCurar = Number.parseInt(toInputArray($('#curacion_input'))[0].value);
@@ -42,13 +55,14 @@ window.onload = function () {
 function init(datos, tabIdActiva, resultadoSubasta) {
     tabToFocus = tabIdActiva;
     configuracionDuplicada = JSON.parse(JSON.stringify(datos));
-    initDerecha();
+    initCentro();
     initIzquierda();
+    initDerecha();
     $('#subasta h3').after(resultadoSubasta.getMostrable());
     $('#analizar_subasta').after(resultadoSubasta.getMostrableFecha());
     $('#analizar_subasta').on('click', () => { mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_SUBASTA }); });
 }
-function initDerecha() {
+function initCentro() {
     //$(@)
     toInputArray($('#nombre_input'))[0].value = configuracionDuplicada.personaje.nombre;
     toInputArray($('#oro_input'))[0].value = configuracionDuplicada.personaje.oroBaseParaPaquete.toString();
@@ -61,7 +75,7 @@ function initDerecha() {
     toInputArray($('#tipo_arena_input'))[0].value = configuracionDuplicada.arenaTipoInput;
     toInputArray($('#tipo_circo_input'))[0].value = configuracionDuplicada.circoTipoInput;
     $('#update')[0].addEventListener('click', actualizar);
-    $('#izquierda input, #derecha input, #derecha select').on('change', function () {
+    $('#izquierda input, #centro input, #centro select').on('change', function () {
         $('#update_ok').css({ 'display': 'none' });
         $('#update_error').css({ 'display': 'none' });
     });
@@ -79,6 +93,10 @@ function initIzquierda() {
         mandarMensajeBackground({ header: MensajeHeader.ACTIVAR_AK });
         chrome.tabs.reload();
     });
+    $('#stop').on('click', () => {
+        mandarMensajeBackground({ header: MensajeHeader.STOP });
+        chrome.tabs.reload();
+    });
     if (tabToFocus === -1) {
         //(<HTMLInputElement><any>$('#update'))[0].disabled = true;
         $('#focus')[0].disabled = true;
@@ -88,6 +106,21 @@ function initIzquierda() {
     }
     //$('#debugear')[0].disabled = true;
     chrome.tabs.query({ currentWindow: true, active: true }, (a) => $('#tabId')[0].textContent = a[0].id.toString());
+}
+function initDerecha() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let items = yield AuctionItem.loadAuctionItems();
+        let sizeItems = items.length;
+        console.log(items);
+        $('.item_name').toArray().forEach((element, index) => {
+            if (index < sizeItems)
+                element.textContent = items[index].name;
+        });
+        $('.extra_info').toArray().forEach((element, index) => {
+            if (index < sizeItems)
+                element.textContent = 'NS:' + items[index].vecesSubastado + '|TG:' + items[index].oroTotalGastado;
+        });
+    });
 }
 function imprimirPaquetes() {
     chrome.storage.local.get(Keys.PAQUETES, (result) => {

@@ -26,13 +26,13 @@ const moduloInfo = {
     analizarSubasta: false
 };
 const prioridadesInfo = {
-    arena: tareaPrioridad.ALTA,
+    arena: tareaPrioridad.NORMAL,
     calabozo: tareaPrioridad.NORMAL,
     curar: tareaPrioridad.MUY_ALTA,
     expedicion: tareaPrioridad.NORMAL,
     misiones: tareaPrioridad.BAJA,
-    turma: tareaPrioridad.ALTA,
-    paquete: tareaPrioridad.ALTA,
+    turma: tareaPrioridad.NORMAL,
+    paquete: tareaPrioridad.NORMAL,
     evento: tareaPrioridad.NORMAL
 };
 const backgroundConfig = {
@@ -44,4 +44,4 @@ const backgroundConfig = {
     arenaTipoInput: 'Arena Provinciarum',
     circoTipoInput: 'Circo Provinciarum'
 };
-const perfil = 'https://s29-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15850';
+const perfil = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15855';

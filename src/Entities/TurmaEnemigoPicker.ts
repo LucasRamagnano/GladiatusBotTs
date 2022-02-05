@@ -64,7 +64,7 @@ class TurmaEnemigoPicker {
     }
 
     async guardar() {
-        return new Promise((res) => {
+        return new Promise<void>((res) => {
             chrome.storage.local.get(Keys.TURMA_HISTORY, (result) => {
                 let turmaHistoria: TurmaEnemigoPicker[] = result.turma_enemigos_historia;
                 let nuevoBatalla: TurmaEnemigoPicker = this;

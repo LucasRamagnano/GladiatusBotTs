@@ -2,7 +2,11 @@ let tabToFocus = -1
 let configuracionDuplicada: ConfiguracionStruct;
 function debuguear(evento) {
 	//chrome.runtime.sendMessage({tipoMensaje: mensajes.DEBUGUEAR});
-	imprimirPaquetes();
+	//imprimirPaquetes();
+	let toSave = {};
+	toSave[Keys.AUCTION_ITEMS] = [];
+	chrome.storage.local.set(toSave)
+	console.log('items deleted')
 }
 
 function actualizar() {
@@ -14,7 +18,7 @@ function actualizar() {
 	configuracionDuplicada.modulos.correrMisiones = toInputArray($('#misiones_cb'))[0].checked;
 	configuracionDuplicada.modulos.correrEvento = toInputArray($('#evento_cb'))[0].checked;
 	configuracionDuplicada.modulos.correrPaquetes = toInputArray($('#paquetes_cb'))[0].checked;
-	//Derecha
+	//Centro
 	configuracionDuplicada.personaje.nombre = toInputArray($('#nombre_input'))[0].value;
 	configuracionDuplicada.personaje.oroBaseParaPaquete = Number.parseInt(toInputArray($('#oro_input'))[0].value);
 	configuracionDuplicada.personaje.porcentajeMinimoParaCurar = Number.parseInt(toInputArray($('#curacion_input'))[0].value);
@@ -47,15 +51,16 @@ window.onload = function() {
 function init(datos: ConfiguracionStruct, tabIdActiva: number, resultadoSubasta :SubastaResultado) {
 	tabToFocus = tabIdActiva;
 	configuracionDuplicada = JSON.parse(JSON.stringify(datos));
-	initDerecha();
+	initCentro();
 	initIzquierda();
+	initDerecha();
 	$('#subasta h3').after(resultadoSubasta.getMostrable());
 	$('#analizar_subasta').after(resultadoSubasta.getMostrableFecha());
 	$('#analizar_subasta').on('click', () => {mandarMensajeBackground({header: MensajeHeader.ANALIZAR_SUBASTA})});
 
 }
 
-function initDerecha() {
+function initCentro() {
 	//$(@)
 	toInputArray($('#nombre_input'))[0].value = configuracionDuplicada.personaje.nombre;
 	toInputArray($('#oro_input'))[0].value = configuracionDuplicada.personaje.oroBaseParaPaquete.toString();
@@ -69,7 +74,7 @@ function initDerecha() {
 	toInputArray($('#tipo_circo_input'))[0].value = configuracionDuplicada.circoTipoInput;
 
 	$('#update')[0].addEventListener('click',actualizar);
-	$('#izquierda input, #derecha input, #derecha select').on('change',function() {
+	$('#izquierda input, #centro input, #centro select').on('change',function() {
 		$('#update_ok').css({'display':'none'});
 		$('#update_error').css({'display':'none'});
 	})
@@ -88,6 +93,10 @@ function initIzquierda() {
 		mandarMensajeBackground({header:MensajeHeader.ACTIVAR_AK});
 		chrome.tabs.reload();
 	});
+	$('#stop').on('click',() => {
+		mandarMensajeBackground({header:MensajeHeader.STOP});
+		chrome.tabs.reload();
+	});
 	if(tabToFocus === -1) {
 		//(<HTMLInputElement><any>$('#update'))[0].disabled = true;
 		(<HTMLInputElement><any>$('#focus'))[0].disabled = true;
@@ -98,6 +107,20 @@ function initIzquierda() {
 	chrome.tabs.query(
 		{currentWindow: true, active: true},
 		(a) => $('#tabId')[0].textContent = a[0].id.toString());
+}
+
+async function initDerecha() {
+	let items = await AuctionItem.loadAuctionItems();
+	let sizeItems = items.length;
+	console.log(items);
+	$('.item_name').toArray().forEach((element, index) => {
+		if(index < sizeItems)
+			element.textContent = items[index].name;
+	})
+	$('.extra_info').toArray().forEach((element, index) => {
+		if(index < sizeItems)
+			element.textContent = 'NS:'+items[index].vecesSubastado +'|TG:' +items[index].oroTotalGastado;
+	})
 }
 
 function imprimirPaquetes() {
