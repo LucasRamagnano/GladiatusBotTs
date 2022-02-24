@@ -22,6 +22,7 @@ let resultadoSubastaMercenarios = new SubastaResultado([], new Date(), []);
 let auctionItems = [];
 let teamTurmaPersonaje;
 let link_subasta;
+let lastTimeAlive;
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 chrome.runtime.onInstalled.addListener(function () {
@@ -40,6 +41,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             break;
         case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
             if (sender.tab.id == tabId) {
+                lastTimeAlive = Date.now().valueOf();
                 sendResponse({
                     correr: true,
                     configuracionToSend: datos,
@@ -70,6 +72,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             setTabId();
             estadoEjecucionBjs.analisisInicial = true;
             if (tabId == -1) {
+                lastTimeAlive = Date.now().valueOf();
                 let toSave = {};
                 toSave[Keys.TAREAS] = [];
                 toSave[Keys.TAREAS_BLOQUEADAS] = [];
@@ -80,6 +83,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     auctionItems = e;
                     window.setTimeout(runAnalisisSubastaGladiador, 1000);
                     window.setTimeout(runAnalisisSubastaMercenario, 1000);
+                    window.setTimeout(runCheckPluginAlive, 1000);
                     window.setTimeout(runItemsAnalizer, 5000);
                 });
                 //window.setTimeout(runAnalisisFundicion,5000);
@@ -320,6 +324,30 @@ function itemsTurmaAnalizar() {
         let newTeam = new TurmaTeam(null, perfil, null);
         yield newTeam.cargarEquipoItems();
         teamTurmaPersonaje = newTeam;
+    });
+}
+function runCheckPluginAlive() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = 5000;
+        try {
+            if (tabId != -1) {
+                let milisecondsNow = Date.now().valueOf();
+                let dif = milisecondsNow - lastTimeAlive;
+                let difMinutos = Math.floor(dif / 60000);
+                if (difMinutos >= 3) {
+                    lastTimeAlive = Date.now().valueOf();
+                    chrome.tabs.reload(tabId);
+                }
+            }
+        }
+        catch (e) {
+            console.log(e);
+            console.log("Error checking plugin live");
+        }
+        finally {
+            if (continuar_analizando)
+                window.setTimeout(runCheckPluginAlive, time);
+        }
     });
 }
 function runItemsAnalizer() {

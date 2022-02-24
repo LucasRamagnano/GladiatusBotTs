@@ -150,10 +150,7 @@ function estaEnVisionGeneral() {
 }
 function lugarEnFundicion() {
     let disponibles = 0;
-    if ($('.advanced_menu_side_icon.indicator-green').length == 1) {
-        disponibles = 6;
-    }
-    else if ($('.advanced_menu_side_icon').length <= 1) { // todo check dis
+    if ($('.advanced_menu_side_icon').length <= 1) { // todo check dis
         disponibles = 6;
     }
     else {

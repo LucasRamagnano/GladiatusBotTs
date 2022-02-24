@@ -13,6 +13,7 @@ let resultadoSubastaMercenarios: SubastaResultado = new SubastaResultado([],new 
 let auctionItems: AuctionItem[] = [];
 let teamTurmaPersonaje :TurmaTeam;
 let link_subasta;
+let lastTimeAlive: number;
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 chrome.runtime.onInstalled.addListener(function() {
@@ -34,6 +35,7 @@ chrome.runtime.onMessage.addListener(
 				break;
 			case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
 				if(sender.tab.id == tabId) {
+					lastTimeAlive = Date.now().valueOf();
 					sendResponse({
 						correr:true,
 						configuracionToSend: datos,
@@ -64,6 +66,7 @@ chrome.runtime.onMessage.addListener(
 				setTabId();
 				estadoEjecucionBjs.analisisInicial = true;
 				if(tabId == -1) {
+					lastTimeAlive = Date.now().valueOf();
 					let toSave = {};
 					toSave[Keys.TAREAS] = [];
 					toSave[Keys.TAREAS_BLOQUEADAS] = [];
@@ -74,6 +77,7 @@ chrome.runtime.onMessage.addListener(
 						auctionItems = e;
 						window.setTimeout(runAnalisisSubastaGladiador,1000);
 						window.setTimeout(runAnalisisSubastaMercenario,1000);
+						window.setTimeout(runCheckPluginAlive,1000);
 						window.setTimeout(runItemsAnalizer,5000);
 					});
 					//window.setTimeout(runAnalisisFundicion,5000);
@@ -329,6 +333,27 @@ async function itemsTurmaAnalizar() {
 	let newTeam = new TurmaTeam(null,perfil,null);
 	await newTeam.cargarEquipoItems();
 	teamTurmaPersonaje = newTeam;
+}
+
+async function runCheckPluginAlive() {
+	let time = 5000;
+	try {
+		if(tabId != -1) {
+			let milisecondsNow = Date.now().valueOf();
+			let dif = milisecondsNow - lastTimeAlive;
+			let difMinutos =  Math.floor(dif / 60000);
+			if(difMinutos >= 3) {
+				lastTimeAlive = Date.now().valueOf();
+				chrome.tabs.reload(tabId);
+			}
+		}
+	}catch (e) {
+		console.log(e);
+		console.log("Error checking plugin live");
+	}finally {
+		if(continuar_analizando)
+			window.setTimeout(runCheckPluginAlive, time);
+	}
 }
 
 async function runItemsAnalizer() {
