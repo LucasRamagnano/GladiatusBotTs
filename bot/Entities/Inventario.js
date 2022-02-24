@@ -3,6 +3,7 @@ class Inventario {
         this.prioridad = globalConfig.prioridades.curar;
         this.tipo_class = 'Inventario';
         this.vecesABuscar = 10;
+        this.timed_out_miliseconds = 5000;
     }
     getProximoClick() {
         if (this.estamosEnVisionGeneral() && estaApuntandoPersonaje()) {
@@ -80,5 +81,8 @@ class Inventario {
     }
     getHomeClick() {
         return $('#mainmenu > div:nth-child(1) a')[0];
+    }
+    puedeDesbloquearse() {
+        return true;
     }
 }

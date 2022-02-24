@@ -5,7 +5,8 @@ class LuchaMazmorra implements Tarea {
     indiceLugar : number;
     estado: tareaEstado;
     tipo_class: string = 'LuchaMazmorra';
-    
+    timed_out_miliseconds = 5000;
+
     constructor();
     constructor(dificultad : string, hacerBoss : boolean, indiceLugar : number);
     constructor(dificultad? : string, hacerBoss? : boolean, indiceLugar? : number){
@@ -23,7 +24,8 @@ class LuchaMazmorra implements Tarea {
     }
 
     proximoEsBoss(): boolean {
-        return $('.map_label').html() === 'Jefe';
+        return $('.map_label').html() === 'Jefe' ;
+        //reset || ($('.dungeoncondition_not_fulfilled').length == 1 && $('.dungeoncondition_fulfilled').length == 2 && this.indiceLugar == 5) la tribu umpokta
     }
 
     cancelarMazmorra(): HTMLElement {
@@ -91,4 +93,9 @@ class LuchaMazmorra implements Tarea {
     getHomeClick(): HTMLElement {
         return $('#submenu2 a.menuitem')[this.indiceLugar];
     }
+
+    puedeDesbloquearse(): boolean {
+        return true;
+    }
+
 }

@@ -2,6 +2,7 @@ class LuchaEvento implements Tarea{
     estado: tareaEstado;
     prioridad : tareaPrioridad = globalConfig.prioridades.evento;
     tipo_class: string = 'LuchaEvento';
+    timed_out_miliseconds = 5000;
 
     getHomeClick(): HTMLElement {
         return $('#banner_event_link')[0];
@@ -38,7 +39,11 @@ class LuchaEvento implements Tarea{
         return $('#ServerQuestTime span').length <= 1 ||
                 $('#ServerQuestTime span')[1].textContent.includes(':') ||
                 $('#ServerQuestTime span')[1].textContent.includes('-') ||
-                $('#ServerQuestTime span')[0].textContent.includes('0');
+                $('#ServerQuestTime span')[0].textContent == '0';
     }
 
+
+    puedeDesbloquearse(): boolean {
+        return true;
+    }
 }

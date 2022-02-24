@@ -1,10 +1,19 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var correrDeNuevo = true;
 var ejecutarReload = true;
 //var tareasCtrl: ControladorTareas;
 var globalConfig = backgroundConfig;
 var estadoEjecucion = { hayComida: false, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
-    intestosPaquetes: 0, indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
-    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false };
+    indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
+    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0 };
 var relojes = {
     relojArena: new Reloj('cooldown_bar_text_arena'),
     relojTurma: new Reloj('cooldown_bar_text_ct'),
@@ -12,29 +21,28 @@ var relojes = {
     relojMazmorras: new Reloj('cooldown_bar_text_dungeon')
 };
 var tareasControlador;
+let itemsTeam;
 function tomarDecision() {
-    actualizarOroFB();
-    if (estadoEjecucion.analisisInicial) {
-        let linkArena = $('#cooldown_bar_arena a').attr('href');
-        let linkTurma = $('#cooldown_bar_ct a').attr('href');
-        mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_ARENA, link: linkArena });
-        mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_TURMA, linkTurma: linkTurma });
-        mandarMensajeBackground({ header: MensajeHeader.ANALISIS_INICIAL_MANDADO });
-    }
-    if (hayPopUp()) {
-        cerrarPopUps();
-    }
-    else {
-        ControladorTareas.loadTareas().then(ctrl => {
-            let temp = calcularTareas(ctrl);
-            console.log('Pre-Tareas: ');
-            console.log(ctrl.tareas);
-            temp.preprocesarTareas();
-            console.log('Post-Tareas: ');
-            console.log(ctrl.tareas);
-            temp.correrTareaActual();
-        });
-    }
+    return __awaiter(this, void 0, void 0, function* () {
+        actualizarOroFB();
+        if (estadoEjecucion.analisisInicial) {
+            let linkArena = $('#cooldown_bar_arena a').attr('href');
+            let linkTurma = $('#cooldown_bar_ct a').attr('href');
+            mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_ARENA, link: linkArena });
+            mandarMensajeBackground({ header: MensajeHeader.ANALIZAR_TURMA, linkTurma: linkTurma });
+            mandarMensajeBackground({ header: MensajeHeader.ANALISIS_INICIAL_MANDADO });
+        }
+        if (hayPopUp()) {
+            cerrarPopUps();
+        }
+        else {
+            let ctrlTareas = yield ControladorTareas.loadTareas();
+            ctrlTareas = calcularTareas(ctrlTareas); //append all doable tasks
+            ctrlTareas.preprocesarTareas();
+            window.setTimeout(() => reloadPag(), ctrlTareas.tareas[0].timed_out_miliseconds);
+            ctrlTareas.correrTareaActual();
+        }
+    });
 }
 function cerrarPopUps() {
     $('#linkbod')[0].click();
@@ -56,31 +64,27 @@ function calcularTareas(tareasCtrl) {
     if (sePuedeCorrerMazmorra()) {
         tareasCtrl.appendTarea(new LuchaMazmorra(globalConfig.mazmorra.dificultad, globalConfig.mazmorra.vencerBoss, globalConfig.mazmorra.calabozo));
     }
+    if (sePuedeCorrerFundicion()) {
+        let tareaEstado = fundicionEstados.AGARRAR_ITEMS;
+        let ldispo = lugarEnFundicion();
+        let tarea = new ControladorDeFundicion(ldispo, tareaEstado);
+        //console.log(tarea);
+        tareasCtrl.appendTarea(tarea);
+    }
     if (sePuedeCorrerEvento()) {
         tareasCtrl.appendTarea(new LuchaEvento());
     }
     if (sePuedeCorrerArena()) {
-        if (tareasControlador.tiene(new Inventario()) || hayPaqueteEnCurso()) {
-            tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
-        }
-        else {
-            tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
-            //tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
-        }
+        tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
     }
     if (sePuedeCorrerTurma()) {
-        if (hayPaqueteEnCurso()) {
-            tareasCtrl.appendTarea(new LuchaPVP(globalConfig.circoTipoInput, '#cooldown_bar_ct .cooldown_bar_link'));
-        }
-        else {
-            tareasCtrl.ponerTareaPrimera(new LuchaPVP(globalConfig.circoTipoInput, '#cooldown_bar_ct .cooldown_bar_link'));
-        }
+        tareasCtrl.appendTarea(new LuchaPVP(globalConfig.circoTipoInput, '#cooldown_bar_ct .cooldown_bar_link'));
     }
     if (hacerMisiones()) {
-        tareasCtrl.ponerTareaPrimera(new ControladorDeMisiones());
+        tareasCtrl.appendTarea(new ControladorDeMisiones());
     }
     if (analizarSubasta()) {
-        tareasCtrl.ponerTareaPrimera(new ControladorSubastas());
+        tareasCtrl.appendTarea(new ControladorSubastas());
     }
     return tareasCtrl;
 }
@@ -125,6 +129,13 @@ function sePuedeCorrerTurma() {
         !tareasControlador.tiene(new LuchaPVP(globalConfig.circoTipoInput, '#cooldown_bar_ct .cooldown_bar_link')) &&
         estadoEjecucion.indiceTurmaProximo.puntaje != 999999;
 }
+function sePuedeCorrerFundicion() {
+    console.log('Lugar en fundicion: ' + lugarEnFundicion());
+    let ldispo = lugarEnFundicion();
+    return globalConfig.modulos.correrFundicion &&
+        ldispo > 0 &&
+        !tareasControlador.tiene(new ControladorDeFundicion());
+}
 function sePuedeCorrerEvento() {
     return globalConfig.modulos.correrEvento &&
         !LuchaEvento.estasEnCooldown() &&
@@ -133,6 +144,17 @@ function sePuedeCorrerEvento() {
 function estaEnVisionGeneral() {
     return $('#overviewPage #avatar').length == 1;
 }
+function lugarEnFundicion() {
+    let disponibles = 0;
+    if ($('.advanced_menu_side_icon').length <= 1) {
+        disponibles = 6;
+    }
+    else {
+        let terminados = $('.advanced_menu_side_icon')[1].getAttribute('data-tooltip').replace(/\[/g, '').replace(/\]/g, '').trim().split('"#DDD","#DDD"').filter(e => e.includes('Enhorabuena')).length;
+        disponibles = 6 - $('.advanced_menu_side_icon')[1].getAttribute('data-tooltip').replace(/\[/g, '').replace(/\]/g, '').trim().split('"#DDD","#DDD"').filter(e => e.includes(':')).length;
+    }
+    return disponibles;
+}
 function estaApuntandoPersonaje() {
     let jQueryResult = $('.charmercsel');
     return jQueryResult[0] === undefined ||
@@ -140,6 +162,29 @@ function estaApuntandoPersonaje() {
 }
 function getPorcentajeVida() {
     return parseInt($('#header_values_hp_percent').html());
+}
+function getItems() {
+    return __awaiter(this, void 0, void 0, function* () {
+        itemsTeam = null;
+        let seguirChequando = true;
+        let timeOut = 3000;
+        mandarMensajeBackground({ header: MensajeHeader.ITEMS_ANALIZER }, (e) => {
+            let turmaTeam = e.items;
+            itemsTeam = new TurmaTeam(turmaTeam.nombre, turmaTeam.link, turmaTeam.boton);
+            itemsTeam.loadFromJson(turmaTeam);
+        });
+        while (seguirChequando && timeOut > 0) {
+            yield wait(10);
+            timeOut = timeOut - 10;
+            try {
+                seguirChequando = !itemsTeam.cargadoJsonEnd;
+            }
+            catch (e) {
+                seguirChequando = true;
+            }
+        }
+        return Promise.resolve();
+    });
 }
 window.onload = function () {
     mandarMensajeBackground({ header: MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO }, injectBot);
@@ -154,6 +199,9 @@ window.onload = function () {
             case MensajeHeader.ACTUALIZAR:
                 globalConfig = mensaje.globalConfig;
                 break;
+            case MensajeHeader.IR_SUBASTA_ITEM:
+                window.open(mensaje.link, '_self');
+                break;
         }
     });
 };
@@ -164,15 +212,15 @@ function injectBot(ans) {
         injectPagina();
         window.setTimeout(mandarMensajeBackground, 100, { header: MensajeHeader.LINK_SUBASTA, subasta_link: $('#submenu1 a').toArray().find(e => e.textContent == 'Edificio de subastas').href });
         window.setTimeout(tomarDecision, 500);
-        window.setTimeout(() => reloadPag(), 5000);
     }
-    if (estamosEnSubasta()) {
-        injectAutoOffer();
+    else {
+        if (estamosEnSubasta()) {
+            injectAutoOffer();
+        }
+        if (estamosEnOverview()) {
+            injectItemComparison();
+        }
     }
-    /*if(ponerFiltroSubasta()) {
-        console.log('insert filtro')
-        injectSubasta();
-    }*/
 }
 function reloadPag() {
     location.reload();
@@ -227,6 +275,9 @@ function ponerFiltroSubasta() {
 function estamosEnSubasta() {
     return $('#auctionPage').length > 0;
 }
+function estamosEnOverview() {
+    return $('#overviewPage').length > 0;
+}
 function injectSubasta() {
     let path = chrome.extension.getURL('Recursos/FiltroSubasta/filtro_subasta.css');
     $('head').append($('<link>')
@@ -236,6 +287,31 @@ function injectSubasta() {
     $.get(chrome.runtime.getURL('Recursos/FiltroSubasta/filtro_subasta.html'), function (data) {
         $(data).appendTo('body');
         window.setTimeout(() => { console.log('iniciado'); inicializarFiltros(); }, 300);
+    });
+}
+function injectItemComparison() {
+    let path = chrome.extension.getURL('Recursos/ItemsComparison/item_container.css');
+    $('head').append($('<link>')
+        .attr("rel", "stylesheet")
+        .attr("type", "text/css")
+        .attr("href", path));
+    $.get(chrome.runtime.getURL('Recursos/ItemsComparison/item_container.html'), function (data) {
+        $('#content > table').after(data);
+        $('.item_boton').on('click', (e) => {
+            let nombre = e.target.textContent;
+            injectItemComparisonEstadisticas(nombre);
+            console.log(nombre);
+        });
+        getItems().then(() => {
+            injectItemComparisonEstadisticas('arma');
+        });
+    });
+}
+function injectItemComparisonEstadisticas(elemToSee) {
+    itemsTeam.turmaPlayers.forEach((elem, index) => {
+        let a = elem.itemsTooltip[elemToSee.toLocaleLowerCase()].getMostrableElement();
+        $('.item_estadisticas:nth-child(' + (index + 1) + ')').empty();
+        $('.item_estadisticas:nth-child(' + (index + 1) + ')').append(a);
     });
 }
 function injectAutoOffer() {
@@ -273,6 +349,9 @@ function autoOfferItem(ev) {
     let itemUrl = $(tdBid).find('.section-header form').attr('action');
     let inputs = $(tdBid).find('.section-header form input').toArray().map(elem => elem);
     let item = new AuctionItem();
-    item.inicializar(itemName, inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value, inputs[5].value, inputs[7].value, itemUrl);
+    item.inicializar(itemName, inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value, inputs[5].value, inputs[7].value, itemUrl, window.location.href.includes('ttype=3'));
     item.guardate().then(() => mandarMensajeBackground({ header: MensajeHeader.AUTOOFFER }));
+}
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

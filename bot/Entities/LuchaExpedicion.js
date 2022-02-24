@@ -2,6 +2,7 @@ class LuchaExpedicion {
     constructor(indiceLugar, indiceEnemigo) {
         this.prioridad = globalConfig.prioridades.expedicion;
         this.tipo_class = 'LuchaExpedicion';
+        this.timed_out_miliseconds = 5000;
         this.indiceEnemigo = indiceEnemigo;
         this.indiceLugar = indiceLugar;
     }
@@ -54,7 +55,7 @@ class LuchaExpedicion {
         return this;
     }
     seCancela() {
-        return !globalConfig.modulos.correrExpedicion &&
+        return !globalConfig.modulos.correrExpedicion ||
             getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar;
     }
     equals(t) {
@@ -62,5 +63,8 @@ class LuchaExpedicion {
     }
     getHomeClick() {
         return $('#submenu2 a.menuitem')[this.indiceLugar];
+    }
+    puedeDesbloquearse() {
+        return true;
     }
 }

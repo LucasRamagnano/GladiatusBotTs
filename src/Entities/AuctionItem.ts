@@ -11,12 +11,14 @@ class AuctionItem extends Guardable{
     oroTotalGastado: number = 0;
     vecesSubastado: number = 0;
     ultimaSubasta: number = 0;
-    tipo_class: string = 'AuctionItem';
+    tipo_class: string = 'AuctionItem'
+    mercenario: boolean;
+    subastaBasica: number;
 
     constructor(){
         super();
     };
-    inicializar(name: string, auctionIds: string, qry: string, itemType: string, itemLevel: string, itemQuality: string, buyouthd: string, bid: string, url: string) {
+    inicializar(name: string, auctionIds: string, qry: string, itemType: string, itemLevel: string, itemQuality: string, buyouthd: string, bid: string, url: string, mercenario: boolean) {
         this.name = name;
         this.auctionIds = auctionIds;
         this.qry = qry;
@@ -26,6 +28,7 @@ class AuctionItem extends Guardable{
         this.buyouthd = buyouthd;
         this.bid = bid;
         this.url = url;
+        this.mercenario = mercenario;
     }
 
     getPostData(amountBid): string {
@@ -59,6 +62,7 @@ class AuctionItem extends Guardable{
         this.oroTotalGastado = jsonGuardado.oroTotalGastado;
         this.vecesSubastado = jsonGuardado.vecesSubastado;
         this.ultimaSubasta = jsonGuardado.ultimaSubasta;
+        this.mercenario = jsonGuardado.mercenario;
         return this;
     }
 

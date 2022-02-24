@@ -5,7 +5,8 @@ enum Keys {
     TAREAS_FINALIZADAS = 'tareas_finalizadas',
     TAREAS_CANCELADAS = 'tareas_canceladas',
     TURMA_HISTORY = 'turma_enemigos_historia',
-    AUCTION_ITEMS = 'auction_items'
+    AUCTION_ITEMS = 'auction_items',
+    TAREAS_BLOQUEADAS = 'tareas_bloqueadas'
 }
 
 //1.0 init

@@ -3,6 +3,7 @@ class Inventario implements Tarea{
     estado: tareaEstado;
     tipo_class: string = 'Inventario';
     vecesABuscar: number = 10;
+    timed_out_miliseconds = 5000;
 
     getProximoClick(): Promise<HTMLElement> {
         if(this.estamosEnVisionGeneral() && estaApuntandoPersonaje()){
@@ -89,5 +90,7 @@ class Inventario implements Tarea{
         return $('#mainmenu > div:nth-child(1) a')[0];
     }
 
-
+    puedeDesbloquearse(): boolean {
+        return true;
+    }
 }

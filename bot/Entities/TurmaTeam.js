@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 class TurmaTeam {
     constructor(nombre, link, boton) {
         this.turmaPlayers = [];
+        this.cargadoJsonEnd = false;
         this.nombre = nombre;
         this.link = link;
         this.boton = boton;
@@ -25,7 +26,19 @@ class TurmaTeam {
                 toLoad.push(personaje.loadData());
             }
             yield Promise.all(toLoad);
-            //console.log('Equipo cargado');
+        });
+    }
+    cargarEquipoItems() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let i = 2;
+            let toLoad = [];
+            for (; i <= 6; i++) {
+                let linkPersonajeTurma = this.insertInString(this.link, '&doll=' + i, this.link.indexOf('&'));
+                let personaje = new TurmaPlayer(linkPersonajeTurma);
+                this.turmaPlayers.push(personaje);
+                toLoad.push(personaje.loadItemToolTip());
+            }
+            yield Promise.all(toLoad);
         });
     }
     insertInString(stringBase, stringAPoner, posicion) {
@@ -60,5 +73,15 @@ class TurmaTeam {
     }
     curandose() {
         return this.turmaPlayers.map(e => e.curandose).reduce((acc, val) => acc + val);
+    }
+    loadFromJson(e) {
+        let players = e.turmaPlayers;
+        console.log(e);
+        this.turmaPlayers = players.map(tp => {
+            let turmaPlayer = new TurmaPlayer(this.link);
+            turmaPlayer.itemsTooltip = new ItemsPlayers(tp.itemsTooltip.casco.rawData, tp.itemsTooltip.arma.rawData, tp.itemsTooltip.armadura.rawData, tp.itemsTooltip.escudo.rawData, tp.itemsTooltip.guante.rawData, tp.itemsTooltip.zapato.rawData, tp.itemsTooltip.anillo_1.rawData, tp.itemsTooltip.anillo_2.rawData, tp.itemsTooltip.amuleto.rawData);
+            return turmaPlayer;
+        });
+        this.cargadoJsonEnd = true;
     }
 }

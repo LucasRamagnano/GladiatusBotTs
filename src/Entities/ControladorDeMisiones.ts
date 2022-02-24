@@ -1,7 +1,8 @@
 class ControladorDeMisiones implements Tarea{
-    estado: tareaEstado = tareaEstado.corriendo;
+    estado: tareaEstado;
     prioridad : tareaPrioridad = globalConfig.prioridades.misiones;
     tipo_class: string = 'ControladorDeMisiones';
+    timed_out_miliseconds = 5000;
 
     cargarMisiones(tipo, id): Mision[] {
         let misionesTemp : Mision[] = [];
@@ -110,5 +111,7 @@ class ControladorDeMisiones implements Tarea{
         return $('a[title=\'Panteón\']')[0];
     }
 
-
+    puedeDesbloquearse(): boolean {
+        return true;
+    }
 }

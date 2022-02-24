@@ -4,6 +4,7 @@ class LuchaExpedicion implements Tarea{
     indiceEnemigo: number;
     estado: tareaEstado;
     tipo_class: string = 'LuchaExpedicion';
+    timed_out_miliseconds = 5000;
 
     constructor();
     constructor(indiceLugar: number, indiceEnemigo: number);
@@ -67,7 +68,7 @@ class LuchaExpedicion implements Tarea{
     }
 
     seCancela(): boolean {
-        return !globalConfig.modulos.correrExpedicion &&
+        return !globalConfig.modulos.correrExpedicion ||
                 getPorcentajeVida()<globalConfig.personaje.porcentajeMinimoParaCurar;
     }
 
@@ -79,5 +80,8 @@ class LuchaExpedicion implements Tarea{
         return $('#submenu2 a.menuitem')[this.indiceLugar];
     }
 
+    puedeDesbloquearse(): boolean {
+        return true;
+    }
 
 }

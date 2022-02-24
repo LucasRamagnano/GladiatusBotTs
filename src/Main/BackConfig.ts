@@ -26,7 +26,8 @@ const moduloInfo: ModulosEstados = {
     correrPaquetes: false,
     correrTurma: false,
     correrEvento: false,
-    analizarSubasta: false
+    analizarSubasta: false,
+    correrFundicion: false
 }
 
 const prioridadesInfo: PrioridadesConfig = {
@@ -37,7 +38,8 @@ const prioridadesInfo: PrioridadesConfig = {
     misiones: tareaPrioridad.BAJA,
     turma: tareaPrioridad.NORMAL,
     paquete: tareaPrioridad.NORMAL,
-    evento: tareaPrioridad.NORMAL
+    evento: tareaPrioridad.NORMAL,
+    fundicion: tareaPrioridad.ALTA,
 }
 
 const backgroundConfig: ConfiguracionStruct = {
@@ -48,6 +50,10 @@ const backgroundConfig: ConfiguracionStruct = {
     prioridades: prioridadesInfo,
     arenaTipoInput: 'Arena Provinciarum',
     circoTipoInput: 'Circo Provinciarum'
+
+
+
+
 }
 
 const perfil: string = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15855';

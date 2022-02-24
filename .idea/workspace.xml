@@ -9,53 +9,68 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/0/0_4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/2/0_4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/res1.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/res2.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/res3.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/res4.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/ui/blackoutDialog/icon_hint.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/9401/img/ui/blackoutDialog/icon_question.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bot/Recursos/AutoOfertar/auto_offer.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entities/AuctionItem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/1/0_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/1/0_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/1/0_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/npc/1/0_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/9401/img/premium/token/15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Entities/FundicionEstados.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Recursos/ItemsComparison/item_container.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Recursos/ItemsComparison/item_container.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/FundicionEstados.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/ItemsCategorizador.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/9379/img/npc/2/0_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/9379/img/ui/blackoutDialog/icon_hint.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/9379/img/ui/blackoutDialog/icon_question.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/AuctionItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/AuctionItem.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ClassMapeo.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ClassMapeo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Inventario.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Inventario.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/KeysEnum.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/TareaEstado.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/TareaEstado.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Tipos.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Tipos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/TurmaPlayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/TurmaPlayer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/TurmaTeam.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/TurmaTeam.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/filtroSubasta.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/filtroSubasta.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/FiltroSubasta/filtro_subasta.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/AuctionItem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/AuctionItem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ClassMapeo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ClassMapeo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Inventario.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Inventario.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/KeysEnum.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPickerBackground.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPickerBackground.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/TareaEstado.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TareaEstado.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaPlayer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaPlayer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaTeam.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaTeam.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/filtroSubasta.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/filtroSubasta.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PopUp/popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/popup.ts" afterDir="false" />
     </list>
@@ -69,11 +84,20 @@
       <list>
         <option value="CSS File" />
         <option value="TypeScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -88,19 +112,21 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/bot/Recursos/ItemsComparison" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2021.3.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\bot\Recursos\ItemsComparison" />
       <recent name="C:\Users\Ezequiel\IdeaProjects\GladiatusBotTs\src\Entities" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -187,6 +213,21 @@
       <workItem from="1644074726290" duration="2058000" />
       <workItem from="1644077125419" duration="174000" />
       <workItem from="1644077659434" duration="333000" />
+      <workItem from="1644078007882" duration="940000" />
+      <workItem from="1644079038769" duration="198000" />
+      <workItem from="1644079251828" duration="441000" />
+      <workItem from="1644079709012" duration="20047000" />
+      <workItem from="1644173654134" duration="13961000" />
+      <workItem from="1644239719994" duration="16157000" />
+      <workItem from="1644328819304" duration="17726000" />
+      <workItem from="1644409384513" duration="24522000" />
+      <workItem from="1644524597853" duration="58810000" />
+      <workItem from="1644877826361" duration="1835000" />
+      <workItem from="1644962155413" duration="13359000" />
+      <workItem from="1645046467478" duration="7453000" />
+      <workItem from="1645134219843" duration="25747000" />
+      <workItem from="1645452995740" duration="8732000" />
+      <workItem from="1645651605581" duration="5964000" />
     </task>
     <servers />
   </component>
@@ -236,5 +277,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

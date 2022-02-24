@@ -11,6 +11,8 @@ class ControladorDePaquetes {
     constructor(estadoPaquete, paqueteComprado) {
         this.prioridad = globalConfig.prioridades.paquete;
         this.tipo_class = 'ControladorDePaquetes';
+        this.intentosPaquetes = 0;
+        this.timed_out_miliseconds = 5000;
         this.estadoPaquete = estadoPaquete;
         this.paqueteComprado = paqueteComprado;
     }
@@ -18,6 +20,7 @@ class ControladorDePaquetes {
         this.estado = guardado.estado;
         this.estadoPaquete = guardado.estadoPaquete;
         this.paqueteComprado = guardado.paqueteComprado;
+        this.estadoPaquete = guardado.estadoPaquete;
         return this;
     }
     getOroActual() {
@@ -26,6 +29,9 @@ class ControladorDePaquetes {
     }
     estamosEnMercado() {
         return $('#guildMarketPage').length > 0;
+    }
+    puedeDesbloquearse() {
+        return true;
     }
     buscarMejorPaquete(oroActual) {
         let mejorPaquete = null;
@@ -60,17 +66,13 @@ class ControladorDePaquetes {
         else {
             let paquete = this.buscarMejorPaquete(this.getOroActual());
             if (paquete === null) {
-                this.actualizarEstadoPaquete(paquete_estados.NO_HAY_DISPONIBLES);
-                this.estado = tareaEstado.toTheEnd;
-                return Promise.resolve($(".icon.market-icon")[0]);
+                this.estadoPaquete = paquete_estados.NO_HAY_DISPONIBLES;
+                this.estado = tareaEstado.bloqueada;
+                return tareasControlador.getPronosticoClick();
             }
             else {
-                mandarMensajeBackground({
-                    header: MensajeHeader.CONTENT_SCRIPT_PKT_COMPRADO,
-                    paqueteComprado: paquete
-                });
                 this.paqueteComprado = paquete;
-                this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_COMPRA);
+                this.estadoPaquete = paquete_estados.VERIFICAR_COMPRA;
                 return Promise.resolve(paquete.link);
             }
         }
@@ -99,12 +101,12 @@ class ControladorDePaquetes {
         let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
         if (estaEnELInventario) {
             this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
-            estadoEjecucion.intestosPaquetes = 0;
+            //estadoEjecucion.intestosPaquetes = 0;
             return Promise.resolve($(".icon.market-icon")[0]);
         }
         else {
             this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_COMPRA);
-            estadoEjecucion.intestosPaquetes = estadoEjecucion.intestosPaquetes + 1;
+            //estadoEjecucion.intestosPaquetes = estadoEjecucion.intestosPaquetes+1;
             return Promise.resolve($('#menue_packages')[0]);
         }
     }
@@ -141,7 +143,7 @@ class ControladorDePaquetes {
             let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
             if (estaEnELInventario) {
                 this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
-                estadoEjecucion.intestosPaquetes = estadoEjecucion.intestosPaquetes + 1;
+                //estadoEjecucion.intestosPaquetes =  estadoEjecucion.intestosPaquetes + 1;
                 return Promise.resolve($(".icon.market-icon")[0]);
             }
             else {
@@ -169,13 +171,13 @@ class ControladorDePaquetes {
                 jQueryResult[hoja].click();
                 yield this.wait(2000);
             }
-            this.paqueteComprado = estadoEjecucion.paquete;
-            this.estadoPaquete = estadoEjecucion.paqueteEstado;
+            /*this.paqueteComprado = estadoEjecucion.paquete;
+            this.estadoPaquete = estadoEjecucion.paqueteEstado;*/
             if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
-                estadoEjecucion.intestosPaquetes = 0;
+                this.intentosPaquetes = 0;
                 resultado = this.comprar();
             }
-            else if (estadoEjecucion.intestosPaquetes == 5) {
+            else if (this.intentosPaquetes == 5) {
                 this.estado = tareaEstado.cancelada;
                 this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
                 console.log("REVISAR PAQUETES.");
@@ -203,7 +205,7 @@ class ControladorDePaquetes {
                 resultado = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
             }
             console.log(estadoEjecucion);
-            mandarMensajeBackground({ header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes });
+            //mandarMensajeBackground({header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes})
             return resultado;
         });
     }

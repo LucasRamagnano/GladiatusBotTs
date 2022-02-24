@@ -23,4 +23,6 @@ var MensajeHeader;
     MensajeHeader["STOP"] = "STOP";
     MensajeHeader["AUTOOFFER"] = "AUTOOFFER";
     MensajeHeader["LINK_SUBASTA"] = "LINK_SUBASTA";
+    MensajeHeader["IR_SUBASTA_ITEM"] = "IR_SUBASTA_ITEM";
+    MensajeHeader["ITEMS_ANALIZER"] = "ITEMS_ANALIZER";
 })(MensajeHeader || (MensajeHeader = {}));

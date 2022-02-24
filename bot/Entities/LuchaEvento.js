@@ -2,6 +2,7 @@ class LuchaEvento {
     constructor() {
         this.prioridad = globalConfig.prioridades.evento;
         this.tipo_class = 'LuchaEvento';
+        this.timed_out_miliseconds = 5000;
     }
     getHomeClick() {
         return $('#banner_event_link')[0];
@@ -33,6 +34,9 @@ class LuchaEvento {
         return $('#ServerQuestTime span').length <= 1 ||
             $('#ServerQuestTime span')[1].textContent.includes(':') ||
             $('#ServerQuestTime span')[1].textContent.includes('-') ||
-            $('#ServerQuestTime span')[0].textContent.includes('0');
+            $('#ServerQuestTime span')[0].textContent == '0';
+    }
+    puedeDesbloquearse() {
+        return true;
     }
 }

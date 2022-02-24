@@ -127,7 +127,7 @@ function getTipoNumber(td) {
 }
 
 //----------DATA INIT
-const nombreData = {
+let nombreData = {
 armas : ['Garrote','Espada corta','Daga corta','Hoz de batalla',
                 'Espada grande','Roce intensivo','Tridente','Espada larga',
                 'Hacha','Lanza tridente','Hacha grande','Martillo',

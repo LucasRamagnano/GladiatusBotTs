@@ -2,6 +2,7 @@ class LuchaMazmorra {
     constructor(dificultad, hacerBoss, indiceLugar) {
         this.prioridad = globalConfig.prioridades.calabozo;
         this.tipo_class = 'LuchaMazmorra';
+        this.timed_out_miliseconds = 5000;
         this.dificultad = dificultad;
         this.hacerBoss = hacerBoss;
         this.indiceLugar = indiceLugar;
@@ -14,6 +15,7 @@ class LuchaMazmorra {
     }
     proximoEsBoss() {
         return $('.map_label').html() === 'Jefe';
+        //reset || ($('.dungeoncondition_not_fulfilled').length == 1 && $('.dungeoncondition_fulfilled').length == 2 && this.indiceLugar == 5) la tribu umpokta
     }
     cancelarMazmorra() {
         return $('input[name*="dungeonId"] + input')[0];
@@ -73,5 +75,8 @@ class LuchaMazmorra {
     }
     getHomeClick() {
         return $('#submenu2 a.menuitem')[this.indiceLugar];
+    }
+    puedeDesbloquearse() {
+        return true;
     }
 }

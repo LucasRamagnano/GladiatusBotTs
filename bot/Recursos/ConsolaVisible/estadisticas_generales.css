@@ -33,7 +33,8 @@
 #paquete {
     width: 200px;
     height: 150px;
-    background: rgb(192, 106, 25);
+    background: red;
+    display: none;
 }
 
 #estado_paquete span {

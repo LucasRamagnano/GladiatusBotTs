@@ -11,6 +11,22 @@ class TurmaPlayer {
     constructor(linkPlayer) {
         this.linkPlayer = linkPlayer;
     }
+    loadItemToolTip() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let response = yield fetch(this.linkPlayer);
+            let paginaPlayer = yield response.text();
+            let casco = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.CASCO + ']').first().attr('data-tooltip');
+            let arma = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ARMA + ']').first().attr('data-tooltip');
+            let armadura = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ARMADURA + ']').first().attr('data-tooltip');
+            let escudo = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ESCUDO + ']').first().attr('data-tooltip');
+            let guante = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.GUANTE + ']').first().attr('data-tooltip');
+            let zapato = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ZAPATO + ']').first().attr('data-tooltip');
+            let anillo_1 = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ANILLO_1 + ']').first().attr('data-tooltip');
+            let anillo_2 = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ANILLO_2 + ']').first().attr('data-tooltip');
+            let amuleto = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.AMULETO + ']').first().attr('data-tooltip');
+            this.itemsTooltip = new ItemsPlayers(casco, arma, armadura, escudo, guante, zapato, anillo_1, anillo_2, amuleto);
+        });
+    }
     loadData() {
         return __awaiter(this, void 0, void 0, function* () {
             let response = yield fetch(this.linkPlayer);

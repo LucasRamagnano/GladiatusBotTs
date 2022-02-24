@@ -3,6 +3,7 @@ class LuchaPVP {
         this.prioridad = globalConfig.prioridades.arena;
         this.analizar_proxima = false;
         this.tipo_class = 'LuchaPVP';
+        this.timed_out_miliseconds = 5000;
         this.lugar = lugar;
         this.selectorBoton = selectorBoton;
     }
@@ -94,5 +95,8 @@ class LuchaPVP {
     }
     getHomeClick() {
         return $(this.selectorBoton)[0];
+    }
+    puedeDesbloquearse() {
+        return true;
     }
 }

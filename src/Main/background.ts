@@ -1,22 +1,17 @@
-var estadoArena = {valor: false, tipo: 'arena'};
-var estadoTurma = {valor: false, tipo: 'turma'};
-var estadoExpedicion = {valor: false, tipo: 'expedicion'};
-var estadoMazmorra = {valor: false, tipo: 'mazmorra'};
-var estadoMisiones = {valor: false, tipo: 'misiones'};
-var estadoPaquetes = {valor: false, tipo: 'paquetes'};
-var estados = [estadoTurma, estadoArena, estadoExpedicion,estadoMazmorra, estadoMisiones, estadoPaquetes];
-var tabId = -1;
+let tabId = -1;
 let intentoArena = 0;
 let intentoTurma = 0;
 let intentosMaximosPvp = 3;
-let continuar_analizando = false;
-var oroJugador = 0;
-var datos: ConfiguracionStruct ;
-var estadoEjecucionBjs: EjecucionEstado = {hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
-			intestosPaquetes: 0, indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
-			indiceTurmaProximo:{ nombre: 'nada', puntaje: 999999}, analisisInicial: false};
-var resultadoSubasta: SubastaResultado = new SubastaResultado([],new Date());
+let continuar_analizando = true;
+let oroJugador = 0;
+let datos: ConfiguracionStruct ;
+let estadoEjecucionBjs: EjecucionEstado = {hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
+			indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
+			indiceTurmaProximo:{ nombre: 'nada', puntaje: 999999}, analisisInicial: false, lugarFundicionDisponible: 0};
+let resultadoSubasta: SubastaResultado = new SubastaResultado([],new Date(), []);
+let resultadoSubastaMercenarios: SubastaResultado = new SubastaResultado([],new Date(), []);
 let auctionItems: AuctionItem[] = [];
+let teamTurmaPersonaje :TurmaTeam;
 let link_subasta;
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
@@ -32,7 +27,10 @@ chrome.runtime.onMessage.addListener(
 	function (request: Mensaje, sender,sendResponse) {
 		switch (request.header) {
 			case MensajeHeader.POP_UP_SEABRIO:
-				sendResponse({datos:datos, tabIdActiva:tabId, subasta:resultadoSubasta});
+				sendResponse({datos:datos, tabIdActiva:tabId,
+										subasta:resultadoSubasta,
+										subastaMercenario:resultadoSubastaMercenarios,
+										linkSubasta:link_subasta});
 				break;
 			case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
 				if(sender.tab.id == tabId) {
@@ -78,17 +76,17 @@ chrome.runtime.onMessage.addListener(
 					chrome.storage.local.set(toSave);
 					AuctionItem.loadAuctionItems().then((e) => {
 						auctionItems = e;
-						window.setTimeout(runAnalisisSubasta,5000);
+						window.setTimeout(runAnalisisSubastaGladiador,1000);
+						window.setTimeout(runAnalisisSubastaMercenario,1000);
+						window.setTimeout(runItemsAnalizer,5000);
 					});
+					//window.setTimeout(runAnalisisFundicion,5000);
 					continuar_analizando = true;
 				}
 				break;
 			case MensajeHeader.STOP:
-				let toSave = {};
-				toSave[Keys.TAREAS] = [];
 				tabId = -1
 				continuar_analizando = false;
-				chrome.storage.local.set(toSave);
 				break;
 			case MensajeHeader.ACTUALIZAR_EXPEDICION:
 				datos.expedicion.lugar = request.lugar;
@@ -107,9 +105,6 @@ chrome.runtime.onMessage.addListener(
 				break;
 			case MensajeHeader.ANALIZAR_SUBASTA:
 				datos.modulos.analizarSubasta = true;
-				break;
-			case MensajeHeader.CAMBIO_INTENTO_PAQUETES:
-				estadoEjecucionBjs.intestosPaquetes = request.intentos;
 				break;
 			case MensajeHeader.ANALIZAR_ARENA:
 				//console.log(request.header);
@@ -133,6 +128,11 @@ chrome.runtime.onMessage.addListener(
 				break;
 			case MensajeHeader.LINK_SUBASTA:
 				link_subasta = request.subasta_link;
+				break;
+			case MensajeHeader.ITEMS_ANALIZER:
+				sendResponse({
+					items:teamTurmaPersonaje
+				})
 				break;
 			default:
 				break;
@@ -206,9 +206,6 @@ function actualizarConfig(nuevosDatos) {
 	datos = nuevosDatos;
 	let toSave = {};
 	toSave[Keys.CONFIGURACION] = datos;
-	console.log('Guardando config:');
-	console.log(toSave);
-	//chrome.tabs.sendMessage(tabId, {tipoMensaje: MensajeHeader.ACTUALIZAR, nuevaConfig: nuevosDatos});
 	chrome.storage.local.set(toSave);
 }
 
@@ -250,40 +247,32 @@ function loadLastConfig(): void {
 			console.log('No hay datos guardados, se carga la info por primera vez.')
 		}else {
 			datos = lastConfig;
-			console.log('Se cargo la ultima info.! :)')
+			console.log('Se cargo la ultima info.! :)');
+			console.log(lastConfig);
 		}
 	});
 }
 
-async function runAnalisisSubasta() {
-	let time = 1000;
-	try {
-		time = await subastaAnalizar();
-	}catch (e) {
-		console.log(e);
-		console.log("Error analizyng auction");
-	}finally {
-		if(continuar_analizando)
-			window.setTimeout(runAnalisisSubasta, time);
-	}
-}
-
-async function subastaAnalizar() {
-	let allItemsLink = 	'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&sh=' + link_subasta.split('=')[link_subasta.split('=').length-1];
+async function subastaAnalizar(linkAllItems:string, mercenario:boolean) {
+	let allItemsLink = linkAllItems;
 	let response = await fetch(allItemsLink)
 	let subastaHTML = await response.text()
 	let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
 	let oroActual = 0;
 	let jQueryResult = $(subastaHTML).find('#sstat_gold_val');
+	let autoSubasta = [];
 	if(jQueryResult.length === 0)
 		oroActual = 0;
 	else {
 		let oroHtml = jQueryResult.html();
 		oroActual = Number.parseInt(oroHtml.replace(/\./g, ''));
 	}
-
+	let copyAI = auctionItems;
+	let resultadoSubastaLocal: SubastaResultado;
 	if(remainingTime == 'muy corto') {
-		auctionItems.forEach(e =>
+		//let sizeItems = $(subastaHTML).find('#auction_table td').length;
+		//console.log(sizeItems);
+		copyAI.forEach(e =>
 			{
 				if($(subastaHTML).find('#auctionForm'+e.auctionIds).length != 0) {//item still on auction
 					//4 estados: no apostado, apostado por random, yo, alianza, estos dos ultimos no se subasta => estaApostado || apostadoXRandom
@@ -313,19 +302,90 @@ async function subastaAnalizar() {
 			}
 		)
 	}
+	else{
+		let controladorSubasta = new ControladorSubastas();
+		let tdsItems = $(subastaHTML).find('#auction_table td');
+		resultadoSubastaLocal = controladorSubasta.analizarSubastaBackground(tdsItems, datos.personaje.nombre);
+		autoSubasta = controladorSubasta.apostarItemsWith(tdsItems,[], mercenario, copyAI);
+		if(autoSubasta.length > 0) {
+			auctionItems = auctionItems.concat(autoSubasta);
+			let oroPivote = oroActual;
+			for (let i = 0; i<autoSubasta.length;i++) {
+				if(oroPivote>= autoSubasta[i]) {
+					await autoSubasta[i].subastar(autoSubasta[i].subastaBasica + 500);
+					oroPivote = oroPivote-autoSubasta[i].subastaBasica;
+				}
+			}
+		}
+	}
 
-	if(auctionItems.some(e=>$(subastaHTML).find('#auctionForm'+e.auctionIds).length == 0)){
-		console.log('Removing items')
+	let finalItems = auctionItems.filter(e=> ($(subastaHTML).find('#auctionForm'+e.auctionIds).length != 0 || ($(subastaHTML).find('#auctionForm'+e.auctionIds).length == 0 && e.mercenario != mercenario)));
+
+	if(finalItems.length != auctionItems.length || autoSubasta.length != 0){
+		console.log('Removing some items')
 		let toSave = {};
-		toSave[Keys.AUCTION_ITEMS] = [];
+		toSave[Keys.AUCTION_ITEMS] = finalItems;
 		chrome.storage.local.set(toSave);
-		auctionItems = [];
+		auctionItems = finalItems;
 	}
 
 	if (remainingTime == 'muy corto')
-		return Promise.resolve(500);
+		return Promise.resolve({time:500, result:null});
 	else if (remainingTime == 'corto')
-		return Promise.resolve(2000);
+		return Promise.resolve({time:2000, result: resultadoSubastaLocal});
 	else
-		return Promise.resolve(5000);
+		return Promise.resolve({time:5000, result: resultadoSubastaLocal});
+}
+
+async function itemsTurmaAnalizar() {
+	let newTeam = new TurmaTeam(null,perfil,null);
+	await newTeam.cargarEquipoItems();
+	teamTurmaPersonaje = newTeam;
+}
+
+async function runItemsAnalizer() {
+	let time = 10000;
+	try {
+		await itemsTurmaAnalizar();
+	}catch (e) {
+		console.log(e);
+		console.log("Error analizyng items");
+	}finally {
+		if(continuar_analizando)
+			window.setTimeout(runItemsAnalizer, time);
+	}
+}
+
+async function runAnalisisSubastaGladiador() {
+	let time = 1000;
+	try {
+		let link = 	'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&sh=' + link_subasta.split('=')[link_subasta.split('=').length-1];
+		let result = await subastaAnalizar(link, false);
+		if (result.result != null)
+			resultadoSubasta = result.result;
+		time = result.time;
+	}catch (e) {
+		//console.log(e);
+		console.log("Error analizyng auction");
+	}finally {
+		if(continuar_analizando)
+			window.setTimeout(runAnalisisSubastaGladiador, time);
+	}
+}
+
+async function runAnalisisSubastaMercenario() {
+	let time = 1000;
+	try {
+		let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&ttype=3&sh=' + link_subasta.split('=')[link_subasta.split('=').length-1];
+		let result = await subastaAnalizar(link, true);
+		if (result.result != null)
+			resultadoSubastaMercenarios = result.result;
+		time = result.time;
+	}catch (e) {
+		//console.log(e);
+		console.log("Error analizyng auction");
+	}finally {
+		if(continuar_analizando)
+			window.setTimeout(runAnalisisSubastaMercenario, time);
+	}
 }

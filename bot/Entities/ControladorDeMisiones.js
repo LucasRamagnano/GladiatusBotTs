@@ -1,8 +1,8 @@
 class ControladorDeMisiones {
     constructor() {
-        this.estado = tareaEstado.corriendo;
         this.prioridad = globalConfig.prioridades.misiones;
         this.tipo_class = 'ControladorDeMisiones';
+        this.timed_out_miliseconds = 5000;
     }
     cargarMisiones(tipo, id) {
         let misionesTemp = [];
@@ -97,5 +97,8 @@ class ControladorDeMisiones {
     }
     getHomeClick() {
         return $('a[title=\'Panteón\']')[0];
+    }
+    puedeDesbloquearse() {
+        return true;
     }
 }

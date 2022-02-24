@@ -1,12 +1,14 @@
 let tabToFocus = -1
 let configuracionDuplicada: ConfiguracionStruct;
+let linkSubasta ='';
 function debuguear(evento) {
 	//chrome.runtime.sendMessage({tipoMensaje: mensajes.DEBUGUEAR});
 	//imprimirPaquetes();
 	let toSave = {};
 	toSave[Keys.AUCTION_ITEMS] = [];
-	chrome.storage.local.set(toSave)
-	console.log('items deleted')
+	chrome.storage.local.set(toSave);
+	mandarMensajeBackground({header: MensajeHeader.AUTOOFFER});
+	console.log('items deleted');
 }
 
 function actualizar() {
@@ -18,6 +20,7 @@ function actualizar() {
 	configuracionDuplicada.modulos.correrMisiones = toInputArray($('#misiones_cb'))[0].checked;
 	configuracionDuplicada.modulos.correrEvento = toInputArray($('#evento_cb'))[0].checked;
 	configuracionDuplicada.modulos.correrPaquetes = toInputArray($('#paquetes_cb'))[0].checked;
+	configuracionDuplicada.modulos.correrFundicion = toInputArray($('#fundicion_cb'))[0].checked;
 	//Centro
 	configuracionDuplicada.personaje.nombre = toInputArray($('#nombre_input'))[0].value;
 	configuracionDuplicada.personaje.oroBaseParaPaquete = Number.parseInt(toInputArray($('#oro_input'))[0].value);
@@ -41,22 +44,34 @@ window.onload = function() {
 	mandarMensajeBackground({header: MensajeHeader.POP_UP_SEABRIO},
 		(respuesta) => {
 			let subastaResultado = new SubastaResultado();
+			let subastaResultadoMercenario = new SubastaResultado();
 			subastaResultado.busquedas = respuesta.subasta.busquedas;
-			subastaResultado.busquedaFecha = respuesta.subasta.busquedaFecha;
-			init(respuesta.datos, respuesta.tabIdActiva, subastaResultado);
+			subastaResultado.busquedaFecha = new Date(respuesta.subasta.busquedaFecha);
+			subastaResultado.tusSubastas = respuesta.subasta.tusSubastas;
+			subastaResultadoMercenario.busquedas = respuesta.subastaMercenario.busquedas;
+			subastaResultadoMercenario.busquedaFecha = new Date(respuesta.subastaMercenario.busquedaFecha);
+			subastaResultadoMercenario.tusSubastas = respuesta.subastaMercenario.tusSubastas;
+			linkSubasta = respuesta.linkSubasta;
+			init(respuesta.datos, respuesta.tabIdActiva, subastaResultado, subastaResultadoMercenario);
 
 	});
 };
 
-function init(datos: ConfiguracionStruct, tabIdActiva: number, resultadoSubasta :SubastaResultado) {
+async function init(datos: ConfiguracionStruct, tabIdActiva: number, resultadoSubasta :SubastaResultado, subastaResultadoMercenario : SubastaResultado) {
 	tabToFocus = tabIdActiva;
 	configuracionDuplicada = JSON.parse(JSON.stringify(datos));
 	initCentro();
 	initIzquierda();
 	initDerecha();
-	$('#subasta h3').after(resultadoSubasta.getMostrable());
-	$('#analizar_subasta').after(resultadoSubasta.getMostrableFecha());
-	$('#analizar_subasta').on('click', () => {mandarMensajeBackground({header: MensajeHeader.ANALIZAR_SUBASTA})});
+	$('#subasta h3').after(resultadoSubasta.getMostrable(linkSubasta, false));
+	$('.analizar_subasta')[0].after(resultadoSubasta.getMostrableFecha());
+	$('#subasta_mercenario h3').after(subastaResultadoMercenario.getMostrable(linkSubasta, true));
+	$('.analizar_subasta')[1].after(subastaResultadoMercenario.getMostrableFecha());
+	$('#subasta_por_vos h3').after(resultadoSubasta.getTusSubastas().concat(subastaResultadoMercenario.getTusSubastas()));
+	$('.analizar_subasta')[2].after(subastaResultadoMercenario.getMostrableFecha());
+	//$('.analizar_subasta').on('click', () => {mandarMensajeBackground({header: MensajeHeader.ANALIZAR_SUBASTA})});
+	$('a').on('click',(e)=>linkToSubasta(e));
+
 
 }
 
@@ -88,6 +103,7 @@ function initIzquierda() {
 	toInputArray($('#misiones_cb'))[0].checked = configuracionDuplicada.modulos.correrMisiones;
 	toInputArray($('#paquetes_cb'))[0].checked = configuracionDuplicada.modulos.correrPaquetes;
 	toInputArray($('#evento_cb'))[0].checked = configuracionDuplicada.modulos.correrEvento;
+	toInputArray($('#fundicion_cb'))[0].checked = configuracionDuplicada.modulos.correrFundicion;
 	$('#debugear').on('click',debuguear);
 	$('#activar').on('click',() => {
 		mandarMensajeBackground({header:MensajeHeader.ACTIVAR_AK});
@@ -131,4 +147,26 @@ function imprimirPaquetes() {
 		}
 		console.log(paquetes.reverse());
 	});
+}
+
+function linkToSubasta(e) {
+		// @ts-ignore
+		let linkSubasta = e.currentTarget.href;
+		chrome.tabs.query({
+			currentWindow: true,
+			active: true
+		},(a) =>
+		{
+			let tabToRefresh = a[0].id
+			if(tabToRefresh != tabToFocus) {
+				chrome.tabs.sendMessage(tabToRefresh, {
+					header: MensajeHeader.IR_SUBASTA_ITEM,
+					link:linkSubasta
+				});
+			}
+			else {
+				// @ts-ignore
+				window.open(linkSubasta, '_blank');
+			}
+		});
 }

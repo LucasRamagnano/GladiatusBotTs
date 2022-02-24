@@ -5,6 +5,7 @@ class LuchaPVP implements Tarea {
     estado: tareaEstado;
     analizar_proxima: boolean = false;
     tipo_class: string = 'LuchaPVP';
+    timed_out_miliseconds = 5000;
 
     constructor();
     constructor(lugar: string, selectorBoton: string);
@@ -107,5 +108,8 @@ class LuchaPVP implements Tarea {
         return $(this.selectorBoton)[0];
     }
 
+    puedeDesbloquearse(): boolean {
+        return true;
+    }
 
 }

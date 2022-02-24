@@ -1,0 +1,40 @@
+#item_container p {
+    margin: 0 !important;
+}
+#item_container {
+    margin-top: 20px;
+    color: white !important;
+    background-color: rgba(0, 0, 0,  0.9)  !important;
+    width: 536px !important;
+    height: 410px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+}
+
+.item_estadisticas, .item_selector {
+    height: 200px;
+    padding-left: 3px;
+    overflow: auto;
+}
+
+.item_estadisticas p {
+    width: 160px;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+}
+
+.item_estadisticas p:nth-child(1) {
+    color: red;
+}
+
+.item_selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(9,1fr);
+    padding-right: 5px;
+}
+
+.item_selector button{
+    margin-top: 5px !important;
+}

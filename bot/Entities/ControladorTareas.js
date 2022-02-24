@@ -1,8 +1,18 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 class ControladorTareas {
     constructor(tareas) {
         this.tareas = [];
         this.tareasFinalizadas = [];
         this.tareasCanceladas = [];
+        this.tareasBloqueadas = [];
         this.tareas = tareas;
     }
     getPronosticoClick() {
@@ -40,13 +50,6 @@ class ControladorTareas {
                     res();
                 }, delayClick);
             });
-        })
-            .then(() => {
-            window.setTimeout(() => {
-                if (hayPopUp()) {
-                    cerrarPopUps();
-                }
-            }, 1500);
         });
     }
     guardarTareas(elemento) {
@@ -54,50 +57,72 @@ class ControladorTareas {
         toSave[Keys.TAREAS] = this.tareas;
         toSave[Keys.TAREAS_CANCELADAS] = this.tareasCanceladas;
         toSave[Keys.TAREAS_FINALIZADAS] = this.tareasFinalizadas;
+        toSave[Keys.TAREAS_BLOQUEADAS] = this.tareasBloqueadas;
         return new Promise((resolve) => {
             chrome.storage.local.set(toSave, () => { resolve(elemento); });
         });
     }
     preprocesarTareas() {
-        let tareasACancelar = this.tareas.filter(e => e.seCancela());
-        let tareasToTheEnd = this.tareas.filter(e => e.estado == tareaEstado.toTheEnd && !e.seCancela());
-        let tareasFinalizada = this.tareas.filter(e => e.estado == tareaEstado.finalizada);
-        let tareasEnEspera = this.tareas.filter(e => e.estado == tareaEstado.enEspera && !e.seCancela());
-        let tareaCorriendo = this.tareas.filter(e => e.estado == tareaEstado.corriendo && !e.seCancela());
-        tareasToTheEnd.map(e => e.estado = tareaEstado.enEspera);
-        this.tareasCanceladas = this.tareasCanceladas.concat(tareasACancelar);
-        this.tareasFinalizadas = this.tareasFinalizadas.concat(tareasFinalizada);
+        this.analizarTareasBloqueadas();
         this.ordenarTareas();
-        this.tareas = tareaCorriendo.concat(tareasEnEspera).concat(tareasToTheEnd);
         if (this.tareas.length != 0)
             this.tareas[0].estado = tareaEstado.corriendo;
     }
     tiene(tarea) {
-        return this.tareas.some(e => e.equals(tarea));
+        return this.tareas.some(e => e.equals(tarea)) || this.tareasBloqueadas.some(e => e.equals(tarea));
     }
     static loadTareas() {
-        return new Promise((resolve) => {
-            let keysToLoad = [Keys.TAREAS, Keys.TAREAS_CANCELADAS, Keys.TAREAS_FINALIZADAS];
-            chrome.storage.local.get(keysToLoad, (resultado) => {
-                let tareas = resultado[Keys.TAREAS] != undefined ? resultado[Keys.TAREAS] : [];
-                let tareasF = resultado[Keys.TAREAS_FINALIZADAS] != undefined ? resultado[Keys.TAREAS_FINALIZADAS] : [];
-                let tareasC = resultado[Keys.TAREAS_CANCELADAS] != undefined ? resultado[Keys.TAREAS_CANCELADAS] : [];
-                let tareasCasteadas = tareas.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
-                let tareasCasteadasC = tareasC.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
-                let tareasCasteadasF = tareasF.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
-                let controladorTareas = new ControladorTareas();
-                controladorTareas.tareasFinalizadas = tareasCasteadasF;
-                controladorTareas.tareasCanceladas = tareasCasteadasC;
-                controladorTareas.tareas = tareasCasteadas;
-                resolve(controladorTareas);
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve) => {
+                let keysToLoad = [Keys.TAREAS, Keys.TAREAS_CANCELADAS, Keys.TAREAS_FINALIZADAS, Keys.TAREAS_BLOQUEADAS];
+                chrome.storage.local.get(keysToLoad, (resultado) => {
+                    let tareas = resultado[Keys.TAREAS] != undefined ? resultado[Keys.TAREAS] : [];
+                    let tareasF = resultado[Keys.TAREAS_FINALIZADAS] != undefined ? resultado[Keys.TAREAS_FINALIZADAS] : [];
+                    let tareasC = resultado[Keys.TAREAS_CANCELADAS] != undefined ? resultado[Keys.TAREAS_CANCELADAS] : [];
+                    let tareasB = resultado[Keys.TAREAS_BLOQUEADAS] != undefined ? resultado[Keys.TAREAS_BLOQUEADAS] : [];
+                    let tareasCasteadas = tareas.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
+                    let tareasCasteadasC = tareasC.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
+                    let tareasCasteadasF = tareasF.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
+                    let tareasCasteadasB = tareasB.map(e => (new guardables[e.tipo_class]).fromJsonString(e));
+                    let controladorTareas = new ControladorTareas();
+                    controladorTareas.tareasFinalizadas = tareasCasteadasF;
+                    controladorTareas.tareasCanceladas = tareasCasteadasC;
+                    controladorTareas.tareasBloqueadas = tareasCasteadasB;
+                    controladorTareas.tareas = tareasCasteadas;
+                    resolve(controladorTareas);
+                });
             });
         });
     }
     ordenarTareas() {
-        let tareasPrioridadMuyAlta = this.tareas.filter(e => e.prioridad == tareaPrioridad.MUY_ALTA);
-        let tareasPrioridadAlta = this.tareas.filter(e => e.prioridad == tareaPrioridad.ALTA);
-        let tareasPrioridadNormal = this.tareas.filter(e => e.prioridad == tareaPrioridad.NORMAL);
-        let tareasPrioridadBaja = this.tareas.filter(e => e.prioridad == tareaPrioridad.BAJA);
-        this.tareas = tareasPrioridadMuyAlta.concat(tareasPrioridadAlta).concat(tareasPrioridadNormal).concat(tareasPrioridadBaja);
+        //Filter task that cant run
+        let allDoableTasks = this.tareas.concat(this.tareasBloqueadas);
+        let tareasACancelar = allDoableTasks.filter(e => e.seCancela());
+        let tareasToTheEnd = allDoableTasks.filter(e => e.estado == tareaEstado.toTheEnd && !e.seCancela());
+        let tareasFinalizada = allDoableTasks.filter(e => e.estado == tareaEstado.finalizada);
+        let tareasCorriendo = allDoableTasks.filter(e => e.estado == tareaEstado.corriendo && !e.seCancela());
+        let tareasBloqueadas = allDoableTasks.filter(e => e.estado == tareaEstado.bloqueada && !e.seCancela());
+        let tareasNoAplicaPrioridad = tareasCorriendo.concat(tareasACancelar).concat(tareasToTheEnd).concat(tareasFinalizada).concat(tareasBloqueadas);
+        //Only order the task than can run
+        let tareasAplicaPrioridad = allDoableTasks.filter(tap => tareasNoAplicaPrioridad.every(tnap => !tnap.equals(tap)));
+        let tareasPrioridadMuyAlta = tareasAplicaPrioridad.filter(e => e.prioridad == tareaPrioridad.MUY_ALTA);
+        let tareasPrioridadAlta = tareasAplicaPrioridad.filter(e => e.prioridad == tareaPrioridad.ALTA);
+        let tareasPrioridadNormal = tareasAplicaPrioridad.filter(e => e.prioridad == tareaPrioridad.NORMAL);
+        let tareasPrioridadBaja = tareasAplicaPrioridad.filter(e => e.prioridad == tareaPrioridad.BAJA);
+        tareasToTheEnd.map(e => e.estado = tareaEstado.enEspera);
+        this.tareasCanceladas = this.tareasCanceladas.concat(tareasACancelar);
+        this.tareasFinalizadas = this.tareasFinalizadas.concat(tareasFinalizada);
+        this.tareasBloqueadas = tareasBloqueadas;
+        this.tareas = tareasCorriendo.concat(tareasPrioridadMuyAlta).concat(tareasPrioridadAlta).concat(tareasPrioridadNormal).concat(tareasPrioridadBaja).concat(tareasToTheEnd);
+    }
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    analizarTareasBloqueadas() {
+        this.tareasBloqueadas.forEach(tarea => {
+            if (tarea.puedeDesbloquearse()) {
+                tarea.estado = tareaEstado.enEspera;
+            }
+        });
     }
 }

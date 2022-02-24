@@ -16,7 +16,7 @@ class AuctionItem extends Guardable {
         this.tipo_class = 'AuctionItem';
     }
     ;
-    inicializar(name, auctionIds, qry, itemType, itemLevel, itemQuality, buyouthd, bid, url) {
+    inicializar(name, auctionIds, qry, itemType, itemLevel, itemQuality, buyouthd, bid, url, mercenario) {
         this.name = name;
         this.auctionIds = auctionIds;
         this.qry = qry;
@@ -26,6 +26,7 @@ class AuctionItem extends Guardable {
         this.buyouthd = buyouthd;
         this.bid = bid;
         this.url = url;
+        this.mercenario = mercenario;
     }
     getPostData(amountBid) {
         let data = "auctionid=" + this.auctionIds +
@@ -55,6 +56,7 @@ class AuctionItem extends Guardable {
         this.oroTotalGastado = jsonGuardado.oroTotalGastado;
         this.vecesSubastado = jsonGuardado.vecesSubastado;
         this.ultimaSubasta = jsonGuardado.ultimaSubasta;
+        this.mercenario = jsonGuardado.mercenario;
         return this;
     }
     guardate() {
