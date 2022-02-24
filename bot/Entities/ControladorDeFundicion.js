@@ -31,7 +31,6 @@ class ControladorDeFundicion {
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')
         ].reverse();
         this.namesNotTuMelt = ['Antonius'];
-        this.prioridad = tareaPrioridad.ALTA;
         this.numeroDeItemsAFundir = numeroItems;
         this.estadoFundicion = estadoFundicion;
     }
@@ -44,7 +43,6 @@ class ControladorDeFundicion {
         this.numeroDeItemsAFundir = jsonGuardado.numeroDeItemsAFundir;
         this.indicePagina = jsonGuardado.indicePagina;
         this.indiceFiltro = jsonGuardado.indiceFiltro;
-        this.prioridad = jsonGuardado.prioridad;
         this.blockTime = jsonGuardado.blockTime;
         return this;
     }
@@ -89,7 +87,7 @@ class ControladorDeFundicion {
         return this.itemsAFundir.length != 0;
     }
     hayLugar() {
-        return this.itemsAFundir.length < 6;
+        return this.itemsAFundir.length <= this.numeroDeItemsAFundir;
     }
     wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));

@@ -13,6 +13,7 @@ class ControladorTareas {
         this.tareasFinalizadas = [];
         this.tareasCanceladas = [];
         this.tareasBloqueadas = [];
+        this.delayBetweenClicks = 500;
         this.tareas = tareas;
     }
     getPronosticoClick() {
@@ -27,39 +28,28 @@ class ControladorTareas {
         tarea.estado = tareaEstado.enEspera;
         this.tareas.push(tarea);
     }
-    ponerTareaPrimera(tarea) {
-        this.tareas.filter(e => e.estado == tareaEstado.corriendo).forEach(e => e.estado = tareaEstado.enEspera);
-        tarea.estado = tareaEstado.corriendo;
-        this.tareas = [tarea].concat(this.tareas);
-    }
     correrTareaActual() {
-        let clickeableElement;
-        let delayClick = 500;
-        if (this.tareas.length == 0) {
-            clickeableElement = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
-        }
-        else {
-            clickeableElement = this.tareas[0].getProximoClick();
-        }
-        clickeableElement
-            .then((e) => this.guardarTareas(e))
-            .then((click) => {
-            return new Promise((res) => {
-                window.setTimeout(() => {
-                    click.click();
-                    res();
-                }, delayClick);
-            });
+        return __awaiter(this, void 0, void 0, function* () {
+            let clickeableElement;
+            if (this.tareas.length == 0) {
+                clickeableElement = $('#mainmenu > div:nth-child(1) a')[0];
+            }
+            else {
+                clickeableElement = yield this.tareas[0].getProximoClick();
+            }
+            yield this.guardarTareas();
+            yield this.wait(this.delayBetweenClicks);
+            clickeableElement.click();
         });
     }
-    guardarTareas(elemento) {
+    guardarTareas() {
         let toSave = {};
         toSave[Keys.TAREAS] = this.tareas;
         toSave[Keys.TAREAS_CANCELADAS] = this.tareasCanceladas;
         toSave[Keys.TAREAS_FINALIZADAS] = this.tareasFinalizadas;
         toSave[Keys.TAREAS_BLOQUEADAS] = this.tareasBloqueadas;
         return new Promise((resolve) => {
-            chrome.storage.local.set(toSave, () => { resolve(elemento); });
+            chrome.storage.local.set(toSave, () => { resolve(); });
         });
     }
     preprocesarTareas() {
@@ -118,11 +108,17 @@ class ControladorTareas {
     wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+    getControladorPaquete() {
+        return this.tareas.concat(this.tareasBloqueadas).find(e => e.equals(new ControladorDePaquetes()));
+    }
     analizarTareasBloqueadas() {
         this.tareasBloqueadas.forEach(tarea => {
             if (tarea.puedeDesbloquearse()) {
                 tarea.estado = tareaEstado.enEspera;
             }
         });
+    }
+    getAllDoableTask() {
+        return this.tareas.concat(this.tareasBloqueadas);
     }
 }

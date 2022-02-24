@@ -2,7 +2,7 @@ var correrDeNuevo = true;
 var ejecutarReload = true;
 //var tareasCtrl: ControladorTareas;
 var globalConfig: ConfiguracionStruct = backgroundConfig;
-var estadoEjecucion: EjecucionEstado = {hayComida: false, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
+var estadoEjecucion: EjecucionEstado = {hayComida: false,
 	indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
 	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999}, analisisInicial : false, lugarFundicionDisponible: 0};
 var relojes = {
@@ -27,10 +27,15 @@ async function tomarDecision() {
 		cerrarPopUps();
 	} else {
 		let ctrlTareas = await ControladorTareas.loadTareas();
+		injectPagina();
+		console.log('Pre tareas');
+		console.log(ctrlTareas.getAllDoableTask());
 		ctrlTareas = calcularTareas(ctrlTareas);//append all doable tasks
 		ctrlTareas.preprocesarTareas();
+		console.log('Post tareas');
+		console.log(ctrlTareas.getAllDoableTask());
 		window.setTimeout(()=>reloadPag(),ctrlTareas.tareas[0].timed_out_miliseconds);
-		ctrlTareas.correrTareaActual();
+		await ctrlTareas.correrTareaActual();
 	}
 }
 
@@ -46,10 +51,10 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 	tareasControlador = tareasCtrl;
 
 	if(hacerPaquete()) {
-		tareasCtrl.appendTarea(new ControladorDePaquetes(paquete_estados.COMPRAR, null));
+		tareasCtrl.appendTarea(new ControladorDePaquetes());
 	}
 	if(hayQueCurar()){
-		tareasCtrl.ponerTareaPrimera(new Inventario());
+		tareasCtrl.appendTarea(new Inventario());
 	}
 	if(sePuedeCorrerExpedicion()) {
 		tareasCtrl.appendTarea(new LuchaExpedicion(globalConfig.expedicion.lugarNu, globalConfig.expedicion.enemigoNu-1));
@@ -97,9 +102,8 @@ function hacerMisiones() {
 }
 
 function hacerPaquete() {
-	let configInicial = estadoEjecucion.paqueteEstado === paquete_estados.COMPRAR &&
-		getOroActualFB() > globalConfig.personaje.oroBaseParaPaquete;
-	return globalConfig.modulos.correrPaquetes &&  configInicial &&
+	let hayOroParaPaquete = getOroActualFB() > globalConfig.personaje.oroBaseParaPaquete;
+	return globalConfig.modulos.correrPaquetes &&  hayOroParaPaquete &&
 			!tareasControlador.tiene(new ControladorDePaquetes())
 }
 
@@ -151,10 +155,11 @@ function estaEnVisionGeneral() {
 
 function lugarEnFundicion() {
 	let disponibles = 0;
-	if($('.advanced_menu_side_icon').length <= 1) {
+	if ($('.advanced_menu_side_icon.indicator-green').length == 1) {
+		disponibles =  6;
+	} else if($('.advanced_menu_side_icon').length <= 1) { // todo check dis
 		disponibles =  6;
 	} else {
-		let terminados = $('.advanced_menu_side_icon')[1].getAttribute('data-tooltip').replace(/\[/g,'').replace(/\]/g,'').trim().split('"#DDD","#DDD"').filter(e => e.includes('Enhorabuena')).length;
 		disponibles = 6 - $('.advanced_menu_side_icon')[1].getAttribute('data-tooltip').replace(/\[/g,'').replace(/\]/g,'').trim().split('"#DDD","#DDD"').filter(e => e.includes(':')).length;
 	}
 	return disponibles;
@@ -199,9 +204,6 @@ window.onload = function() {
 				case MensajeHeader.DEBUGUEAR:
 					debugMostrarPaquetes();
 					break;
-				case MensajeHeader.CONTENT_SCRIPT_CAMBIO_PKT:
-					estadoEjecucion.paqueteEstado = mensaje.estadoPaquete;
-					break;
 				case MensajeHeader.ACTUALIZAR:
 					globalConfig = mensaje.globalConfig;
 					break;
@@ -217,9 +219,8 @@ function injectBot(ans: BotInjectMensaje) {
 	if(ans.correr) {
 		globalConfig = ans.configuracionToSend;
 		estadoEjecucion = ans.estadoEjecucion;
-		injectPagina();
 		window.setTimeout(mandarMensajeBackground,100, {header:MensajeHeader.LINK_SUBASTA, subasta_link: (<any>$('#submenu1 a').toArray().find(e=>e.textContent == 'Edificio de subastas')).href});
-		window.setTimeout(tomarDecision,500);
+		window.setTimeout(tomarDecision,200);
 	}else {
 		if (estamosEnSubasta()) {
 			injectAutoOffer();
@@ -265,19 +266,22 @@ function actualizarOroFB() {
 }
 
 function initEstadisticasGenerales() {
+	let controladorPaquetes: ControladorDePaquetes = tareasControlador.getControladorPaquete();
 	$('#nombre')[0].innerText = "Nombre: " + globalConfig.personaje.nombre;
 	$('#oro')[0].innerText = "Oro: " + getOroActualFB();
-	$('#estado_paquete span')[0].innerText = estadoEjecucion.paqueteEstado;
+	$('#estado_paquete span')[0].innerText = controladorPaquetes === undefined ? 'Nada armandose' : controladorPaquetes.estadoPaquete;
 	$('#vida_para_curar')[0].innerText = "VidaToHeal: " + globalConfig.personaje.porcentajeMinimoParaCurar + '%';
 	$('#oro_para_paquete')[0].innerText = 'Paquete despues de ' + globalConfig.personaje.oroBaseParaPaquete;
 	$('#lugar_expedicion')[0].innerText = globalConfig.expedicion.lugar;
 	$('#enemigo_expedicion')[0].innerText = globalConfig.expedicion.enemigo;
 
-	if(estadoEjecucion.paquete != null) {
-		$('#origen')[0].innerText = estadoEjecucion.paquete.origen;
-		$('#valor')[0].innerText = estadoEjecucion.paquete.precio.toString();
-		$('#fecha')[0].innerText = estadoEjecucion.paquete.fecha.toString();
-		$('#paquete_desc')[0].innerText = estadoEjecucion.paquete.itemNombre;
+	let paquete = controladorPaquetes === undefined ? null : controladorPaquetes.paqueteComprado;
+	if(paquete != null) {
+		$('#paquete')[0].classList.remove('no_mostrar');
+		$('#origen')[0].innerText = paquete.origen;
+		$('#valor')[0].innerText = paquete.precio.toString();
+		$('#fecha')[0].innerText = paquete.fecha.toString();
+		$('#paquete_desc')[0].innerText = paquete.itemNombre;
 	}
 }
 
@@ -363,12 +367,6 @@ function injectAutoOffer() {
 		})
 	});
 
-}
-
-function hayPaqueteEnCurso() {
-	return this.estadoEjecucion.paqueteEstado != paquete_estados.COMPRAR &&
-		this.estadoEjecucion.paqueteEstado != paquete_estados.NO_HAY_DISPONIBLES &&
-		this.tareasControlador.tiene(new ControladorDePaquetes())
 }
 
 function autoOfferItem(ev) {

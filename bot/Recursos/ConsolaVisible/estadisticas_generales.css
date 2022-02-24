@@ -33,7 +33,10 @@
 #paquete {
     width: 200px;
     height: 150px;
-    background: red;
+    background: rgb(192, 106, 25);
+}
+
+.no_mostrar {
     display: none;
 }
 

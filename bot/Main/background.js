@@ -14,7 +14,7 @@ let intentosMaximosPvp = 3;
 let continuar_analizando = true;
 let oroJugador = 0;
 let datos;
-let estadoEjecucionBjs = { hayComida: true, paquete: undefined, paqueteEstado: paquete_estados.COMPRAR,
+let estadoEjecucionBjs = { hayComida: true,
     indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
     indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0 };
 let resultadoSubasta = new SubastaResultado([], new Date(), []);
@@ -51,13 +51,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 sendResponse({ correr: false });
             }
             break;
-        case MensajeHeader.CONTENT_SCRIPT_CAMBIO_PKT:
-            estadoEjecucionBjs.paqueteEstado = request.estadoPaquete;
-            break;
-        case MensajeHeader.CONTENT_SCRIPT_PKT_COMPRADO:
-            estadoEjecucionBjs.paquete = request.paqueteComprado;
-            guardarPaquete(estadoEjecucionBjs.paquete);
-            break;
         case MensajeHeader.DEBUGUEAR:
             mandarDebug();
             break;
@@ -79,6 +72,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             if (tabId == -1) {
                 let toSave = {};
                 toSave[Keys.TAREAS] = [];
+                toSave[Keys.TAREAS_BLOQUEADAS] = [];
+                toSave[Keys.TAREAS_CANCELADAS] = [];
+                toSave[Keys.TAREAS_FINALIZADAS] = [];
                 chrome.storage.local.set(toSave);
                 AuctionItem.loadAuctionItems().then((e) => {
                     auctionItems = e;
@@ -223,16 +219,6 @@ function setTabId() {
     }, (a) => tabId = a[0].id);
 }
 function actualizarOro(oroNuevo) {
-    if (oroNuevo > oroJugador) {
-        if (estadoEjecucionBjs.paqueteEstado === paquete_estados.JUNTAR_PLATA) {
-            estadoEjecucionBjs.paqueteEstado = paquete_estados.DEVOLVER;
-            mandarEstadoNuevo(estadoEjecucionBjs.paqueteEstado);
-        }
-        else if (estadoEjecucionBjs.paqueteEstado === paquete_estados.NO_HAY_DISPONIBLES) {
-            estadoEjecucionBjs.paqueteEstado = paquete_estados.COMPRAR;
-            mandarEstadoNuevo(estadoEjecucionBjs.paqueteEstado);
-        }
-    }
     oroJugador = oroNuevo;
 }
 function loadLastConfig() {
@@ -244,6 +230,7 @@ function loadLastConfig() {
         }
         else {
             datos = lastConfig;
+            datos.prioridades = backgroundConfig.prioridades;
             console.log('Se cargo la ultima info.! :)');
             console.log(lastConfig);
         }

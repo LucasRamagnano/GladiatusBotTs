@@ -3,7 +3,7 @@ class ControladorTareas {
     tareasFinalizadas: Tarea[] = [];
     tareasCanceladas: Tarea[] = [];
     tareasBloqueadas: Tarea[] = [];
-
+    delayBetweenClicks = 500;
     constructor();
     constructor(tareas?:Tarea[]) {
         this.tareas = tareas;
@@ -22,40 +22,26 @@ class ControladorTareas {
         this.tareas.push(tarea);
     }
 
-    ponerTareaPrimera(tarea: Tarea): void {
-        this.tareas.filter(e=>e.estado == tareaEstado.corriendo).forEach(e=> e.estado = tareaEstado.enEspera);
-        tarea.estado = tareaEstado.corriendo;
-        this.tareas = [tarea].concat(this.tareas);
-    }
-
-    correrTareaActual(): void {
-        let clickeableElement: Promise<HTMLElement>;
-        let delayClick = 500;
+    async correrTareaActual() {
+        let clickeableElement: HTMLElement;
         if(this.tareas.length == 0) {
-            clickeableElement = Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
+            clickeableElement = $('#mainmenu > div:nth-child(1) a')[0];
         } else {
-            clickeableElement = this.tareas[0].getProximoClick();
+            clickeableElement = await this.tareas[0].getProximoClick();
         }
-        clickeableElement
-            .then((e) => this.guardarTareas(e))
-            .then((click) => {
-                return new Promise<void>((res) => {
-                    window.setTimeout(() => {
-                        click.click();
-                        res();
-                    }, delayClick)
-                })
-            })
+        await this.guardarTareas();
+        await this.wait(this.delayBetweenClicks);
+        clickeableElement.click();
     }
 
-    guardarTareas(elemento: HTMLElement):Promise<HTMLElement>{
+    guardarTareas():Promise<void>{
         let toSave = {};
         toSave[Keys.TAREAS] = this.tareas;
         toSave[Keys.TAREAS_CANCELADAS] = this.tareasCanceladas;
         toSave[Keys.TAREAS_FINALIZADAS] = this.tareasFinalizadas;
         toSave[Keys.TAREAS_BLOQUEADAS] = this.tareasBloqueadas;
-        return new Promise<HTMLElement>((resolve) => {
-            chrome.storage.local.set(toSave,()=> {resolve(elemento)});
+        return new Promise<void>((resolve) => {
+            chrome.storage.local.set(toSave,()=> {resolve()});
         });
     }
 
@@ -125,11 +111,19 @@ class ControladorTareas {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    getControladorPaquete(): ControladorDePaquetes {
+        return <ControladorDePaquetes>this.tareas.concat(this.tareasBloqueadas).find(e => e.equals(new ControladorDePaquetes()));
+    }
+
     private analizarTareasBloqueadas() {
         this.tareasBloqueadas.forEach(tarea => {
             if(tarea.puedeDesbloquearse()) {
                 tarea.estado = tareaEstado.enEspera;
             }
         })
+    }
+
+    getAllDoableTask() {
+        return this.tareas.concat(this.tareasBloqueadas);
     }
 }

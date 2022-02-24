@@ -22,9 +22,7 @@ interface PrioridadesConfig {
 }
 
 interface EjecucionEstado {
-    paqueteEstado: paquete_estados,
     hayComida: boolean,
-    paquete: Paquete,
     indiceArenaProximo: ResultadoAnalisisPvP,
     indiceTurmaProximo: ResultadoAnalisisPvP,
     analisisInicial: boolean,
