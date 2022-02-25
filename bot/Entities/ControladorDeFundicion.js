@@ -27,6 +27,8 @@ class ControladorDeFundicion {
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'mateus'),
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'decimus'),
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'constancio'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'marcelo'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'dairus'),
             new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')
         ].reverse();
