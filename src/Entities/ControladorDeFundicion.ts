@@ -20,9 +20,10 @@ class ControladorDeFundicion implements Tarea{
                     new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'constancio'),
                     new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'marcelo'),
                     new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'dairus'),
+                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'ichorus'),
                     new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
                     new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();
-    namesNotTuMelt = ['Antonius']
+    namesNotTuMelt = ['Antonius', 'Lucius', 'Gaius']
     blockTime: number;
 
     constructor()

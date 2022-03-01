@@ -36,7 +36,6 @@ class LuchaExpedicion {
     getProximoClick() {
         if (this.estamosEnTuLugar() && this.botonesHabilitados()) {
             this.analizarPlace();
-            mandarMensajeBackground({ header: MensajeHeader.HAY_COMIDA });
             this.estado = tareaEstado.finalizada;
             return Promise.resolve(this.atacar());
         }

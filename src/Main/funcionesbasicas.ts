@@ -1,17 +1,14 @@
-var correrDeNuevo = true;
-var ejecutarReload = true;
-//var tareasCtrl: ControladorTareas;
-var globalConfig: ConfiguracionStruct = backgroundConfig;
-var estadoEjecucion: EjecucionEstado = {hayComida: false,
+let globalConfig: ConfiguracionStruct = backgroundConfig;
+let estadoEjecucion: EjecucionEstado = {
 	indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
 	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999}, analisisInicial : false, lugarFundicionDisponible: 0};
-var relojes = {
+let relojes = {
 	relojArena: new Reloj('cooldown_bar_text_arena'),
 	relojTurma: new Reloj('cooldown_bar_text_ct'),
 	relojExpediciones: new Reloj('cooldown_bar_text_expedition'),
 	relojMazmorras: new Reloj('cooldown_bar_text_dungeon')
 };
-var tareasControlador;
+let tareasControlador;
 let itemsTeam: TurmaTeam;
 
 async function tomarDecision() {
@@ -93,7 +90,6 @@ function analizarSubasta() {
 
 function hayQueCurar() {
 	return getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar &&
-			estadoEjecucion.hayComida &&
 			!tareasControlador.tiene(new Inventario())
 }
 

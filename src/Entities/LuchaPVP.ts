@@ -34,7 +34,6 @@ class LuchaPVP implements Tarea {
 
     getProximoClick(): Promise<HTMLElement> {
         if(this.estamosEnTuLugar() && !this.analizar_proxima){
-            mandarMensajeBackground({header: MensajeHeader.HAY_COMIDA});
             this.analizar_proxima = true;
             let resultado;
             if(this.sosArena()) {

@@ -22,7 +22,6 @@ interface PrioridadesConfig {
 }
 
 interface EjecucionEstado {
-    hayComida: boolean,
     indiceArenaProximo: ResultadoAnalisisPvP,
     indiceTurmaProximo: ResultadoAnalisisPvP,
     analisisInicial: boolean,

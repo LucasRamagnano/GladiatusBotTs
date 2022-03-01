@@ -5,7 +5,7 @@ let intentosMaximosPvp = 3;
 let continuar_analizando = true;
 let oroJugador = 0;
 let datos: ConfiguracionStruct ;
-let estadoEjecucionBjs: EjecucionEstado = {hayComida: true,
+let estadoEjecucionBjs: EjecucionEstado = {
 			indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
 			indiceTurmaProximo:{ nombre: 'nada', puntaje: 999999}, analisisInicial: false, lugarFundicionDisponible: 0};
 let resultadoSubasta: SubastaResultado = new SubastaResultado([],new Date(), []);
@@ -55,12 +55,6 @@ chrome.runtime.onMessage.addListener(
 				break;
 			case MensajeHeader.CAMBIO_ORO:
 				actualizarOro(request.oro)
-				break;
-			case MensajeHeader.NO_HAY_COMIDA:
-				estadoEjecucionBjs.hayComida = false;
-				break;
-			case MensajeHeader.HAY_COMIDA:
-				estadoEjecucionBjs.hayComida = true;
 				break;
 			case MensajeHeader.ACTIVAR_AK:
 				setTabId();

@@ -3,7 +3,8 @@ class ControladorTareas {
     tareasFinalizadas: Tarea[] = [];
     tareasCanceladas: Tarea[] = [];
     tareasBloqueadas: Tarea[] = [];
-    delayBetweenClicks = 500;
+    delayPostTask = 2000;
+    delayPreTask = 0;
     constructor();
     constructor(tareas?:Tarea[]) {
         this.tareas = tareas;
@@ -24,13 +25,14 @@ class ControladorTareas {
 
     async correrTareaActual() {
         let clickeableElement: HTMLElement;
+        await this.wait(this.delayPreTask);
         if(this.tareas.length == 0) {
             clickeableElement = $('#mainmenu > div:nth-child(1) a')[0];
         } else {
             clickeableElement = await this.tareas[0].getProximoClick();
         }
         await this.guardarTareas();
-        await this.wait(this.delayBetweenClicks);
+        await this.wait(this.delayPostTask);
         clickeableElement.click();
     }
 

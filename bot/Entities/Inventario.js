@@ -1,15 +1,22 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 class Inventario {
     constructor() {
         this.prioridad = globalConfig.prioridades.curar;
         this.tipo_class = 'Inventario';
         this.vecesABuscar = 10;
-        this.timed_out_miliseconds = 5000;
+        this.timed_out_miliseconds = 10000;
     }
     getProximoClick() {
         if (this.estamosEnVisionGeneral() && estaApuntandoPersonaje()) {
-            //TODO VER QUE HACER CON CORRER DE NUEVO
-            correrDeNuevo = false;
-            return new Promise((resolve, fallo) => { this.buscarComidaYCurar(resolve, fallo); });
+            return this.buscarComidaYCurar();
         }
         else if (estaEnVisionGeneral()) {
             return Promise.resolve($('.charmercsel')[0]);
@@ -18,26 +25,28 @@ class Inventario {
             return Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
         }
     }
-    buscarComidaYCurar(resolve, reject) {
-        if (this.vecesABuscar <= 0) {
-            //Mando no hay comida
-            //Voy a vision general
-            mandarMensajeBackground({ header: MensajeHeader.NO_HAY_COMIDA });
-            this.estado = tareaEstado.cancelada;
-            resolve($('#mainmenu > div:nth-child(1) a')[0]);
-        }
-        else if ($('#inv div[data-tooltip*=\'ndose: Cura\']').length === 0) {
-            $('a.awesome-tabs[data-available*=\"true\"]')[this.proximaHoja()].click();
-            setTimeout(() => {
-                this.buscarComidaYCurar(resolve, reject);
-            }, 250);
-            this.vecesABuscar = this.vecesABuscar - 1;
-        }
-        else {
-            this.curar();
-            this.estado = tareaEstado.finalizada;
-            window.setTimeout(() => resolve($('#mainmenu > div:nth-child(1) a')[0]), 500);
-        }
+    buscarComidaYCurar() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.vecesABuscar <= 0) {
+                //Mando no hay comida
+                //Voy a vision general
+                this.estado = tareaEstado.bloqueada;
+                this.timeBlocked = Date.now().valueOf();
+                return tareasControlador.getPronosticoClick();
+            }
+            else if ($('#inv div[data-tooltip*=\'ndose: Cura\']').length === 0) {
+                $('a.awesome-tabs[data-available*=\"true\"]')[this.proximaHoja()].click();
+                this.vecesABuscar--;
+                yield this.wait(250);
+                this.buscarComidaYCurar();
+            }
+            else {
+                this.curar();
+                this.estado = tareaEstado.finalizada;
+                yield this.wait(500);
+                return tareasControlador.getPronosticoClick();
+            }
+        });
     }
     curar() {
         this.ponerIdDeComida();
@@ -71,10 +80,11 @@ class Inventario {
         this.estado = guardado.estado;
         this.tipo_class = guardado.tipo_class;
         this.vecesABuscar = guardado.vecesABuscar;
+        this.timeBlocked = guardado.timeBlocked;
         return this;
     }
     seCancela() {
-        return false;
+        return getPorcentajeVida() > globalConfig.personaje.porcentajeMinimoParaCurar;
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;
@@ -83,6 +93,11 @@ class Inventario {
         return $('#mainmenu > div:nth-child(1) a')[0];
     }
     puedeDesbloquearse() {
-        return true;
+        let milisecondsNow = Date.now().valueOf();
+        let dif = milisecondsNow - this.timeBlocked;
+        return Math.floor(dif / 60000) >= 10;
+    }
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

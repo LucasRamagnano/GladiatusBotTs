@@ -5,11 +5,12 @@ class ControladorDePaquetes implements Tarea{
     estado: tareaEstado;
     tipo_class: string = 'ControladorDePaquetes';
     intentosPaquetes: number = 0;
-    timed_out_miliseconds = 20000;
+    timed_out_miliseconds = 30000;
     minimoPrecioPaquete = 50000;
     hojaInvetario = 0;
     timeBlocked: number;
     timeRecheck: number = 5;
+    oroToKeep: number = 80000;
 
     fromJsonString(guardado: any): Guardable {
         this.estado = guardado.estado;
@@ -50,11 +51,12 @@ class ControladorDePaquetes implements Tarea{
 
     buscarMejorPaquete(oroActual): Paquete{
         let minPrecioPaquete = this.minimoPrecioPaquete;
+        let oroToKeep = this.oroToKeep;
         let mejorPaquete = null;
         $('#market_item_table tr').each(function() {
             if($(this).find('th').length == 0) {
                 let paquete = crearPackDesdeTr(this);
-                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || paquete.origen === globalConfig.personaje.nombre) {
+                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || oroActual - paquete.precio < oroToKeep || paquete.origen === globalConfig.personaje.nombre) {
                     //nada
                 }else if(mejorPaquete===null && paquete.nivel == 1) {
                     mejorPaquete = paquete;
@@ -68,12 +70,12 @@ class ControladorDePaquetes implements Tarea{
 
     buscarPaqueteComprado(): HTMLElement {
         let todosLosPaquetes =  $('.packageItem .ui-draggable').toArray();
-        return todosLosPaquetes.find(elem => elem.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre))
+        return todosLosPaquetes.find(elem => elem.getAttribute('data-tooltip').split('"')[1].trim().toLowerCase() == this.paqueteComprado.itemNombre.toLowerCase());
     } 
 
     buscarPaqueteCompradoEnInventario(): HTMLElement {
         let todosLosPaquetes =  $('#inv .ui-droppable').toArray();
-        return todosLosPaquetes.filter(elem=>elem.getAttribute('data-tooltip')!=null).find(elem => elem.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+        return todosLosPaquetes.filter(elem=>elem.getAttribute('data-tooltip')!=null).find(elem => elem.getAttribute('data-tooltip').split('"')[1].trim().toLowerCase() == this.paqueteComprado.itemNombre.toLowerCase());
     } 
 
     comprar(): HTMLElement {
@@ -116,8 +118,9 @@ class ControladorDePaquetes implements Tarea{
         }
     }
 
-    verificarAgarre(): HTMLElement  {
-        let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e=>e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+    async verificarAgarre(): Promise<HTMLElement>  {
+        await this.ponerHojaInventario(this.hojaInvetario);
+        let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e=>e.getAttribute('data-tooltip').split('"')[1].trim().toLowerCase() == this.paqueteComprado.itemNombre.toLowerCase());
         if(estaEnELInventario) {
             this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
             this.intentosPaquetes = 0;
@@ -133,14 +136,8 @@ class ControladorDePaquetes implements Tarea{
         if(!this.estamosEnMercado()) {
             return Promise.resolve($(".icon.market-icon")[0]);
         }else {
+            await this.ponerHojaInventario(this.hojaInvetario);
             let itemAVender = this.buscarPaqueteCompradoEnInventario();
-            /*
-            Ak llega siempre con paquete o por lo menos deberia ser asi.
-            if(itemAVender == null) {
-                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-                this.estado = tareaEstado.finalizada;
-                return Promise.resolve($('#menue_packages')[0]);
-            }else */
             if(this.paqueteComprado.precio*0.04>this.getOroActual()){
                 this.actualizarEstadoPaquete(paquete_estados.JUNTAR_PLATA);
                 this.estado = tareaEstado.bloqueada;
@@ -165,10 +162,11 @@ class ControladorDePaquetes implements Tarea{
         }
     }
 
-    verificarDevolucion() : HTMLElement {
+    async verificarDevolucion() : Promise<HTMLElement> {
         if(!this.estamosEnMercado()) {
             return $(".icon.market-icon")[0];
         }else {
+            await this.ponerHojaInventario(this.hojaInvetario);
             let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e=>e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
             if(estaEnELInventario) {
                 this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
@@ -176,8 +174,7 @@ class ControladorDePaquetes implements Tarea{
                 return $(".icon.market-icon")[0];
             }else {
                 this.estado = tareaEstado.finalizada;
-                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-                return $(".icon.market-icon")[0];
+                return tareasControlador.getPronosticoClick();
             }
         }
     }
@@ -207,10 +204,22 @@ class ControladorDePaquetes implements Tarea{
         //mandarMensajeBackground({header: MensajeHeader.CONTENT_SCRIPT_CAMBIO_PKT, estadoPaquete: estadoNuevo});
     }
 
+    async esperarInventariorAvailable() {
+        let chequeos: number = 0;
+        while($('#inv')[0].classList.contains('unavailable') && chequeos <= 8) {
+            chequeos++;
+            await this.wait(500);
+        }
+        if($('#inv')[0].classList.contains('unavailable')) {
+            throw 'Can not load inventory';
+        }
+    }
+
     async ponerHojaInventario(nroHoja:number) {
         let hoja = nroHoja; //cero es la primera
         let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
         let intentosCambioHoja = 0;
+        await this.esperarInventariorAvailable();
         while (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current') && intentosCambioHoja <= 3) {
             jQueryResult[hoja].click();
             await this.wait(1000+(1000*intentosCambioHoja));
@@ -223,9 +232,6 @@ class ControladorDePaquetes implements Tarea{
 
     async getProximoClick(): Promise<HTMLElement> {
         let resultado : HTMLElement ;
-        console.log(this);
-        /*this.paqueteComprado = estadoEjecucion.paquete;
-        this.estadoPaquete = estadoEjecucion.paqueteEstado;*/
 
         if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
             this.intentosPaquetes = 0;
@@ -241,15 +247,13 @@ class ControladorDePaquetes implements Tarea{
             this.estado = tareaEstado.bloqueada;
             resultado = tareasControlador.getPronosticoClick();
         }else if(this.estadoPaquete === paquete_estados.VERIFICAR_AGARRE) {
-            resultado = this.verificarAgarre();
+            resultado = await this.verificarAgarre();
         }else if(this.estadoPaquete === paquete_estados.VERIFICAR_DEVOLUCION) {
-            resultado = this.verificarDevolucion();
+            resultado = await this.verificarDevolucion();
         }else {
             this.estado = tareaEstado.cancelada;
             resultado = tareasControlador.getPronosticoClick();
         }
-        //console.log(estadoEjecucion);
-        //mandarMensajeBackground({header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes})
         return Promise.resolve(resultado);
     }
 

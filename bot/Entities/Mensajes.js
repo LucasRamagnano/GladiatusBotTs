@@ -8,8 +8,8 @@ var MensajeHeader;
     MensajeHeader["CONTENT_SCRIPT_PKT_COMPRADO"] = "CONTENT_SCRIPT_PKT_COMPRADO";
     MensajeHeader["CAMBIO_ORO"] = "CAMBIO_ORO";
     MensajeHeader["ACTUALIZAR"] = "ACTUALIZAR";
-    MensajeHeader["NO_HAY_COMIDA"] = "NO_HAY_COMIDA";
-    MensajeHeader["HAY_COMIDA"] = "HAY_COMIDA";
+    //NO_HAY_COMIDA= "NO_HAY_COMIDA",
+    //HAY_COMIDA= "HAY_COMIDA",
     MensajeHeader["ACTUALIZAR_EXPEDICION"] = "ACTUALIZAR_EXPEDICION";
     MensajeHeader["LOG_IN"] = "LOG_IN";
     MensajeHeader["ACTIVAR_AK"] = "ACTIVAR_AK";

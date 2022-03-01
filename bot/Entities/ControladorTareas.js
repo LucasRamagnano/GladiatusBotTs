@@ -13,7 +13,8 @@ class ControladorTareas {
         this.tareasFinalizadas = [];
         this.tareasCanceladas = [];
         this.tareasBloqueadas = [];
-        this.delayBetweenClicks = 500;
+        this.delayPostTask = 2000;
+        this.delayPreTask = 0;
         this.tareas = tareas;
     }
     getPronosticoClick() {
@@ -31,6 +32,7 @@ class ControladorTareas {
     correrTareaActual() {
         return __awaiter(this, void 0, void 0, function* () {
             let clickeableElement;
+            yield this.wait(this.delayPreTask);
             if (this.tareas.length == 0) {
                 clickeableElement = $('#mainmenu > div:nth-child(1) a')[0];
             }
@@ -38,7 +40,7 @@ class ControladorTareas {
                 clickeableElement = yield this.tareas[0].getProximoClick();
             }
             yield this.guardarTareas();
-            yield this.wait(this.delayBetweenClicks);
+            yield this.wait(this.delayPostTask);
             clickeableElement.click();
         });
     }

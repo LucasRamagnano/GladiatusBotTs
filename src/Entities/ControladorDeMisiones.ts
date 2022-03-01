@@ -2,7 +2,7 @@ class ControladorDeMisiones implements Tarea{
     estado: tareaEstado;
     prioridad : tareaPrioridad = globalConfig.prioridades.misiones;
     tipo_class: string = 'ControladorDeMisiones';
-    timed_out_miliseconds = 5000;
+    timed_out_miliseconds = 10000;
 
     cargarMisiones(tipo, id): Mision[] {
         let misionesTemp : Mision[] = [];
@@ -46,7 +46,8 @@ class ControladorDeMisiones implements Tarea{
         return $('#questsPage').length === 1;
     }
 
-    irAQuest(): HTMLElement {
+    async irAQuest(): Promise<HTMLElement> {
+        await this.wait(2000);
         return $('a[title=\'Panteón\']')[0];
     }
 
@@ -89,7 +90,7 @@ class ControladorDeMisiones implements Tarea{
                 return Promise.resolve(this.nuevasMisiones());
         }else {
             this.estado = tareaEstado.toTheEnd;
-            return Promise.resolve(this.irAQuest());
+            return this.irAQuest();
         }
     }
 
@@ -113,5 +114,9 @@ class ControladorDeMisiones implements Tarea{
 
     puedeDesbloquearse(): boolean {
         return true;
+    }
+
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

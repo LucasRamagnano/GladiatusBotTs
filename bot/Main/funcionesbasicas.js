@@ -7,20 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var correrDeNuevo = true;
-var ejecutarReload = true;
-//var tareasCtrl: ControladorTareas;
-var globalConfig = backgroundConfig;
-var estadoEjecucion = { hayComida: false,
+let globalConfig = backgroundConfig;
+let estadoEjecucion = {
     indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
-    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0 };
-var relojes = {
+    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0
+};
+let relojes = {
     relojArena: new Reloj('cooldown_bar_text_arena'),
     relojTurma: new Reloj('cooldown_bar_text_ct'),
     relojExpediciones: new Reloj('cooldown_bar_text_expedition'),
     relojMazmorras: new Reloj('cooldown_bar_text_dungeon')
 };
-var tareasControlador;
+let tareasControlador;
 let itemsTeam;
 function tomarDecision() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -98,7 +96,6 @@ function analizarSubasta() {
 }
 function hayQueCurar() {
     return getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar &&
-        estadoEjecucion.hayComida &&
         !tareasControlador.tiene(new Inventario());
 }
 function hacerMisiones() {

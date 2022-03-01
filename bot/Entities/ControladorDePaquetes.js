@@ -13,10 +13,11 @@ class ControladorDePaquetes {
         this.estadoPaquete = paquete_estados.COMPRAR;
         this.tipo_class = 'ControladorDePaquetes';
         this.intentosPaquetes = 0;
-        this.timed_out_miliseconds = 20000;
+        this.timed_out_miliseconds = 30000;
         this.minimoPrecioPaquete = 50000;
         this.hojaInvetario = 0;
         this.timeRecheck = 5;
+        this.oroToKeep = 80000;
     }
     fromJsonString(guardado) {
         this.estado = guardado.estado;
@@ -54,11 +55,12 @@ class ControladorDePaquetes {
     }
     buscarMejorPaquete(oroActual) {
         let minPrecioPaquete = this.minimoPrecioPaquete;
+        let oroToKeep = this.oroToKeep;
         let mejorPaquete = null;
         $('#market_item_table tr').each(function () {
             if ($(this).find('th').length == 0) {
                 let paquete = crearPackDesdeTr(this);
-                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || paquete.origen === globalConfig.personaje.nombre) {
+                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || oroActual - paquete.precio < oroToKeep || paquete.origen === globalConfig.personaje.nombre) {
                     //nada
                 }
                 else if (mejorPaquete === null && paquete.nivel == 1) {
@@ -73,11 +75,11 @@ class ControladorDePaquetes {
     }
     buscarPaqueteComprado() {
         let todosLosPaquetes = $('.packageItem .ui-draggable').toArray();
-        return todosLosPaquetes.find(elem => elem.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+        return todosLosPaquetes.find(elem => elem.getAttribute('data-tooltip').split('"')[1].trim().toLowerCase() == this.paqueteComprado.itemNombre.toLowerCase());
     }
     buscarPaqueteCompradoEnInventario() {
         let todosLosPaquetes = $('#inv .ui-droppable').toArray();
-        return todosLosPaquetes.filter(elem => elem.getAttribute('data-tooltip') != null).find(elem => elem.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+        return todosLosPaquetes.filter(elem => elem.getAttribute('data-tooltip') != null).find(elem => elem.getAttribute('data-tooltip').split('"')[1].trim().toLowerCase() == this.paqueteComprado.itemNombre.toLowerCase());
     }
     comprar() {
         if (!this.estamosEnMercado()) {
@@ -124,17 +126,20 @@ class ControladorDePaquetes {
         });
     }
     verificarAgarre() {
-        let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
-        if (estaEnELInventario) {
-            this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
-            this.intentosPaquetes = 0;
-            return $(".icon.market-icon")[0];
-        }
-        else {
-            this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_COMPRA);
-            this.intentosPaquetes++;
-            return $('#menue_packages')[0];
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.ponerHojaInventario(this.hojaInvetario);
+            let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').split('"')[1].trim().toLowerCase() == this.paqueteComprado.itemNombre.toLowerCase());
+            if (estaEnELInventario) {
+                this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
+                this.intentosPaquetes = 0;
+                return $(".icon.market-icon")[0];
+            }
+            else {
+                this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_COMPRA);
+                this.intentosPaquetes++;
+                return $('#menue_packages')[0];
+            }
+        });
     }
     devolver() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -142,14 +147,8 @@ class ControladorDePaquetes {
                 return Promise.resolve($(".icon.market-icon")[0]);
             }
             else {
+                yield this.ponerHojaInventario(this.hojaInvetario);
                 let itemAVender = this.buscarPaqueteCompradoEnInventario();
-                /*
-                Ak llega siempre con paquete o por lo menos deberia ser asi.
-                if(itemAVender == null) {
-                    this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-                    this.estado = tareaEstado.finalizada;
-                    return Promise.resolve($('#menue_packages')[0]);
-                }else */
                 if (this.paqueteComprado.precio * 0.04 > this.getOroActual()) {
                     this.actualizarEstadoPaquete(paquete_estados.JUNTAR_PLATA);
                     this.estado = tareaEstado.bloqueada;
@@ -176,22 +175,24 @@ class ControladorDePaquetes {
         });
     }
     verificarDevolucion() {
-        if (!this.estamosEnMercado()) {
-            return $(".icon.market-icon")[0];
-        }
-        else {
-            let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
-            if (estaEnELInventario) {
-                this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
-                this.intentosPaquetes++;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.estamosEnMercado()) {
                 return $(".icon.market-icon")[0];
             }
             else {
-                this.estado = tareaEstado.finalizada;
-                this.actualizarEstadoPaquete(paquete_estados.COMPRAR);
-                return $(".icon.market-icon")[0];
+                yield this.ponerHojaInventario(this.hojaInvetario);
+                let estaEnELInventario = $('#inv .ui-droppable').toArray().some(e => e.getAttribute('data-tooltip').includes(this.paqueteComprado.itemNombre));
+                if (estaEnELInventario) {
+                    this.actualizarEstadoPaquete(paquete_estados.DEVOLVER);
+                    this.intentosPaquetes++;
+                    return $(".icon.market-icon")[0];
+                }
+                else {
+                    this.estado = tareaEstado.finalizada;
+                    return tareasControlador.getPronosticoClick();
+                }
             }
-        }
+        });
     }
     ponerALaVenta() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -216,11 +217,24 @@ class ControladorDePaquetes {
         this.estadoPaquete = estadoNuevo;
         //mandarMensajeBackground({header: MensajeHeader.CONTENT_SCRIPT_CAMBIO_PKT, estadoPaquete: estadoNuevo});
     }
+    esperarInventariorAvailable() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let chequeos = 0;
+            while ($('#inv')[0].classList.contains('unavailable') && chequeos <= 8) {
+                chequeos++;
+                yield this.wait(500);
+            }
+            if ($('#inv')[0].classList.contains('unavailable')) {
+                throw 'Can not load inventory';
+            }
+        });
+    }
     ponerHojaInventario(nroHoja) {
         return __awaiter(this, void 0, void 0, function* () {
             let hoja = nroHoja; //cero es la primera
             let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
             let intentosCambioHoja = 0;
+            yield this.esperarInventariorAvailable();
             while (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current') && intentosCambioHoja <= 3) {
                 jQueryResult[hoja].click();
                 yield this.wait(1000 + (1000 * intentosCambioHoja));
@@ -234,9 +248,6 @@ class ControladorDePaquetes {
     getProximoClick() {
         return __awaiter(this, void 0, void 0, function* () {
             let resultado;
-            console.log(this);
-            /*this.paqueteComprado = estadoEjecucion.paquete;
-            this.estadoPaquete = estadoEjecucion.paqueteEstado;*/
             if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
                 this.intentosPaquetes = 0;
                 resultado = this.comprar();
@@ -256,17 +267,15 @@ class ControladorDePaquetes {
                 resultado = tareasControlador.getPronosticoClick();
             }
             else if (this.estadoPaquete === paquete_estados.VERIFICAR_AGARRE) {
-                resultado = this.verificarAgarre();
+                resultado = yield this.verificarAgarre();
             }
             else if (this.estadoPaquete === paquete_estados.VERIFICAR_DEVOLUCION) {
-                resultado = this.verificarDevolucion();
+                resultado = yield this.verificarDevolucion();
             }
             else {
                 this.estado = tareaEstado.cancelada;
                 resultado = tareasControlador.getPronosticoClick();
             }
-            //console.log(estadoEjecucion);
-            //mandarMensajeBackground({header: MensajeHeader.CAMBIO_INTENTO_PAQUETES, intentos: estadoEjecucion.intestosPaquetes})
             return Promise.resolve(resultado);
         });
     }

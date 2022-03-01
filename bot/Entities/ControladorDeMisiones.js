@@ -1,8 +1,17 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 class ControladorDeMisiones {
     constructor() {
         this.prioridad = globalConfig.prioridades.misiones;
         this.tipo_class = 'ControladorDeMisiones';
-        this.timed_out_miliseconds = 5000;
+        this.timed_out_miliseconds = 10000;
     }
     cargarMisiones(tipo, id) {
         let misionesTemp = [];
@@ -42,7 +51,10 @@ class ControladorDeMisiones {
         return $('#questsPage').length === 1;
     }
     irAQuest() {
-        return $('a[title=\'Panteón\']')[0];
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.wait(2000);
+            return $('a[title=\'Panteón\']')[0];
+        });
     }
     restartMision() {
         return $('.quest_slot_button_restart')[0];
@@ -81,7 +93,7 @@ class ControladorDeMisiones {
         }
         else {
             this.estado = tareaEstado.toTheEnd;
-            return Promise.resolve(this.irAQuest());
+            return this.irAQuest();
         }
     }
     fromJsonString(jsonGuardado) {
@@ -100,5 +112,8 @@ class ControladorDeMisiones {
     }
     puedeDesbloquearse() {
         return true;
+    }
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

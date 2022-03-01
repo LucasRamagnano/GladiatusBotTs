@@ -3,13 +3,12 @@ class Inventario implements Tarea{
     estado: tareaEstado;
     tipo_class: string = 'Inventario';
     vecesABuscar: number = 10;
-    timed_out_miliseconds = 5000;
+    timed_out_miliseconds = 10000;
+    timeBlocked: number;
 
     getProximoClick(): Promise<HTMLElement> {
         if(this.estamosEnVisionGeneral() && estaApuntandoPersonaje()){
-            //TODO VER QUE HACER CON CORRER DE NUEVO
-            correrDeNuevo = false;
-            return new Promise<HTMLElement>((resolve,fallo) => {this.buscarComidaYCurar(resolve,fallo)});
+            return this.buscarComidaYCurar();
         }else if(estaEnVisionGeneral()){
             return Promise.resolve($('.charmercsel')[0]);
         } else {
@@ -18,23 +17,23 @@ class Inventario implements Tarea{
     }
 
 
-    buscarComidaYCurar(resolve,reject): void {
+    async buscarComidaYCurar(): Promise<HTMLElement> {
         if(this.vecesABuscar <= 0) {
             //Mando no hay comida
             //Voy a vision general
-            mandarMensajeBackground({header: MensajeHeader.NO_HAY_COMIDA});
-            this.estado = tareaEstado.cancelada;
-            resolve($('#mainmenu > div:nth-child(1) a')[0]);
+            this.estado = tareaEstado.bloqueada;
+            this.timeBlocked = Date.now().valueOf();
+            return tareasControlador.getPronosticoClick();
         }else if($('#inv div[data-tooltip*=\'ndose: Cura\']').length === 0) {
             $('a.awesome-tabs[data-available*=\"true\"]')[this.proximaHoja()].click();
-            setTimeout(()=>{
-                this.buscarComidaYCurar(resolve,reject);
-                }, 250);
-            this.vecesABuscar = this.vecesABuscar-1;
+            this.vecesABuscar--;
+            await this.wait(250);
+            this.buscarComidaYCurar();
         }else{
             this.curar();
             this.estado = tareaEstado.finalizada;
-            window.setTimeout(()=>resolve($('#mainmenu > div:nth-child(1) a')[0]),500);
+            await this.wait(500);
+            return tareasControlador.getPronosticoClick();
         }
     }
 
@@ -75,11 +74,12 @@ class Inventario implements Tarea{
         this.estado  = guardado.estado;
         this.tipo_class  = guardado.tipo_class;
         this.vecesABuscar  = guardado.vecesABuscar;
+        this.timeBlocked = guardado.timeBlocked;
         return this;
     }
 
     seCancela(): boolean {
-        return false;
+        return getPorcentajeVida() > globalConfig.personaje.porcentajeMinimoParaCurar;
     }
 
     equals(t: Tarea): boolean {
@@ -91,6 +91,12 @@ class Inventario implements Tarea{
     }
 
     puedeDesbloquearse(): boolean {
-        return true;
+        let milisecondsNow = Date.now().valueOf();
+        let dif = milisecondsNow - this.timeBlocked;
+        return Math.floor(dif/60000) >= 10;
+    }
+
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

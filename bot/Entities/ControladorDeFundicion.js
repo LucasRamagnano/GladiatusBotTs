@@ -29,10 +29,11 @@ class ControladorDeFundicion {
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'constancio'),
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'marcelo'),
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'dairus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'ichorus'),
             new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
             new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')
         ].reverse();
-        this.namesNotTuMelt = ['Antonius'];
+        this.namesNotTuMelt = ['Antonius', 'Lucius', 'Gaius'];
         this.numeroDeItemsAFundir = numeroItems;
         this.estadoFundicion = estadoFundicion;
     }
