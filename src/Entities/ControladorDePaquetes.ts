@@ -1,8 +1,8 @@
 class ControladorDePaquetes implements Tarea{
-    prioridad : tareaPrioridad = globalConfig.prioridades.paquete;
+    prioridad : tareaPrioridad = datosContext.prioridades.paquete;
     estadoPaquete: paquete_estados = paquete_estados.COMPRAR;
     paqueteComprado: Paquete;
-    estado: tareaEstado;
+    private estado: tareaEstado = tareaEstado.enEspera;
     tipo_class: string = 'ControladorDePaquetes';
     intentosPaquetes: number = 0;
     timed_out_miliseconds = 30000;
@@ -20,8 +20,14 @@ class ControladorDePaquetes implements Tarea{
         this.timeBlocked = guardado.timeBlocked;
         return this;
     }
-    /*this.paqueteComprado = new Paquete("[[[\"Madera\",\"white\"],[\"Valor 36 <div class=\\\"",111,
-                                        "JTU",5000,1,null);*/
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
+    }
 
     getOroActual(): number {
         let oroHtml = $('#sstat_gold_val').html();
@@ -56,7 +62,7 @@ class ControladorDePaquetes implements Tarea{
         $('#market_item_table tr').each(function() {
             if($(this).find('th').length == 0) {
                 let paquete = crearPackDesdeTr(this);
-                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || oroActual - paquete.precio < oroToKeep || paquete.origen === globalConfig.personaje.nombre) {
+                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || oroActual - paquete.precio < oroToKeep || paquete.origen === datosContext.personaje.nombre) {
                     //nada
                 }else if(mejorPaquete===null && paquete.nivel == 1) {
                     mejorPaquete = paquete;
@@ -233,7 +239,7 @@ class ControladorDePaquetes implements Tarea{
     async getProximoClick(): Promise<HTMLElement> {
         let resultado : HTMLElement ;
 
-        if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
+        if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > datosContext.personaje.oroBaseParaPaquete) {
             this.intentosPaquetes = 0;
             resultado = this.comprar();
         }else if(this.intentosPaquetes == 5) {
@@ -258,7 +264,8 @@ class ControladorDePaquetes implements Tarea{
     }
 
     seCancela(): boolean {
-        return !globalConfig.modulos.correrPaquetes;
+        return !datosContext.modulos.correrPaquetes ||
+                (this.getOroActual() < datosContext.personaje.oroBaseParaPaquete && this.estadoPaquete === paquete_estados.COMPRAR);
     }
 
     equals(t: Tarea): boolean {

@@ -1,7 +1,7 @@
 class ControladorDeFundicion implements Tarea{
     //link : string = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=forge&submod=smeltery&sh=202d551151ed895739913f0618b78290';
-    estado: tareaEstado = tareaEstado.enEspera;
-    prioridad: tareaPrioridad = globalConfig.prioridades.fundicion;
+    private estado: tareaEstado = tareaEstado.enEspera;
+    prioridad: tareaPrioridad = datosContext.prioridades.fundicion;
     estadoFundicion: fundicionEstados = fundicionEstados.AGARRAR_ITEMS;
     itemsAFundir: string[] = [];
     tipo_class: string = 'ControladorDeFundicion';
@@ -10,21 +10,11 @@ class ControladorDeFundicion implements Tarea{
     timed_out_miliseconds = 60000;
     indicePagina = -1;
     indiceFiltro = -1;
-    filtrosToUse = [//new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'tálith'),
-                    new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'sufrimiento'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'sextus'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'titus'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'mateus'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'decimus'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'constancio'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'marcelo'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'dairus'),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'ichorus'),
-                    new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
-                    new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();
-    namesNotTuMelt = ['Antonius', 'Lucius', 'Gaius']
+    allFilters = ControladorDeFundicion.getFilters();
+    filtrosToUse:FiltroPaquete[] = [];
+    private static namesNotTuMelt = ['Lucius','Antonius']
     blockTime: number;
+    procesadoTerminado: boolean = false;
 
     constructor()
     constructor(numeroItems:number, estadoFundicion: fundicionEstados)
@@ -42,7 +32,17 @@ class ControladorDeFundicion implements Tarea{
         this.indicePagina = jsonGuardado.indicePagina;
         this.indiceFiltro = jsonGuardado.indiceFiltro;
         this.blockTime = jsonGuardado.blockTime;
+        this.procesadoTerminado = jsonGuardado.procesadoTerminado;
+        this.filtrosToUse = jsonGuardado.filtrosToUse.map(e=>new FiltroPaquete(e.calidad,e.query));
         return this;
+    }
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
     }
 
     equals(t: Tarea): boolean {
@@ -78,7 +78,7 @@ class ControladorDeFundicion implements Tarea{
     }
 
     seCancela(): boolean {
-        return !globalConfig.modulos.correrFundicion;
+        return !datosContext.modulos.correrFundicion;
     }
 
     hayItems():boolean {
@@ -102,6 +102,7 @@ class ControladorDeFundicion implements Tarea{
 
     async filtrarYagarrarItems(): Promise<HTMLElement> {
         //&& this.indicePagina == -1
+        await this.filtersBackgroundAnalyze();
         if(this.indiceFiltro == -1 )
             this.indiceFiltro = this.filtrosToUse.length;
         if(this.indicePagina > -1 && this.indiceFiltro >= 0 && this.filtrosToUse[this.indiceFiltro].isFilterSeteado()){
@@ -120,7 +121,7 @@ class ControladorDeFundicion implements Tarea{
             } else {
                 Consola.log(this.debuguear, 'Error seteando filtro...');
                 return Promise.resolve($('#menue_packages')[0]);
-            };
+            }
         } else if(this.indiceFiltro == 0 && this.indicePagina == -1) {
             Consola.log(this.debuguear, 'No hay mas paquetes');
             if(this.itemsAFundir.length > 0) {
@@ -139,6 +140,21 @@ class ControladorDeFundicion implements Tarea{
             return tareasControlador.getPronosticoClick();
         }
 
+    }
+
+    async filtersBackgroundAnalyze() {
+        if(this.procesadoTerminado)
+            return;
+
+        Consola.log(this.debuguear,'Analizando filtros background');
+        let toDo: Promise<void>[] = [];
+        for (const e of this.allFilters) {
+            toDo.push(this.analizeFilter(e));
+        }
+        await Promise.all(toDo);
+        Consola.log(this.debuguear,'Filtros analizados');
+        this.filtrosToUse = this.allFilters.filter(e=>e.hayItemsFundibles);
+        this.procesadoTerminado = true;
     }
 
     async agarrarItems(): Promise<HTMLElement> {
@@ -178,7 +194,7 @@ class ControladorDeFundicion implements Tarea{
             itemsToGrab = $('#packages_wrapper .ui-draggable').toArray().reverse()
                 .filter((elem, index) => {
                 let hayEspacio = itemsAgarrados + 1 <= (this.numeroDeItemsAFundir-this.itemsAFundir.length);
-                if(this.esItemFundible(elem) && hayEspacio) {
+                if(ControladorDeFundicion.esItemFundible(elem) && hayEspacio) {
                     itemsAgarrados++;
                     return true;
                 }
@@ -409,17 +425,48 @@ class ControladorDeFundicion implements Tarea{
     hayItemsFundibles() {
         return $('#packages_wrapper .ui-draggable').toArray()
             .some((elem, index) => {
-                return this.esItemFundible(elem);
+                return ControladorDeFundicion.esItemFundible(elem);
             })
     }
 
-    esItemFundible(item:HTMLElement) {
+    static esItemFundible(item:HTMLElement) {
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
+        let quality = this.getColor(item.getAttribute('data-tooltip'));
         let notToKeep = this.namesNotTuMelt.every((e)=>!nameitem.includes(e));
         let categoria = getItemCategoria(nameitem);
         let esFundible = categoria.nombreCategoria == 'Fundible';
-        let esJoyaFundible = categoria.subCategoria == 'Joya' && (this.filtrosToUse[this.indiceFiltro].calidad == calidadesItemsPaquetes.PURPURA || this.filtrosToUse[this.indiceFiltro].query != '')
+        let esJoyaFundible = categoria.subCategoria == 'Joya' &&
+                                (quality == calidadesItemsPaquetes.PURPURA
+                                || this.getFilters().filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase())));
         return notToKeep && (esFundible || esJoyaFundible);
+    }
+
+    static esItemToWarn(item:HTMLElement) {//todo ver donde poner
+        let nameitem = item.getAttribute('data-tooltip').split('"')[1];
+        let categoria = getItemCategoria(nameitem);
+        let ToKeep = this.namesNotTuMelt.some((e)=>nameitem.includes(e)) && (categoria.nombreCategoria == 'Fundible' || categoria.subCategoria == 'Joya');
+        let esWaringFundible = categoria.nombreCategoria == 'Fundible' && this.getFilters().filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && this.getFilters().filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        return ToKeep || esWaringFundible || esWaringJoyaFundible;
+    }
+
+    static getColor(rawData:string):calidadesItemsPaquetes {//todo crear entidad Item? extraer a item mensajes
+        let colors:{code:string,color:string,index:number,quality:calidadesItemsPaquetes}[] =
+                [{code:'lime',color:'green',index:0, quality:calidadesItemsPaquetes.VERDE},
+                    {code:'#5159F7',color:'blue',index:0, quality:calidadesItemsPaquetes.AZUL},
+                    {code:'#E303E0',color:'purple',index:0, quality:calidadesItemsPaquetes.PURPURA},
+                    {code:'#FF6A00',color:'gold',index:0, quality:calidadesItemsPaquetes.NARANJA}];
+        try {
+            let colorPick = colors.filter(e => rawData.includes(e.code))
+                .map(e => {
+                    e.index = rawData.indexOf(e.code);
+                    return e;
+                })
+                .sort((e1, e2) => e1.index > e2.index ? 1 : -1)[0];
+            return colorPick.quality;
+        }catch (e){
+            return calidadesItemsPaquetes.ESTANDAR;
+        }
     }
 
     puedeDesbloquearse(): boolean {
@@ -428,5 +475,42 @@ class ControladorDeFundicion implements Tarea{
         return Math.floor(dif/60000) >= 10;
     }
 
+    async analizeFilter(filter: FiltroPaquete) {
+        let response = await fetch(filter.getLink(), {
+            cache: 'no-store'
+        });
+        let paginaPaquete = await response.text();
+        filter.hayItemsFundibles = $(paginaPaquete).find('#packages .ui-draggable').toArray()
+                                    .some((elem, index) => {
+                                        return ControladorDeFundicion.esItemFundible(elem);
+                                    })
+    }
 
+    static getFilters() {
+        return [new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Gaius'),//crystal, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Titus'),//crystal, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Manius'),//crystal, antonius
+
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Marcelo'),//crystal, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Quinto'),//crystal, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tellus'),//crystal, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Constancio'),//crystal, antonius
+
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Mateus'),//Amethyst, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Dexterus'),//Amethyst, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Servius'),//Amethyst, antonius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Giganticus'),//Amethyst, antonius
+
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Sentarions'),//tint resitencia, lucius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tantus'),//tint resitencia, lucius
+
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del misterio'),//scorpion veneno, assesination
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del veneno'),//scorpion veneno, assesination
+
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'de la fragmentación'),//fortune stone, lucius
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del silencio'),//fortune stone, lucius
+            new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();
+    }
 }

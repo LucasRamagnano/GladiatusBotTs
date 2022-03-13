@@ -9,10 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class Inventario {
     constructor() {
-        this.prioridad = globalConfig.prioridades.curar;
+        this.prioridad = datosContext.prioridades.curar;
+        this.estado = tareaEstado.enEspera;
         this.tipo_class = 'Inventario';
         this.vecesABuscar = 10;
         this.timed_out_miliseconds = 10000;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     getProximoClick() {
         if (this.estamosEnVisionGeneral() && estaApuntandoPersonaje()) {
@@ -38,7 +45,7 @@ class Inventario {
                 $('a.awesome-tabs[data-available*=\"true\"]')[this.proximaHoja()].click();
                 this.vecesABuscar--;
                 yield this.wait(250);
-                this.buscarComidaYCurar();
+                return yield this.buscarComidaYCurar();
             }
             else {
                 this.curar();
@@ -84,7 +91,7 @@ class Inventario {
         return this;
     }
     seCancela() {
-        return getPorcentajeVida() > globalConfig.personaje.porcentajeMinimoParaCurar;
+        return getPorcentajeVida() > datosContext.personaje.porcentajeMinimoParaCurar;
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;

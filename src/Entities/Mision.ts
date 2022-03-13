@@ -59,11 +59,11 @@ class Mision {
         if(this.tipo === 'Mazmorra' || this.tipo === 'Trabajo') {
             return false;
         }else if(this.tipo === 'Expedicion') {
-            return this.analizarTextMision(globalConfig.expedicion) && globalConfig.modulos.correrExpedicion && this.daElTiempoParaHacerla() && false;
+            return this.analizarTextMision(datosContext.expedicion) && datosContext.modulos.correrExpedicion && this.daElTiempoParaHacerla() && false;
         }else if(this.tipo === 'Arena'){
-            return globalConfig.modulos.correrArena;
+            return datosContext.modulos.correrArena;
         }else if(this.tipo === 'Turma'){
-            return globalConfig.modulos.correrTurma;
+            return datosContext.modulos.correrTurma;
         }else {
             return true;
         }

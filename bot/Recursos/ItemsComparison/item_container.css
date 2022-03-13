@@ -24,8 +24,17 @@
     text-overflow: ellipsis !important;
 }
 
-.item_estadisticas p:nth-child(1) {
-    color: red;
+.green {
+    color: lime;
+}
+.blue {
+    color: #5159F7;
+}
+.purple {
+    color: #E303E0;
+}
+.gold {
+    color: #FF6A00;
 }
 
 .item_selector {

@@ -3,8 +3,8 @@ class ControladorTareas {
     tareasFinalizadas: Tarea[] = [];
     tareasCanceladas: Tarea[] = [];
     tareasBloqueadas: Tarea[] = [];
-    delayPostTask = 2000;
-    delayPreTask = 0;
+    delayPostTask = 500;
+    delayPreTask = 500;
     constructor();
     constructor(tareas?:Tarea[]) {
         this.tareas = tareas;
@@ -19,7 +19,6 @@ class ControladorTareas {
     }
 
     appendTarea(tarea: Tarea): void {
-        tarea.estado = tareaEstado.enEspera;
         this.tareas.push(tarea);
     }
 
@@ -51,7 +50,7 @@ class ControladorTareas {
         this.analizarTareasBloqueadas();
         this.ordenarTareas();
         if(this.tareas.length != 0)
-            this.tareas[0].estado = tareaEstado.corriendo;
+            this.tareas[0].changeEstado(tareaEstado.corriendo);
     }
 
     tiene(tarea: Tarea) {
@@ -86,10 +85,10 @@ class ControladorTareas {
         //Filter task that cant run
         let allDoableTasks = this.tareas.concat(this.tareasBloqueadas);
         let tareasACancelar: Tarea[] = allDoableTasks.filter(e=>e.seCancela());
-        let tareasToTheEnd: Tarea[] = allDoableTasks.filter(e=>e.estado == tareaEstado.toTheEnd && !e.seCancela());
-        let tareasFinalizada: Tarea[] = allDoableTasks.filter(e=>e.estado == tareaEstado.finalizada);
-        let tareasCorriendo: Tarea[] = allDoableTasks.filter(e=>e.estado == tareaEstado.corriendo && !e.seCancela());
-        let tareasBloqueadas: Tarea[] = allDoableTasks.filter(e=>e.estado == tareaEstado.bloqueada && !e.seCancela());
+        let tareasToTheEnd: Tarea[] = allDoableTasks.filter(e=>e.getEstado() == tareaEstado.toTheEnd && !e.seCancela());
+        let tareasFinalizada: Tarea[] = allDoableTasks.filter(e=>e.getEstado() == tareaEstado.finalizada);
+        let tareasCorriendo: Tarea[] = allDoableTasks.filter(e=>e.getEstado() == tareaEstado.corriendo && !e.seCancela());
+        let tareasBloqueadas: Tarea[] = allDoableTasks.filter(e=>e.getEstado() == tareaEstado.bloqueada && !e.seCancela());
         let tareasNoAplicaPrioridad = tareasCorriendo.concat(tareasACancelar).concat(tareasToTheEnd).concat(tareasFinalizada).concat(tareasBloqueadas);
 
         //Only order the task than can run
@@ -99,7 +98,7 @@ class ControladorTareas {
         let tareasPrioridadNormal: Tarea[] = tareasAplicaPrioridad.filter(e=>e.prioridad == tareaPrioridad.NORMAL);
         let tareasPrioridadBaja: Tarea[] = tareasAplicaPrioridad.filter(e=>e.prioridad == tareaPrioridad.BAJA);
 
-        tareasToTheEnd.map(e=>e.estado = tareaEstado.enEspera);
+        tareasToTheEnd.map(e=>e.changeEstado(tareaEstado.enEspera));
 
         this.tareasCanceladas = this.tareasCanceladas.concat(tareasACancelar);
         this.tareasFinalizadas = this.tareasFinalizadas.concat(tareasFinalizada);
@@ -120,7 +119,7 @@ class ControladorTareas {
     private analizarTareasBloqueadas() {
         this.tareasBloqueadas.forEach(tarea => {
             if(tarea.puedeDesbloquearse()) {
-                tarea.estado = tareaEstado.enEspera;
+                tarea.changeEstado(tareaEstado.enEspera);
             }
         })
     }

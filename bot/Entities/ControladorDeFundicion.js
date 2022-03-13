@@ -11,7 +11,7 @@ class ControladorDeFundicion {
     constructor(numeroItems, estadoFundicion) {
         //link : string = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=forge&submod=smeltery&sh=202d551151ed895739913f0618b78290';
         this.estado = tareaEstado.enEspera;
-        this.prioridad = globalConfig.prioridades.fundicion;
+        this.prioridad = datosContext.prioridades.fundicion;
         this.estadoFundicion = fundicionEstados.AGARRAR_ITEMS;
         this.itemsAFundir = [];
         this.tipo_class = 'ControladorDeFundicion';
@@ -19,21 +19,9 @@ class ControladorDeFundicion {
         this.timed_out_miliseconds = 60000;
         this.indicePagina = -1;
         this.indiceFiltro = -1;
-        this.filtrosToUse = [
-            new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'sufrimiento'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'sextus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'titus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'mateus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'decimus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'constancio'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'marcelo'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'dairus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'ichorus'),
-            new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')
-        ].reverse();
-        this.namesNotTuMelt = ['Antonius', 'Lucius', 'Gaius'];
+        this.allFilters = ControladorDeFundicion.getFilters();
+        this.filtrosToUse = [];
+        this.procesadoTerminado = false;
         this.numeroDeItemsAFundir = numeroItems;
         this.estadoFundicion = estadoFundicion;
     }
@@ -47,7 +35,15 @@ class ControladorDeFundicion {
         this.indicePagina = jsonGuardado.indicePagina;
         this.indiceFiltro = jsonGuardado.indiceFiltro;
         this.blockTime = jsonGuardado.blockTime;
+        this.procesadoTerminado = jsonGuardado.procesadoTerminado;
+        this.filtrosToUse = jsonGuardado.filtrosToUse.map(e => new FiltroPaquete(e.calidad, e.query));
         return this;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;
@@ -84,7 +80,7 @@ class ControladorDeFundicion {
         }
     }
     seCancela() {
-        return !globalConfig.modulos.correrFundicion;
+        return !datosContext.modulos.correrFundicion;
     }
     hayItems() {
         return this.itemsAFundir.length != 0;
@@ -106,6 +102,7 @@ class ControladorDeFundicion {
     filtrarYagarrarItems() {
         return __awaiter(this, void 0, void 0, function* () {
             //&& this.indicePagina == -1
+            yield this.filtersBackgroundAnalyze();
             if (this.indiceFiltro == -1)
                 this.indiceFiltro = this.filtrosToUse.length;
             if (this.indicePagina > -1 && this.indiceFiltro >= 0 && this.filtrosToUse[this.indiceFiltro].isFilterSeteado()) {
@@ -128,7 +125,6 @@ class ControladorDeFundicion {
                     Consola.log(this.debuguear, 'Error seteando filtro...');
                     return Promise.resolve($('#menue_packages')[0]);
                 }
-                ;
             }
             else if (this.indiceFiltro == 0 && this.indicePagina == -1) {
                 Consola.log(this.debuguear, 'No hay mas paquetes');
@@ -149,6 +145,21 @@ class ControladorDeFundicion {
                 this.estado = tareaEstado.finalizada;
                 return tareasControlador.getPronosticoClick();
             }
+        });
+    }
+    filtersBackgroundAnalyze() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.procesadoTerminado)
+                return;
+            Consola.log(this.debuguear, 'Analizando filtros background');
+            let toDo = [];
+            for (const e of this.allFilters) {
+                toDo.push(this.analizeFilter(e));
+            }
+            yield Promise.all(toDo);
+            Consola.log(this.debuguear, 'Filtros analizados');
+            this.filtrosToUse = this.allFilters.filter(e => e.hayItemsFundibles);
+            this.procesadoTerminado = true;
         });
     }
     agarrarItems() {
@@ -190,7 +201,7 @@ class ControladorDeFundicion {
                 itemsToGrab = $('#packages_wrapper .ui-draggable').toArray().reverse()
                     .filter((elem, index) => {
                     let hayEspacio = itemsAgarrados + 1 <= (this.numeroDeItemsAFundir - this.itemsAFundir.length);
-                    if (this.esItemFundible(elem) && hayEspacio) {
+                    if (ControladorDeFundicion.esItemFundible(elem) && hayEspacio) {
                         itemsAgarrados++;
                         return true;
                     }
@@ -418,20 +429,84 @@ class ControladorDeFundicion {
     hayItemsFundibles() {
         return $('#packages_wrapper .ui-draggable').toArray()
             .some((elem, index) => {
-            return this.esItemFundible(elem);
+            return ControladorDeFundicion.esItemFundible(elem);
         });
     }
-    esItemFundible(item) {
+    static esItemFundible(item) {
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
+        let quality = this.getColor(item.getAttribute('data-tooltip'));
         let notToKeep = this.namesNotTuMelt.every((e) => !nameitem.includes(e));
         let categoria = getItemCategoria(nameitem);
         let esFundible = categoria.nombreCategoria == 'Fundible';
-        let esJoyaFundible = categoria.subCategoria == 'Joya' && (this.filtrosToUse[this.indiceFiltro].calidad == calidadesItemsPaquetes.PURPURA || this.filtrosToUse[this.indiceFiltro].query != '');
+        let esJoyaFundible = categoria.subCategoria == 'Joya' &&
+            (quality == calidadesItemsPaquetes.PURPURA
+                || this.getFilters().filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase())));
         return notToKeep && (esFundible || esJoyaFundible);
+    }
+    static esItemToWarn(item) {
+        let nameitem = item.getAttribute('data-tooltip').split('"')[1];
+        let categoria = getItemCategoria(nameitem);
+        let ToKeep = this.namesNotTuMelt.some((e) => nameitem.includes(e)) && (categoria.nombreCategoria == 'Fundible' || categoria.subCategoria == 'Joya');
+        let esWaringFundible = categoria.nombreCategoria == 'Fundible' && this.getFilters().filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && this.getFilters().filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        return ToKeep || esWaringFundible || esWaringJoyaFundible;
+    }
+    static getColor(rawData) {
+        let colors = [{ code: 'lime', color: 'green', index: 0, quality: calidadesItemsPaquetes.VERDE },
+            { code: '#5159F7', color: 'blue', index: 0, quality: calidadesItemsPaquetes.AZUL },
+            { code: '#E303E0', color: 'purple', index: 0, quality: calidadesItemsPaquetes.PURPURA },
+            { code: '#FF6A00', color: 'gold', index: 0, quality: calidadesItemsPaquetes.NARANJA }];
+        try {
+            let colorPick = colors.filter(e => rawData.includes(e.code))
+                .map(e => {
+                e.index = rawData.indexOf(e.code);
+                return e;
+            })
+                .sort((e1, e2) => e1.index > e2.index ? 1 : -1)[0];
+            return colorPick.quality;
+        }
+        catch (e) {
+            return calidadesItemsPaquetes.ESTANDAR;
+        }
     }
     puedeDesbloquearse() {
         let milisecondsNow = Date.now().valueOf();
         let dif = milisecondsNow - this.blockTime;
         return Math.floor(dif / 60000) >= 10;
     }
+    analizeFilter(filter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let response = yield fetch(filter.getLink(), {
+                cache: 'no-store'
+            });
+            let paginaPaquete = yield response.text();
+            filter.hayItemsFundibles = $(paginaPaquete).find('#packages .ui-draggable').toArray()
+                .some((elem, index) => {
+                return ControladorDeFundicion.esItemFundible(elem);
+            });
+        });
+    }
+    static getFilters() {
+        return [new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Gaius'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Titus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Manius'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Marcelo'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Quinto'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tellus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Constancio'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Mateus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Dexterus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Servius'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Giganticus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Sentarions'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tantus'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del misterio'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del veneno'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'de la fragmentación'),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del silencio'),
+            new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
+            new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();
+    }
 }
+ControladorDeFundicion.namesNotTuMelt = ['Lucius', 'Antonius'];

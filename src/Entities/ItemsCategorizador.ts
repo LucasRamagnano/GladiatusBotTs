@@ -50,7 +50,7 @@ const itemsDataName = {
         'Daga punteaguda','Angel de la muerte','Schiavone','Gladius',
         'Khopesh','Lanza','Seax','Vara de lucha'],
 
-    escudos : ['Tablones','Escudo de madera','Escudo redondo','Red','Escudo del dragón',
+    escudos : ['Tablones','Escudo de madera','Escudo redondo','Red','Escudo',
         'Escudo de plata','Escudo de la torre','Escudo de fuego','Escudo de la torre en llamas',
         'Escudo de titanio','Escudo vikingo','Escudo egipcio'],
 

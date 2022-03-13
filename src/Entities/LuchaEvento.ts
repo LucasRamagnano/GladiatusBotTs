@@ -1,8 +1,16 @@
 class LuchaEvento implements Tarea{
-    estado: tareaEstado;
-    prioridad : tareaPrioridad = globalConfig.prioridades.evento;
+    private estado: tareaEstado = tareaEstado.enEspera;
+    prioridad : tareaPrioridad = datosContext.prioridades.evento;
     tipo_class: string = 'LuchaEvento';
     timed_out_miliseconds = 5000;
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
+    }
 
     getHomeClick(): HTMLElement {
         return $('#banner_event_link')[0];

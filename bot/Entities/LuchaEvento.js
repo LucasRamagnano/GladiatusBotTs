@@ -1,8 +1,15 @@
 class LuchaEvento {
     constructor() {
-        this.prioridad = globalConfig.prioridades.evento;
+        this.estado = tareaEstado.enEspera;
+        this.prioridad = datosContext.prioridades.evento;
         this.tipo_class = 'LuchaEvento';
         this.timed_out_miliseconds = 5000;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     getHomeClick() {
         return $('#banner_event_link')[0];

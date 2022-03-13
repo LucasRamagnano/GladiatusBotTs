@@ -9,9 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class ControladorDeMisiones {
     constructor() {
-        this.prioridad = globalConfig.prioridades.misiones;
+        this.estado = tareaEstado.enEspera;
+        this.prioridad = datosContext.prioridades.misiones;
         this.tipo_class = 'ControladorDeMisiones';
         this.timed_out_miliseconds = 10000;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     cargarMisiones(tipo, id) {
         let misionesTemp = [];
@@ -102,7 +109,7 @@ class ControladorDeMisiones {
         return this;
     }
     seCancela() {
-        return !globalConfig.modulos.correrMisiones;
+        return !datosContext.modulos.correrMisiones;
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;

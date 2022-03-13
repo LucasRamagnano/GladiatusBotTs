@@ -1,8 +1,8 @@
 class LuchaExpedicion implements Tarea{
-    prioridad : tareaPrioridad = globalConfig.prioridades.expedicion;
+    prioridad : tareaPrioridad = datosContext.prioridades.expedicion;
     indiceLugar: number;
     indiceEnemigo: number;
-    estado: tareaEstado;
+    private estado: tareaEstado = tareaEstado.enEspera;
     tipo_class: string = 'LuchaExpedicion';
     timed_out_miliseconds = 5000;
 
@@ -12,7 +12,15 @@ class LuchaExpedicion implements Tarea{
         this.indiceEnemigo = indiceEnemigo;
         this.indiceLugar = indiceLugar;
     }
-    
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
+    }
+
     botonesHabilitados(): boolean {
         return $('#expedition_list button')[0] != undefined && !$('#expedition_list button')[0].classList.contains('disabled');
     }
@@ -67,8 +75,8 @@ class LuchaExpedicion implements Tarea{
     }
 
     seCancela(): boolean {
-        return !globalConfig.modulos.correrExpedicion ||
-                getPorcentajeVida()<globalConfig.personaje.porcentajeMinimoParaCurar;
+        return !datosContext.modulos.correrExpedicion ||
+                getPorcentajeVida()<datosContext.personaje.porcentajeMinimoParaCurar;
     }
 
     equals(t: Tarea): boolean {

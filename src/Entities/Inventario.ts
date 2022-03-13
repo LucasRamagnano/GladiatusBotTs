@@ -1,10 +1,18 @@
 class Inventario implements Tarea{
-    prioridad : tareaPrioridad = globalConfig.prioridades.curar;
-    estado: tareaEstado;
+    prioridad : tareaPrioridad = datosContext.prioridades.curar;
+    private estado: tareaEstado = tareaEstado.enEspera;
     tipo_class: string = 'Inventario';
     vecesABuscar: number = 10;
     timed_out_miliseconds = 10000;
     timeBlocked: number;
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
+    }
 
     getProximoClick(): Promise<HTMLElement> {
         if(this.estamosEnVisionGeneral() && estaApuntandoPersonaje()){
@@ -15,7 +23,6 @@ class Inventario implements Tarea{
             return Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]);
         }
     }
-
 
     async buscarComidaYCurar(): Promise<HTMLElement> {
         if(this.vecesABuscar <= 0) {
@@ -28,7 +35,7 @@ class Inventario implements Tarea{
             $('a.awesome-tabs[data-available*=\"true\"]')[this.proximaHoja()].click();
             this.vecesABuscar--;
             await this.wait(250);
-            this.buscarComidaYCurar();
+            return await this.buscarComidaYCurar();
         }else{
             this.curar();
             this.estado = tareaEstado.finalizada;
@@ -79,7 +86,7 @@ class Inventario implements Tarea{
     }
 
     seCancela(): boolean {
-        return getPorcentajeVida() > globalConfig.personaje.porcentajeMinimoParaCurar;
+        return getPorcentajeVida() > datosContext.personaje.porcentajeMinimoParaCurar;
     }
 
     equals(t: Tarea): boolean {

@@ -1,9 +1,9 @@
 class LuchaMazmorra implements Tarea {
-    prioridad : tareaPrioridad = globalConfig.prioridades.calabozo;
+    prioridad : tareaPrioridad = datosContext.prioridades.calabozo;
     dificultad : string;
     hacerBoss: boolean;
     indiceLugar : number;
-    estado: tareaEstado;
+    private estado: tareaEstado = tareaEstado.enEspera;
     tipo_class: string = 'LuchaMazmorra';
     timed_out_miliseconds = 5000;
 
@@ -13,6 +13,14 @@ class LuchaMazmorra implements Tarea {
         this.dificultad = dificultad;
         this.hacerBoss = hacerBoss;
         this.indiceLugar = indiceLugar;
+    }
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
     }
     
     noEstaIniciada(): boolean {
@@ -83,7 +91,7 @@ class LuchaMazmorra implements Tarea {
     }
 
     seCancela(): boolean {
-        return !globalConfig.modulos.correrMazmorra;
+        return !datosContext.modulos.correrMazmorra;
     }
 
     equals(t: Tarea): boolean {

@@ -1,11 +1,18 @@
 class LuchaPVP {
     constructor(lugar, selectorBoton) {
-        this.prioridad = globalConfig.prioridades.arena;
+        this.prioridad = datosContext.prioridades.arena;
+        this.estado = tareaEstado.enEspera;
         this.analizar_proxima = false;
         this.tipo_class = 'LuchaPVP';
         this.timed_out_miliseconds = 5000;
         this.lugar = lugar;
         this.selectorBoton = selectorBoton;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     estamosEnTuLugar() {
         return $('#arenaPage .awesome-tabs.current').html() === this.lugar;
@@ -28,7 +35,7 @@ class LuchaPVP {
             this.analizar_proxima = true;
             let resultado;
             if (this.sosArena()) {
-                if (estadoEjecucion.indiceArenaProximo.puntaje > 90) {
+                if (estadoEjecucion.indiceArenaProximo.puntaje > 130) {
                     let indiceToAttack;
                     $('#own2 a').toArray().forEach((e, index) => {
                         if (e.textContent.trim() == estadoEjecucion.indiceArenaProximo.nombre)
@@ -82,9 +89,9 @@ class LuchaPVP {
         return this;
     }
     seCancela() {
-        return (!globalConfig.modulos.correrArena && this.sosArena()) ||
-            (!globalConfig.modulos.correrTurma && !this.sosArena()) ||
-            (this.sosArena() && getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar);
+        return (!datosContext.modulos.correrArena && this.sosArena()) ||
+            (!datosContext.modulos.correrTurma && !this.sosArena()) ||
+            (this.sosArena() && getPorcentajeVida() < datosContext.personaje.porcentajeMinimoParaCurar);
     }
     sosArena() {
         return this.lugar == 'Arena Provinciarum' || this.lugar == 'Arena';

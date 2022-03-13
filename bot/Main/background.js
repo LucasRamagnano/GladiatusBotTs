@@ -13,17 +13,20 @@ let intentoTurma = 0;
 let intentosMaximosPvp = 3;
 let continuar_analizando = true;
 let oroJugador = 0;
-let datos;
+let datosBackground;
 let estadoEjecucionBjs = {
     indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
-    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0
+    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0, sh: ''
 };
-let resultadoSubasta = new SubastaResultado([], new Date(), []);
-let resultadoSubastaMercenarios = new SubastaResultado([], new Date(), []);
 let auctionItems = [];
 let teamTurmaPersonaje;
 let link_subasta;
 let lastTimeAlive;
+let ctrlSubastaGladiador = new ControladorSubastas(ControladorSubastas.getKeysSubasta(), 'gladiador');
+let ctrlSubastaMercenario = new ControladorSubastas(ControladorSubastas.getKeysSubasta(), 'mercenario');
+let ctrlSubastaFundicion = new ControladorSubastas(ControladorSubastas.getKeysFundicion(), 'fundicionGladiador');
+let ctrlSubastaFundicionMercenario = new ControladorSubastas(ControladorSubastas.getKeysFundicion(), 'fundicionMercenario');
+let ctrlSubastaGuerrerosMercenario = new ControladorSubastas(ControladorSubastas.getKeysTiposMercenario(), 'guerreroMercenario');
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 chrome.runtime.onInstalled.addListener(function () {
@@ -32,12 +35,35 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.runtime.onStartup.addListener(function () {
     loadLastConfig();
 });
+function initBackgroundProcces() {
+    let toSave = {};
+    toSave[Keys.TAREAS] = [];
+    toSave[Keys.TAREAS_BLOQUEADAS] = [];
+    toSave[Keys.TAREAS_CANCELADAS] = [];
+    toSave[Keys.TAREAS_FINALIZADAS] = [];
+    chrome.storage.local.set(toSave);
+    AuctionItem.loadAuctionItems().then((e) => {
+        auctionItems = e;
+        window.setTimeout(runAnalisisSubastaGladiador, 500);
+        window.setTimeout(runAnalisisSubastaMercenario, 500);
+        window.setTimeout(runAnalisisSubastaFundicion, 1500);
+        window.setTimeout(runAnalisisSubastaFundicionMercenario, 1500);
+        window.setTimeout(runAnalisisSubastaGuerreroMercenario, 2000);
+        window.setTimeout(runCheckPluginAlive, 1000);
+        window.setTimeout(runItemsAnalizer, 5000);
+    });
+    //window.setTimeout(runAnalisisFundicion,5000);
+    continuar_analizando = true;
+}
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.header) {
         case MensajeHeader.POP_UP_SEABRIO:
-            sendResponse({ datos: datos, tabIdActiva: tabId,
-                subasta: resultadoSubasta,
-                subastaMercenario: resultadoSubastaMercenarios,
+            sendResponse({ datos: datosBackground, tabIdActiva: tabId,
+                subasta: ctrlSubastaGladiador.lastResult,
+                subastaMercenario: ctrlSubastaMercenario.lastResult,
+                subastaFundicion: ctrlSubastaFundicion.lastResult,
+                subastaFundicionMercenario: ctrlSubastaFundicionMercenario.lastResult,
+                subastaGuerrerosMercenarios: ctrlSubastaGuerrerosMercenario.lastResult,
                 linkSubasta: link_subasta });
             break;
         case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
@@ -45,7 +71,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 lastTimeAlive = Date.now().valueOf();
                 sendResponse({
                     correr: true,
-                    configuracionToSend: datos,
+                    configuracionToSend: datosBackground,
                     header: MensajeHeader.RESPUESTA,
                     estadoEjecucion: estadoEjecucionBjs
                 });
@@ -68,21 +94,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             estadoEjecucionBjs.analisisInicial = true;
             if (tabId == -1) {
                 lastTimeAlive = Date.now().valueOf();
-                let toSave = {};
-                toSave[Keys.TAREAS] = [];
-                toSave[Keys.TAREAS_BLOQUEADAS] = [];
-                toSave[Keys.TAREAS_CANCELADAS] = [];
-                toSave[Keys.TAREAS_FINALIZADAS] = [];
-                chrome.storage.local.set(toSave);
-                AuctionItem.loadAuctionItems().then((e) => {
-                    auctionItems = e;
-                    window.setTimeout(runAnalisisSubastaGladiador, 1000);
-                    window.setTimeout(runAnalisisSubastaMercenario, 1000);
-                    window.setTimeout(runCheckPluginAlive, 1000);
-                    window.setTimeout(runItemsAnalizer, 5000);
-                });
-                //window.setTimeout(runAnalisisFundicion,5000);
-                continuar_analizando = true;
+                getSh().then(initBackgroundProcces);
             }
             break;
         case MensajeHeader.STOP:
@@ -90,28 +102,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             continuar_analizando = false;
             break;
         case MensajeHeader.ACTUALIZAR_EXPEDICION:
-            datos.expedicion.lugar = request.lugar;
-            datos.expedicion.enemigo = request.enemigo;
+            datosBackground.expedicion.lugar = request.lugar;
+            datosBackground.expedicion.enemigo = request.enemigo;
             let aGuardar = {};
-            aGuardar[Keys.CONFIGURACION] = datos;
+            aGuardar[Keys.CONFIGURACION] = datosBackground;
             chrome.storage.local.set(aGuardar);
             break;
         case MensajeHeader.LOG_IN:
             window.setTimeout(() => { actualizarTabId(); }, 400);
             break;
-        case MensajeHeader.RESULTADO_SUBASTA:
-            resultadoSubasta.busquedas = request.resultado.busquedas;
-            resultadoSubasta.busquedaFecha = request.resultado.busquedaFecha;
-            datos.modulos.analizarSubasta = false;
-            break;
-        case MensajeHeader.ANALIZAR_SUBASTA:
-            datos.modulos.analizarSubasta = true;
-            break;
         case MensajeHeader.ANALIZAR_ARENA:
-            //console.log(request.header);
             let a = request.link;
             let sh = a.split('=')[a.split('=').length - 1];
-            //console.log(sh);
             let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=2&sh=' + sh;
             analizarArena(link);
             break;
@@ -198,9 +200,9 @@ function guardarPaquete(paqueteComprado) {
     });
 }
 function actualizarConfig(nuevosDatos) {
-    datos = nuevosDatos;
+    datosBackground = nuevosDatos;
     let toSave = {};
-    toSave[Keys.CONFIGURACION] = datos;
+    toSave[Keys.CONFIGURACION] = datosBackground;
     chrome.storage.local.set(toSave);
 }
 function mandarDebug() {
@@ -224,12 +226,12 @@ function loadLastConfig() {
     chrome.storage.local.get(Keys.CONFIGURACION, (result) => {
         let lastConfig = result[Keys.CONFIGURACION];
         if (lastConfig == undefined) {
-            datos = backgroundConfig;
+            datosBackground = backgroundConfig;
             console.log('No hay datos guardados, se carga la info por primera vez.');
         }
         else {
-            datos = lastConfig;
-            datos.prioridades = backgroundConfig.prioridades;
+            datosBackground = lastConfig;
+            datosBackground.prioridades = backgroundConfig.prioridades;
             console.log('Se cargo la ultima info.! :)');
             console.log(lastConfig);
         }
@@ -283,10 +285,8 @@ function subastaAnalizar(linkAllItems, mercenario) {
             });
         }
         else {
-            let controladorSubasta = new ControladorSubastas();
-            let tdsItems = $(subastaHTML).find('#auction_table td');
-            resultadoSubastaLocal = controladorSubasta.analizarSubastaBackground(tdsItems, datos.personaje.nombre);
-            autoSubasta = controladorSubasta.apostarItemsWith(tdsItems, [], mercenario, copyAI);
+            resultadoSubastaLocal = yield ctrlSubastaGladiador.analizarSubastaBackground();
+            //autoSubasta = controladorSubasta.apostarItemsWith(tdsItems,[], mercenario, copyAI);
             if (autoSubasta.length > 0) {
                 auctionItems = auctionItems.concat(autoSubasta);
                 let oroPivote = oroActual;
@@ -365,11 +365,10 @@ function runAnalisisSubastaGladiador() {
     return __awaiter(this, void 0, void 0, function* () {
         let time = 1000;
         try {
-            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&sh=' + link_subasta.split('=')[link_subasta.split('=').length - 1];
-            let result = yield subastaAnalizar(link, false);
-            if (result.result != null)
-                resultadoSubasta = result.result;
-            time = result.time;
+            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&sh=' + estadoEjecucionBjs.sh;
+            ctrlSubastaGladiador.setLink(link);
+            yield ctrlSubastaGladiador.analizarSubastaBackground();
+            time = ctrlSubastaGladiador.timeToNextRecheck;
         }
         catch (e) {
             //console.log(e);
@@ -385,11 +384,10 @@ function runAnalisisSubastaMercenario() {
     return __awaiter(this, void 0, void 0, function* () {
         let time = 1000;
         try {
-            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&ttype=3&sh=' + link_subasta.split('=')[link_subasta.split('=').length - 1];
-            let result = yield subastaAnalizar(link, true);
-            if (result.result != null)
-                resultadoSubastaMercenarios = result.result;
-            time = result.time;
+            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&ttype=3&sh=' + estadoEjecucionBjs.sh;
+            ctrlSubastaMercenario.setLink(link);
+            yield ctrlSubastaMercenario.analizarSubastaBackground();
+            time = ctrlSubastaMercenario.timeToNextRecheck;
         }
         catch (e) {
             //console.log(e);
@@ -399,5 +397,80 @@ function runAnalisisSubastaMercenario() {
             if (continuar_analizando)
                 window.setTimeout(runAnalisisSubastaMercenario, time);
         }
+    });
+}
+function runAnalisisSubastaFundicion() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = 10000;
+        try {
+            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&sh=' + estadoEjecucionBjs.sh;
+            ctrlSubastaFundicion.setLink(link);
+            yield ctrlSubastaFundicion.analizarSubastaBackground();
+        }
+        catch (e) {
+            //console.log(e);
+            console.log("Error analizyng auction");
+            time = 1000;
+        }
+        finally {
+            if (continuar_analizando)
+                window.setTimeout(runAnalisisSubastaFundicion, time);
+        }
+    });
+}
+function runAnalisisSubastaFundicionMercenario() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = 10000;
+        try {
+            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=0&itemQuality=-1&ttype=3&sh=' + estadoEjecucionBjs.sh;
+            ctrlSubastaFundicionMercenario.setLink(link);
+            yield ctrlSubastaFundicionMercenario.analizarSubastaBackground();
+        }
+        catch (e) {
+            //console.log(e);
+            console.log("Error analizyng auction");
+            time = 1000;
+        }
+        finally {
+            if (continuar_analizando)
+                window.setTimeout(runAnalisisSubastaFundicionMercenario, time);
+        }
+    });
+}
+function runAnalisisSubastaGuerreroMercenario() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = 10000;
+        try {
+            let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=&itemLevel=00&itemType=15&itemQuality=-1&sh=' + estadoEjecucionBjs.sh;
+            ctrlSubastaGuerrerosMercenario.setLink(link);
+            yield ctrlSubastaGuerrerosMercenario.analizarSubastaBackground();
+        }
+        catch (e) {
+            //console.log(e);
+            console.log("Error analizyng auction");
+            time = 1000;
+        }
+        finally {
+            if (continuar_analizando)
+                window.setTimeout(runAnalisisSubastaGuerreroMercenario, time);
+        }
+    });
+}
+function getSh() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let promise = new Promise((resolve) => chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+            let url = tabs[0].url;
+            estadoEjecucionBjs.sh = url.split('=')[url.split('=').length - 1];
+            console.log(estadoEjecucionBjs.sh);
+            resolve(estadoEjecucionBjs.sh);
+        }));
+        return promise;
+    });
+}
+function analizarPaquetes() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=packages&f=0&fq=-1&qry=&sh=&page=1';
+        link = link.replace('sh=', 'sh=' + estadoEjecucionBjs.sh);
+        new AnalisisPaquetesBackground(link).analizarPaquetes();
     });
 }

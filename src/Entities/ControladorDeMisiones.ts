@@ -1,8 +1,16 @@
 class ControladorDeMisiones implements Tarea{
-    estado: tareaEstado;
-    prioridad : tareaPrioridad = globalConfig.prioridades.misiones;
+    private estado: tareaEstado = tareaEstado.enEspera;
+    prioridad : tareaPrioridad = datosContext.prioridades.misiones;
     tipo_class: string = 'ControladorDeMisiones';
     timed_out_miliseconds = 10000;
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
+    }
 
     cargarMisiones(tipo, id): Mision[] {
         let misionesTemp : Mision[] = [];
@@ -101,7 +109,7 @@ class ControladorDeMisiones implements Tarea{
     }
 
     seCancela(): boolean {
-        return !globalConfig.modulos.correrMisiones;
+        return !datosContext.modulos.correrMisiones;
     }
 
     equals(t: Tarea): boolean {

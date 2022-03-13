@@ -1,0 +1,201 @@
+<link rel="stylesheet" href="popup.css">
+<link rel="stylesheet" href="preview_subasta.css">
+<div id="prev_subasta" class="no_mostrar">
+    <div id="header_subasta">
+        <h3><a>Subasta Items</a></h3>
+        <button id="close_prev_subasta">X</button>
+    </div>
+    <div id="item_container_preview">
+    </div>
+</div>
+<div id="configuracion">
+    <div id="izquierda">
+        <div class="topic" id="expedicion_cnf" >
+            <input id='expedicion_cb' type="checkbox" value="expediciones_checkbox" tipo="expedicion"> <label>Expediciones</label>
+        </div>
+        <div  class="topic" id="mazmorra_cnf" >
+            <input id='mazmorra_cb' type="checkbox" value="mazmorra_checkbox" tipo="mazmorra"> <label>Mazmorra</label>
+        </div>
+        <div class="topic" id="arena_cnf" >
+            <input id='arena_cb' type="checkbox" value="arena_checkbox" tipo="arena"> <label>Arena</label>
+        </div>
+        <div  class="topic" id="turma_cnf" >
+            <input id='turma_cb' type="checkbox" value="turma_checkbox" tipo="turma"> <label>Turma</label>
+        </div>
+        <div  class="topic" id="misiones_cnf" >
+            <input id='misiones_cb' type="checkbox" value="misiones_checkbox" tipo="misiones"> <label>Misiones</label>
+        </div>
+        <div  class="topic" id="evento_cnf" >
+            <input id='evento_cb' type="checkbox" value="evento_checkbox" tipo="evento"> <label>Evento</label>
+        </div>
+        <div  class="topic" id="paquetes_cnf" >
+            <input id='paquetes_cb' type="checkbox" value="paquetes_checkbox" tipo="paquetes"> <label>Paquetes</label>
+        </div>
+        <div  class="topic" id="fundicion_cnf" >
+            <input id='fundicion_cb' type="checkbox" value="fundicion_checkbox" tipo="fundiciones"> <label>Fundicion</label>
+        </div>
+        <div class="centrador">
+            <button id="focus">Focus!</button>
+        </div>
+        <div class="centrador">
+            <button id="activar">Activar ak!</button>
+        </div>
+        <div class="centrador">
+            <button id="debugear">Debug</button>
+        </div>
+        <div class="centrador">
+            <button id="stop">STOP!</button>
+        </div>
+        <div class="centrador" id="tabId">
+            235
+        </div>
+    </div>
+
+    <div id="centro">
+        <div class="form_option">Name:
+            <div class="config_form">
+                <input type="text" id="nombre_input">
+            </div>
+        </div>
+        <div class="form_option">Oro paquete:
+            <div class="config_form">
+                <input type="number" id="oro_input"  min="0" step="1000">
+            </div>
+        </div>
+        <div class="form_option">HealMe (%)
+            <div class="config_form">
+                <input type="number" id="curacion_input" min="10" max="90" step="5">
+            </div>
+        </div>
+        <div class="separador"></div>
+        <div class="form_option">Numero Expedicion:
+            <div class="config_form">
+                <input type="number" id="expedicion_input" step="1" min="1" max="9">
+            </div>
+        </div>
+        <div class="form_option">Enemigo:
+            <div class="config_form">
+                <input type="number" id="enemigo_input" step="1" min="1" max="4">
+            </div>
+        </div>
+        <div class="separador"></div>
+        <div class="form_option">Calabozo:
+            <div class="config_form">
+                <input type="number" id="calabazo_input" step="1" min="1" max="9">
+            </div>
+        </div>
+        <div class="form_option">Dificultad:
+            <div class="config_form">
+                <select id="dificultad_calabozo_input">
+                    <option value="Normal" selected>Normal</option>
+                    <option value="Avanzado">Avanzado</option>
+                </select>
+            </div>
+        </div>
+        <div class="form_option">Atacar Boss?:
+            <div class="config_form">
+                <select id="vencer_boss_input">
+                    <option value="true">Si</option>
+                    <option value="false" selected>No</option>
+                </select>
+            </div>
+        </div>
+        <div class="separador"></div>
+        <div class="form_option">Arena Provinciarum?
+            <div class="config_form">
+                <select id="tipo_arena_input">
+                    <option value="Arena" selected>No</option>
+                    <option value="Arena Provinciarum">Si</option>
+                </select>
+            </div>
+        </div>
+        <div class="form_option">Circo Provinciarum?
+            <div class="config_form">
+                <select id="tipo_circo_input">
+                    <option value="Circo Turma" selected>No</option>
+                    <option value="Circo Provinciarum">Si</option>
+                </select>
+            </div>
+        </div>
+        <div class="centrador">
+            <button id="update">Actualizar</button>
+            <span id="update_ok">OK!</span>
+            <span id="update_error">ERROR!</span>
+        </div>
+        <div class="centrador boludo_warning">No chequeo nada, no le erres!!!</div>
+    </div>
+    <div id="derecha">
+        <div id="auction_title">
+            <h5>Auto Subasta Items</h5>
+        </div>
+        <div id="item_container">
+            <div class="item">
+                <p class="item_name">No items selected</p>
+                <p class="extra_info">NS:XX|TG:XXXXXX</p>
+            </div>
+            <div class="item">
+                <p class="item_name">No items selected</p>
+                <p class="extra_info">NS:XX|TG:XXXXXX</p>
+            </div>
+            <div class="item">
+                <p class="item_name">No items selected</p>
+                <p class="extra_info">NS:XX|TG:XXXXXX</p>
+            </div>
+            <div class="item">
+                <p class="item_name">No items selected</p>
+                <p class="extra_info">NS:XX|TG:XXXXXX</p>
+            </div>
+            <div class="item">
+                <p class="item_name">No items selected</p>
+                <p class="extra_info">NS:XX|TG:XXXXXX</p>
+            </div>
+        </div>
+    </div>
+    <div id="subasta" class="subasta_ouput">
+        <h3 >Subasta Galdiadores</h3>
+        <div class="subasta_subinfo">
+            <button class="analizar_subasta">Analizar</button>
+        </div>
+    </div>
+    <div id="subasta_mercenario" class="subasta_ouput">
+        <h3>Subasta Mercenarios</h3>
+        <div class="subasta_subinfo">
+            <button class="analizar_subasta">Analizar</button>
+        </div>
+    </div>
+    <div id="subasta_fundicion" class="subasta_ouput">
+        <h3>Subasta fundicion</h3>
+        <div class="subasta_subinfo">
+            <button class="analizar_subasta">Analizar</button>
+        </div>
+    </div>
+    <div id="subasta_fundicion_mercenario" class="subasta_ouput">
+        <h3>Subasta fundicion mercenario</h3>
+        <div class="subasta_subinfo">
+            <button class="analizar_subasta">Analizar</button>
+        </div>
+    </div>
+    <div id="subasta_guerrero_mercenario" class="subasta_ouput">
+        <h3>Subasta guerreros mercenario</h3>
+        <div class="subasta_subinfo">
+            <button class="analizar_subasta">Analizar</button>
+        </div>
+    </div>
+    <div id="subasta_por_vos">
+        <h3>Tus Subastas</h3>
+        <div class="subasta_subinfo">
+            <button class="analizar_subasta">Analizar</button>
+        </div>
+    </div>
+</div>
+<!--
+
+-->
+<script src="../LibreriasExternas/JQuery/jquery-3.5.1.min.js"></script>
+<script src="../Entities/KeysEnum.js"></script>
+<script src="../Entities/Tipos.js"></script>
+<script src="../Entities/Adapters.js"></script>
+<script src="../Entities/Mensajes.js"></script>
+<script src="../Entities/Conversor.js"></script>
+<script src="../Entities/AuctionItem.js"></script>
+<script src="configuracion_popup.js"></script>

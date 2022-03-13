@@ -1,7 +1,7 @@
-let globalConfig: ConfiguracionStruct = backgroundConfig;
+let datosContext: ConfiguracionStruct = backgroundConfig;
 let estadoEjecucion: EjecucionEstado = {
 	indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
-	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999}, analisisInicial : false, lugarFundicionDisponible: 0};
+	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999}, analisisInicial : false, lugarFundicionDisponible: 0, sh:''};
 let relojes = {
 	relojArena: new Reloj('cooldown_bar_text_arena'),
 	relojTurma: new Reloj('cooldown_bar_text_ct'),
@@ -54,10 +54,10 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 		tareasCtrl.appendTarea(new Inventario());
 	}
 	if(sePuedeCorrerExpedicion()) {
-		tareasCtrl.appendTarea(new LuchaExpedicion(globalConfig.expedicion.lugarNu, globalConfig.expedicion.enemigoNu-1));
+		tareasCtrl.appendTarea(new LuchaExpedicion(datosContext.expedicion.lugarNu, datosContext.expedicion.enemigoNu-1));
 	}
 	if(sePuedeCorrerMazmorra()) {
-		tareasCtrl.appendTarea(new LuchaMazmorra(globalConfig.mazmorra.dificultad, globalConfig.mazmorra.vencerBoss, globalConfig.mazmorra.calabozo));
+		tareasCtrl.appendTarea(new LuchaMazmorra(datosContext.mazmorra.dificultad, datosContext.mazmorra.vencerBoss, datosContext.mazmorra.calabozo));
 	}
 	if(sePuedeCorrerFundicion()) {
 		let tareaEstado : fundicionEstados = fundicionEstados.AGARRAR_ITEMS;
@@ -70,77 +70,70 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 		tareasCtrl.appendTarea(new LuchaEvento());
 	}
 	if(sePuedeCorrerArena()) {
-		tareasCtrl.appendTarea(new LuchaPVP(globalConfig.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
+		tareasCtrl.appendTarea(new LuchaPVP(datosContext.arenaTipoInput, '#cooldown_bar_arena .cooldown_bar_link'));
 	}
 	if(sePuedeCorrerTurma()) {
-		tareasCtrl.appendTarea(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
+		tareasCtrl.appendTarea(new LuchaPVP(datosContext.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link'));
 	}
 	if(hacerMisiones()) {
 		tareasCtrl.appendTarea(new ControladorDeMisiones());
 	}
-	if(analizarSubasta()) {
-		tareasCtrl.appendTarea(new ControladorSubastas());
-	}
 	return tareasCtrl;
 }
 
-function analizarSubasta() {
-	return globalConfig.modulos.analizarSubasta &&  !tareasControlador.tiene(new ControladorSubastas())
-}
-
 function hayQueCurar() {
-	return getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar &&
+	return getPorcentajeVida() < datosContext.personaje.porcentajeMinimoParaCurar &&
 			!tareasControlador.tiene(new Inventario())
 }
 
 function hacerMisiones() {
-	return globalConfig.modulos.correrMisiones &&  !tareasControlador.tiene(new ControladorDeMisiones())
+	return datosContext.modulos.correrMisiones &&  !tareasControlador.tiene(new ControladorDeMisiones())
 }
 
 function hacerPaquete() {
-	let hayOroParaPaquete = getOroActualFB() > globalConfig.personaje.oroBaseParaPaquete;
-	return globalConfig.modulos.correrPaquetes &&  hayOroParaPaquete &&
+	let hayOroParaPaquete = getOroActualFB() > datosContext.personaje.oroBaseParaPaquete;
+	return datosContext.modulos.correrPaquetes &&  hayOroParaPaquete &&
 			!tareasControlador.tiene(new ControladorDePaquetes())
 }
 
 function sePuedeCorrerExpedicion(): boolean {
-	return globalConfig.modulos.correrExpedicion &&
+	return datosContext.modulos.correrExpedicion &&
 		!relojes.relojExpediciones.estasEnCooldDown() &&
-		getPorcentajeVida()>=globalConfig.personaje.porcentajeMinimoParaCurar &&
+		getPorcentajeVida()>=datosContext.personaje.porcentajeMinimoParaCurar &&
 		!tareasControlador.tiene(new LuchaExpedicion())
 }
 
 function sePuedeCorrerArena(): boolean {
-	return globalConfig.modulos.correrArena &&
+	return datosContext.modulos.correrArena &&
 		!relojes.relojArena.estasEnCooldDown() &&
-		getPorcentajeVida()>=globalConfig.personaje.porcentajeMinimoParaCurar &&
-		!tareasControlador.tiene(new LuchaPVP(globalConfig.arenaTipoInput,'#cooldown_bar_arena .cooldown_bar_link')) &&
+		getPorcentajeVida()>=datosContext.personaje.porcentajeMinimoParaCurar &&
+		!tareasControlador.tiene(new LuchaPVP(datosContext.arenaTipoInput,'#cooldown_bar_arena .cooldown_bar_link')) &&
 		estadoEjecucion.indiceArenaProximo.puntaje != 999999
 }
 
 function sePuedeCorrerMazmorra(): boolean {
-	return globalConfig.modulos.correrMazmorra &&
+	return datosContext.modulos.correrMazmorra &&
 			!relojes.relojMazmorras.estasEnCooldDown() &&
 			!tareasControlador.tiene(new LuchaMazmorra())
 }
 
 function sePuedeCorrerTurma(): boolean {
-	return globalConfig.modulos.correrTurma  &&
+	return datosContext.modulos.correrTurma  &&
 		!relojes.relojTurma.estasEnCooldDown() &&
-		!tareasControlador.tiene(new LuchaPVP(globalConfig.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link')) &&
+		!tareasControlador.tiene(new LuchaPVP(datosContext.circoTipoInput,'#cooldown_bar_ct .cooldown_bar_link')) &&
 		estadoEjecucion.indiceTurmaProximo.puntaje != 999999
 }
 
 function sePuedeCorrerFundicion(): boolean {
 	console.log('Lugar en fundicion: ' + lugarEnFundicion());
 	let ldispo = lugarEnFundicion();
-	return globalConfig.modulos.correrFundicion  &&
+	return datosContext.modulos.correrFundicion  &&
 		ldispo > 0 &&
 		!tareasControlador.tiene(new ControladorDeFundicion())
 }
 
 function sePuedeCorrerEvento(): boolean {
-	return globalConfig.modulos.correrEvento  &&
+	return datosContext.modulos.correrEvento  &&
 		!LuchaEvento.estasEnCooldown() &&
 		!tareasControlador.tiene(new LuchaEvento())
 }
@@ -154,7 +147,7 @@ function lugarEnFundicion() {
 	if($('.advanced_menu_side_icon').length <= 1) { // todo check dis
 		disponibles =  6;
 	} else {
-		disponibles = 6 - $('.advanced_menu_side_icon')[1].getAttribute('data-tooltip').replace(/\[/g,'').replace(/\]/g,'').trim().split('"#DDD","#DDD"').filter(e => e.includes(':')).length;
+		disponibles = 6 - $('.advanced_menu_side_icon')[1].getAttribute('data-tooltip').split('Herrer')[0].replace(/\[/g,'').replace(/\]/g,'').trim().split('"#DDD","#DDD"').filter(e => e.includes(':')).length;
 	}
 	return disponibles;
 }
@@ -199,7 +192,7 @@ window.onload = function() {
 					debugMostrarPaquetes();
 					break;
 				case MensajeHeader.ACTUALIZAR:
-					globalConfig = mensaje.globalConfig;
+					datosContext = mensaje.globalConfig;
 					break;
 				case MensajeHeader.IR_SUBASTA_ITEM:
 					window.open(mensaje.link,'_self');
@@ -209,9 +202,13 @@ window.onload = function() {
 	
 };
 
+function estamosEnPaquetes() {
+	return $('#packagesPage').length!=0;
+}
+
 function injectBot(ans: BotInjectMensaje) {
 	if(ans.correr) {
-		globalConfig = ans.configuracionToSend;
+		datosContext = ans.configuracionToSend;
 		estadoEjecucion = ans.estadoEjecucion;
 		window.setTimeout(mandarMensajeBackground,100, {header:MensajeHeader.LINK_SUBASTA, subasta_link: (<any>$('#submenu1 a').toArray().find(e=>e.textContent == 'Edificio de subastas')).href});
 		window.setTimeout(tomarDecision,200);
@@ -221,6 +218,9 @@ function injectBot(ans: BotInjectMensaje) {
 		}
 		if (estamosEnOverview()) {
 			injectItemComparison();
+		}
+		if (estamosEnPaquetes()){
+			injectPcktWarning();
 		}
 	}
 }
@@ -261,13 +261,13 @@ function actualizarOroFB() {
 
 function initEstadisticasGenerales() {
 	let controladorPaquetes: ControladorDePaquetes = tareasControlador.getControladorPaquete();
-	$('#nombre')[0].innerText = "Nombre: " + globalConfig.personaje.nombre;
+	$('#nombre')[0].innerText = "Nombre: " + datosContext.personaje.nombre;
 	$('#oro')[0].innerText = "Oro: " + getOroActualFB();
 	$('#estado_paquete span')[0].innerText = controladorPaquetes === undefined ? 'Nada armandose' : controladorPaquetes.estadoPaquete;
-	$('#vida_para_curar')[0].innerText = "VidaToHeal: " + globalConfig.personaje.porcentajeMinimoParaCurar + '%';
-	$('#oro_para_paquete')[0].innerText = 'Paquete despues de ' + globalConfig.personaje.oroBaseParaPaquete;
-	$('#lugar_expedicion')[0].innerText = globalConfig.expedicion.lugar;
-	$('#enemigo_expedicion')[0].innerText = globalConfig.expedicion.enemigo;
+	$('#vida_para_curar')[0].innerText = "VidaToHeal: " + datosContext.personaje.porcentajeMinimoParaCurar + '%';
+	$('#oro_para_paquete')[0].innerText = 'Paquete despues de ' + datosContext.personaje.oroBaseParaPaquete;
+	$('#lugar_expedicion')[0].innerText = datosContext.expedicion.lugar;
+	$('#enemigo_expedicion')[0].innerText = datosContext.expedicion.enemigo;
 
 	let paquete = controladorPaquetes === undefined ? null : controladorPaquetes.paqueteComprado;
 	if(paquete != null) {
@@ -327,6 +327,31 @@ function injectItemComparison() {
 		);
 
 	});
+}
+
+async function injectPcktWarning() {
+	let path = chrome.extension.getURL('Recursos/Paquete/paquete_warning.css');
+	$('head').append($('<link>')
+		.attr("rel","stylesheet")
+		.attr("type","text/css")
+		.attr("href", path));
+	let wordWarning = ['antonius','lucius'];
+	wordWarning = wordWarning.concat(ControladorDeFundicion.getFilters().filter(e=>e.query.length>0).map(e=>e.query));
+	let trysToDo = 15;
+	while($('.packageItem:not(.yaestanalizado)').length!=0 && trysToDo>0) {
+		$('.packageItem:not(.yaestanalizado)').each((e, v) => {
+
+			try {
+				if($(v).find('.ui-draggable')[0].hasAttribute('data-toolip'))
+					v.classList.add('yaestanalizado');
+				if (ControladorDeFundicion.esItemToWarn($(v).find('.ui-draggable')[0]))
+					v.classList.add('warning')
+			} catch (e) {
+			}
+		})
+		await wait(200);
+		trysToDo--;
+	}
 }
 
 function injectItemComparisonEstadisticas(elemToSee) {

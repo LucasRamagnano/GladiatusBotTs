@@ -9,30 +9,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="added reload tab from background when there is no action for 3 minutes.">
+      <change afterPath="$PROJECT_DIR$/bot/Entities/AnalisisPaquetesBackground.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Entities/SubastaEstado.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/PopUp/configuracion.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/PopUp/preview_subasta.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot/Recursos/Paquete/paquete_warning.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/AnalisisPaquetesBackground.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/SubastaEstado.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Builder/PaqueteBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Builder/PaqueteBuilder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeMisiones.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorSubastas.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Inventario.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Inventario.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ItemsCategorizador.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ItemsCategorizador.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaExpedicion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Mision.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mision.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Tipos.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Tipos.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Builder/PaqueteBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Builder/PaqueteBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/popup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/ItemsComparison/item_container.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ItemsComparison/item_container.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeMisiones.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorSubastas.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Inventario.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Inventario.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ItemsCategorizador.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ItemsCategorizador.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaExpedicion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Mision.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mision.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PopUp/popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/popup.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,9 +69,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="CSS File" />
         <option value="TypeScript File" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -193,6 +220,18 @@
       <workItem from="1645842777929" duration="217000" />
       <workItem from="1645843027183" duration="13255000" />
       <workItem from="1645971866085" duration="4976000" />
+      <workItem from="1646108181623" duration="25557000" />
+      <workItem from="1646322296125" duration="1498000" />
+      <workItem from="1646334733279" duration="33186000" />
+      <workItem from="1646582453644" duration="7233000" />
+      <workItem from="1646593400372" duration="7179000" />
+      <workItem from="1646601332204" duration="6738000" />
+      <workItem from="1646667369857" duration="6985000" />
+      <workItem from="1646752473739" duration="12903000" />
+      <workItem from="1646830820397" duration="12998000" />
+      <workItem from="1646876769223" duration="777000" />
+      <workItem from="1646942302402" duration="738000" />
+      <workItem from="1647034046862" duration="2128000" />
     </task>
     <task id="LOCAL-00001" summary="too many changes v2">
       <created>1645717461017</created>

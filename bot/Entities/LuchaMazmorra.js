@@ -1,11 +1,18 @@
 class LuchaMazmorra {
     constructor(dificultad, hacerBoss, indiceLugar) {
-        this.prioridad = globalConfig.prioridades.calabozo;
+        this.prioridad = datosContext.prioridades.calabozo;
+        this.estado = tareaEstado.enEspera;
         this.tipo_class = 'LuchaMazmorra';
         this.timed_out_miliseconds = 5000;
         this.dificultad = dificultad;
         this.hacerBoss = hacerBoss;
         this.indiceLugar = indiceLugar;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     noEstaIniciada() {
         return $('input[value*=\"' + this.dificultad + '\"]').length == 1;
@@ -68,7 +75,7 @@ class LuchaMazmorra {
         return this;
     }
     seCancela() {
-        return !globalConfig.modulos.correrMazmorra;
+        return !datosContext.modulos.correrMazmorra;
     }
     equals(t) {
         return this.tipo_class == t.tipo_class;

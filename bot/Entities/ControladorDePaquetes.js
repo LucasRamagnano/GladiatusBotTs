@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class ControladorDePaquetes {
     constructor() {
-        this.prioridad = globalConfig.prioridades.paquete;
+        this.prioridad = datosContext.prioridades.paquete;
         this.estadoPaquete = paquete_estados.COMPRAR;
+        this.estado = tareaEstado.enEspera;
         this.tipo_class = 'ControladorDePaquetes';
         this.intentosPaquetes = 0;
         this.timed_out_miliseconds = 30000;
@@ -27,8 +28,12 @@ class ControladorDePaquetes {
         this.timeBlocked = guardado.timeBlocked;
         return this;
     }
-    /*this.paqueteComprado = new Paquete("[[[\"Madera\",\"white\"],[\"Valor 36 <div class=\\\"",111,
-                                        "JTU",5000,1,null);*/
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
+    }
     getOroActual() {
         let oroHtml = $('#sstat_gold_val').html();
         return Number.parseInt(oroHtml.replace(/\./g, ''));
@@ -60,7 +65,7 @@ class ControladorDePaquetes {
         $('#market_item_table tr').each(function () {
             if ($(this).find('th').length == 0) {
                 let paquete = crearPackDesdeTr(this);
-                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || oroActual - paquete.precio < oroToKeep || paquete.origen === globalConfig.personaje.nombre) {
+                if (paquete.precio > oroActual || paquete.precio < minPrecioPaquete || oroActual - paquete.precio < oroToKeep || paquete.origen === datosContext.personaje.nombre) {
                     //nada
                 }
                 else if (mejorPaquete === null && paquete.nivel == 1) {
@@ -248,7 +253,7 @@ class ControladorDePaquetes {
     getProximoClick() {
         return __awaiter(this, void 0, void 0, function* () {
             let resultado;
-            if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > globalConfig.personaje.oroBaseParaPaquete) {
+            if (this.estadoPaquete === paquete_estados.COMPRAR && this.getOroActual() > datosContext.personaje.oroBaseParaPaquete) {
                 this.intentosPaquetes = 0;
                 resultado = this.comprar();
             }
@@ -280,7 +285,8 @@ class ControladorDePaquetes {
         });
     }
     seCancela() {
-        return !globalConfig.modulos.correrPaquetes;
+        return !datosContext.modulos.correrPaquetes ||
+            (this.getOroActual() < datosContext.personaje.oroBaseParaPaquete && this.estadoPaquete === paquete_estados.COMPRAR);
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;

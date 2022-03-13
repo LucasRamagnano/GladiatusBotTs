@@ -7,7 +7,8 @@ class Guardable {
 class AuctionKey {
     constructor(key) {
         this.contador = 0;
-        this.levelMaximo = 0;
+        this.maxLevel = 0;
+        this.statItems = [];
         this.key = key;
     }
     encontrado() {
@@ -15,21 +16,44 @@ class AuctionKey {
     }
     analizarNivel(nuevoLevel) {
         try {
-            if (parseInt(nuevoLevel) > this.levelMaximo) {
-                this.levelMaximo = parseInt(nuevoLevel);
+            if (parseInt(nuevoLevel) > this.maxLevel) {
+                this.maxLevel = parseInt(nuevoLevel);
             }
         }
         catch (e) {
             //console.log(e);
         }
     }
+    getMaxColor() {
+        if (this.statItems.filter(e => e.getColor() == 'gold').length > 0) {
+            return 'gold';
+        }
+        if (this.statItems.filter(e => e.getColor() == 'purple').length > 0) {
+            return 'purple';
+        }
+        if (this.statItems.filter(e => e.getColor() == 'blue').length > 0) {
+            return 'blue';
+        }
+        if (this.statItems.filter(e => e.getColor() == 'green').length > 0) {
+            return 'green';
+        }
+    }
+    //let colors:{code:string,color:string,index:number}[] = [{code:'lime',color:'green',index:0}, {code:'#5159F7',color:'blue',index:0}, {code:'#E303E0',color:'purple',index:0}, {code:'#FF6A00',color:'gold',index:0}];
+    reset() {
+        this.contador = 0;
+        this.maxLevel = 0;
+        this.statItems = [];
+    }
 }
 class SubastaResultado {
-    constructor(busquedas, busquedaFecha, tusSubastas) {
+    constructor(busquedas, busquedaFecha, tusSubastas, desc) {
         this.tusSubastas = [];
+        this.totalItems = 0;
+        this.tipo_class = 'SubastaResultado';
         this.busquedas = busquedas;
         this.busquedaFecha = busquedaFecha;
         this.tusSubastas = tusSubastas;
+        this.desc = desc;
     }
     sortResultado(e1, e2) {
         let numberOfWordE1 = Math.min(e1.key.split(' ').length, 2);
@@ -56,9 +80,11 @@ class SubastaResultado {
         return this.busquedas.sort((e1, e2) => this.sortResultado(e1, e2)).map((e) => {
             let lastWord = e.key.split(' ').pop();
             let a = document.createElement('a');
-            a.textContent = e.key + ': ' + e.contador + ' (' + e.levelMaximo + ')';
+            a.textContent = e.key + ': ' + e.contador + ' (' + e.maxLevel + ')';
             a.target = '_self';
             e.contador > 0 ? a.classList.add("hay-items") : a.classList.add("vacio");
+            a.setAttribute('data-tipo-subasta', this.desc);
+            a.classList.add(e.getMaxColor());
             if (!isMercenario)
                 a.href = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=auction&qry=' + encodeURIComponent(lastWord) + '&itemLevel=00&itemType=0&itemQuality=-1&sh=' + link_subasta.split('=')[link_subasta.split('=').length - 1];
             else
@@ -81,6 +107,19 @@ class SubastaResultado {
         let diferenciaSegundos = Math.floor((diffMilliseconds / 1000));
         p.textContent = 'Actualizado hace ' + diferenciaSegundos + ' segundos';
         return p;
+    }
+    fromJsonString(guardado) {
+        this.busquedas = guardado.busquedas.map(e => {
+            let tempKey = new AuctionKey(e.key);
+            tempKey.maxLevel = e.maxLevel;
+            tempKey.contador = e.contador;
+            tempKey.statItems = e.statItems.map(st => new StatsItems(st.rawData));
+            return tempKey;
+        });
+        this.busquedaFecha = new Date(guardado.busquedaFecha);
+        this.tusSubastas = guardado.tusSubastas;
+        this.desc = guardado.desc;
+        return this;
     }
 }
 class Consola {
@@ -115,6 +154,7 @@ class ItemsPlayers {
     }
 }
 class StatsItems {
+    //color:string;
     constructor(rawData) {
         this.stasToInclude = ['daño', 'armadura', 'salud', 'fuerza', 'habilidad', 'agilidad', 'constitución', 'carisma', 'inteligencia', 'ataque',
             'curación', 'bloqueo', 'endurecimiento', 'amenaza', 'nivel'];
@@ -122,6 +162,8 @@ class StatsItems {
         this.rawData = rawData;
     }
     procesarRawData() {
+        if (this.statsFinales.length != 0)
+            return;
         let estadisticasSinProcesar = this.rawData.split('"');
         estadisticasSinProcesar = estadisticasSinProcesar.map(e => {
             try {
@@ -134,13 +176,17 @@ class StatsItems {
         let name = estadisticasSinProcesar[1];
         let estadisticas = estadisticasSinProcesar.filter(elem => this.stasToInclude.some(estat => elem.toLocaleLowerCase().includes(estat)));
         this.statsFinales = [name].concat(estadisticas);
+        let ix = this.statsFinales.findIndex((e) => e.includes('Nivel'));
+        this.statsFinales = this.statsFinales.slice(0, ix + 1);
     }
     getMostrableElement() {
         try {
             this.procesarRawData();
-            return this.statsFinales.map((e) => {
+            return this.statsFinales.map((e, ix) => {
                 let p = document.createElement('p');
                 p.textContent = e;
+                if (ix == 0)
+                    p.classList.add(this.getColor());
                 return p;
             });
         }
@@ -149,5 +195,16 @@ class StatsItems {
             p.textContent = e;
             return [p];
         }
+    }
+    getLevel() {
+        this.procesarRawData();
+        return parseInt(this.statsFinales[this.statsFinales.length - 1].replace('Nivel', '').trim());
+    }
+    getColor() {
+        let colors = [{ code: 'lime', color: 'green', index: 0 }, { code: '#5159F7', color: 'blue', index: 0 }, { code: '#E303E0', color: 'purple', index: 0 }, { code: '#FF6A00', color: 'gold', index: 0 }];
+        let colorPick = colors.filter(e => this.rawData.includes(e.code))
+            .map(e => { e.index = this.rawData.indexOf(e.code); return e; })
+            .sort((e1, e2) => e1.index > e2.index ? 1 : -1)[0];
+        return colorPick.color;
     }
 }

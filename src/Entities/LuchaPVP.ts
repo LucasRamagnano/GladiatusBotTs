@@ -1,8 +1,8 @@
 class LuchaPVP implements Tarea {
-    prioridad : tareaPrioridad = globalConfig.prioridades.arena;
+    prioridad : tareaPrioridad = datosContext.prioridades.arena;
     lugar: string;
     selectorBoton: string;
-    estado: tareaEstado;
+    private estado: tareaEstado = tareaEstado.enEspera;
     analizar_proxima: boolean = false;
     tipo_class: string = 'LuchaPVP';
     timed_out_miliseconds = 5000;
@@ -12,6 +12,14 @@ class LuchaPVP implements Tarea {
     constructor(lugar?: string, selectorBoton?: string) {
         this.lugar = lugar;
         this.selectorBoton = selectorBoton;
+    }
+
+    changeEstado(newEstado: tareaEstado): void {
+        this.estado = newEstado;
+    }
+
+    getEstado(): tareaEstado {
+        return this.estado;
     }
 
     estamosEnTuLugar():boolean {
@@ -37,7 +45,7 @@ class LuchaPVP implements Tarea {
             this.analizar_proxima = true;
             let resultado;
             if(this.sosArena()) {
-                if(estadoEjecucion.indiceArenaProximo.puntaje > 90) {
+                if(estadoEjecucion.indiceArenaProximo.puntaje > 130) {
                     let indiceToAttack;
                     $('#own2 a').toArray().forEach((e, index)=>{
                         if(e.textContent.trim() == estadoEjecucion.indiceArenaProximo.nombre)
@@ -90,9 +98,9 @@ class LuchaPVP implements Tarea {
     }
 
     seCancela(): boolean {
-        return (!globalConfig.modulos.correrArena && this.sosArena()) ||
-                (!globalConfig.modulos.correrTurma && !this.sosArena()) ||
-                (this.sosArena() && getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar);
+        return (!datosContext.modulos.correrArena && this.sosArena()) ||
+                (!datosContext.modulos.correrTurma && !this.sosArena()) ||
+                (this.sosArena() && getPorcentajeVida() < datosContext.personaje.porcentajeMinimoParaCurar);
     }
 
     sosArena(): boolean {

@@ -1,10 +1,17 @@
 class LuchaExpedicion {
     constructor(indiceLugar, indiceEnemigo) {
-        this.prioridad = globalConfig.prioridades.expedicion;
+        this.prioridad = datosContext.prioridades.expedicion;
+        this.estado = tareaEstado.enEspera;
         this.tipo_class = 'LuchaExpedicion';
         this.timed_out_miliseconds = 5000;
         this.indiceEnemigo = indiceEnemigo;
         this.indiceLugar = indiceLugar;
+    }
+    changeEstado(newEstado) {
+        this.estado = newEstado;
+    }
+    getEstado() {
+        return this.estado;
     }
     botonesHabilitados() {
         return $('#expedition_list button')[0] != undefined && !$('#expedition_list button')[0].classList.contains('disabled');
@@ -54,8 +61,8 @@ class LuchaExpedicion {
         return this;
     }
     seCancela() {
-        return !globalConfig.modulos.correrExpedicion ||
-            getPorcentajeVida() < globalConfig.personaje.porcentajeMinimoParaCurar;
+        return !datosContext.modulos.correrExpedicion ||
+            getPorcentajeVida() < datosContext.personaje.porcentajeMinimoParaCurar;
     }
     equals(t) {
         return t.tipo_class == this.tipo_class;

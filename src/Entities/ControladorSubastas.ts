@@ -1,115 +1,58 @@
-class ControladorSubastas implements Tarea{
-    prioridad : tareaPrioridad = tareaPrioridad.BAJA;
-    link: string;
-    tds: JQuery<HTMLElement>;
+class ControladorSubastas extends Guardable{
+    private link: string;
     aBuscar: AuctionKey[];
-    estado: tareaEstado;
+    lastEstado: SubastaEstado = SubastaEstado.UNKNOWN;
+    lastResult: SubastaResultado;
     tipo_class: string = 'ControladorSubastas';
     timed_out_miliseconds = 5000;
+    subastadosPorVos: string[] = [];
+    timeToNextRecheck = 500;
+    descSubasta:string;
 
-    equals(t: Tarea): boolean {
-        return t.tipo_class == this.tipo_class;
-    }
 
     fromJsonString(guardado: any): Guardable {
-        this.estado = guardado.estado;
         this.link = guardado.link;
         return this;
     }
 
-    puedeDesbloquearse(): boolean {
-        return true;
+    constructor()
+    constructor(aBuscar: AuctionKey[], descSubasta)
+    constructor(aBuscar?: AuctionKey[], descSubasta?: string) {
+        super();
+        this.descSubasta = descSubasta;
+        this.aBuscar = aBuscar;
+        this.lastResult = new SubastaResultado([],new Date(),[], this.descSubasta);
     }
 
-    getProximoClick(): Promise<HTMLElement> {
-        let aClickear = this.analizarSubasta();
-        return aClickear;
+
+    setLink(link: string) {
+        this.link = link;
     }
 
-    seCancela(): boolean {
-        return false;
+    resetResult() {
+        this.aBuscar.forEach(e=>e.reset());
+        this.subastadosPorVos = [];
     }
 
-    constructor() {
-        //this.link =  (<any>$('#submenu1 a').toArray().find(e=>e.textContent == 'Edificio de subastas')).href
-        this.aBuscar = [new AuctionKey('Ichorus'),new AuctionKey('Antonius'), new AuctionKey('Táliths'),
-                        new AuctionKey('Decimus'), new AuctionKey('Lucius'), new AuctionKey('Gaius'),
-                        new AuctionKey('Titus'), new AuctionKey('Mateus'),new AuctionKey('Sextus'),
-                        new AuctionKey('de la delicadeza'),  new AuctionKey('de asesinato'),new AuctionKey('del Dragon'),
-                        new AuctionKey('de la agresión'), new AuctionKey('la eliminación'), new AuctionKey('de la Tierra'),
-                        new AuctionKey('del infierno'), new AuctionKey('Marcelo'), new AuctionKey('Constancio'),
-                        new AuctionKey('de la soledad'), new AuctionKey('del Amor'), new AuctionKey('del sufrimiento')];
-    }
+    async analizarSubastaBackground() {
 
-    async gettTds(){
         let response = await fetch(this.link);
-        let text = await response.text();
-        this.tds = $(text).find('#auction_table td');
-        return Promise.resolve();
-    }
-
-    async analizarSubasta() {
-        await this.gettTds();
-        this.tds.toArray().forEach(elem=>{
-            if($(elem).find('.auction_item_div .ui-draggable')[0] !== undefined) {
-                let desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
-                desc = desc.substring(0, desc.indexOf('icon_gold'));
-                desc = desc.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                console.log(desc);
-                this.aBuscar.forEach((e) => {
-                    if(desc.toLocaleLowerCase().includes(e.key.toLocaleLowerCase())){
-                        e.encontrado();
-                    }
-                })
-            }
-        })
+        let subastaHTML = await response.text()
+        let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
+        let tds = $(subastaHTML).find('#auction_table td');
+        let estadoActual = this.calcularEstadoSubastaActual(remainingTime);
+        this.resetResult();
+        tds.toArray().forEach(elem => this.analizarSubastaTdElement(elem));
         let resultado: SubastaResultado = new SubastaResultado();
-        resultado.busquedas = this.aBuscar.map(e=>{return {key: e.key, contador: e.contador, levelMaximo: e.levelMaximo}})
+        resultado.totalItems = tds.length;
+        resultado.busquedas = this.aBuscar;
         resultado.busquedaFecha = new Date();
-        let aClickear = await  new Promise<void>(resolve => {mandarMensajeBackground({header:MensajeHeader.RESULTADO_SUBASTA, resultado: resultado},()=> resolve() )})
-                                    .then((e) => Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]))
-                                    .catch((e) => Promise.resolve($('#mainmenu > div:nth-child(1) a')[0]))
-        //los vacio para no llenar de data el local storage
-        this.aBuscar = [];
-        this.tds = null;
-        this.estado = tareaEstado.finalizada;
-        return aClickear;
-        //console.log(this.aBuscar);
-    }
-
-    analizarSubastaBackground(tds, player_name:string) {
-        //.find('.section-header form').attr('data-item_name')
-        let subastadosPorVos: string[] = [];
-        tds.toArray().forEach(elem=>{
-            if($(elem).find('.section-header form')[0] !== undefined) {
-                let descFull = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
-                let desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
-                let level = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-level')
-                let splitsDesce = desc.split('"');
-                desc = splitsDesce[1];
-                desc = desc.normalize("NFC").replace(/[\u0300-\u036f]/g, "");
-                desc = desc.replace(/\\u00e1/g,'á').replace(/\\u00f3/g,'ó');
-                this.aBuscar.forEach((e) => {
-                    if(desc.toLocaleLowerCase().includes(e.key.toLocaleLowerCase())){
-                        e.encontrado();
-                        //saco comidas
-                        if(!descFull.toLocaleLowerCase().includes('ndose: Cura'.toLocaleLowerCase())) {
-                            e.analizarNivel(level);
-                        }
-                        //console.log($(elem).find('.auction_bid_div > div')[0].textContent.toLocaleLowerCase());
-                    }
-                })
-                if($(elem).find('.auction_bid_div > div')[0].textContent.trim().toLocaleLowerCase().includes(player_name.toLocaleLowerCase())) {
-                    subastadosPorVos.push(desc);
-                }
-            }
-        })
-        let resultado: SubastaResultado = new SubastaResultado();
-        resultado.busquedas = this.aBuscar.map(e=>{return {key: e.key, contador: e.contador, levelMaximo: e.levelMaximo}})
-        resultado.busquedaFecha = new Date();
-        //console.log(subastadosPorVos);
-        resultado.tusSubastas = subastadosPorVos;
-        return resultado;
+        resultado.tusSubastas = this.subastadosPorVos;
+        resultado.desc = this.descSubasta;
+        this.lastResult = resultado;
+        this.lastEstado = estadoActual;
+        this.timeToNextRecheck = this.estaEnMuyCorto() ? 1000 : 10000;
+        return this.lastResult;
     }
 
     apostarItemsWith(tds, itemsToBid: string[], mercenario:boolean, itemsApostados:AuctionItem[]) {
@@ -149,8 +92,78 @@ class ControladorSubastas implements Tarea{
         return autoApostados;
     }
 
-    getHomeClick(): HTMLElement {
-        return undefined;
+    private analizarSubastaTdElement(elem:HTMLElement){
+        if($(elem).find('.section-header form')[0] !== undefined) {
+            let descFull = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
+            let desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
+            let level = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-level')
+            let splitsDesce = desc.split('"');
+            desc = splitsDesce[1];
+            desc = desc.normalize("NFC").replace(/[\u0300-\u036f]/g, "");
+            desc = desc.replace(/\\u00e1/g,'á').replace(/\\u00f3/g,'ó');
+            this.aBuscar.forEach((e) => {
+                if(desc.toLocaleLowerCase().includes(e.key.toLocaleLowerCase())){
+                    //saco comidas
+                    if(!descFull.toLocaleLowerCase().includes('ndose: Cura'.toLocaleLowerCase())) {
+                        e.encontrado();
+                        e.analizarNivel(level);
+                        e.statItems.push(new StatsItems(descFull));
+                    }
+                }
+            })
+            let subastador = $(elem).find('.auction_bid_div > div')[0].textContent.trim().toLocaleLowerCase();
+            let personajeNombre = datosBackground.personaje.nombre.toLocaleLowerCase();
+            if(subastador.includes(personajeNombre) && this.subastadosPorVos.every(e=>e!=desc)) {
+                this.subastadosPorVos.push(desc);
+            }
+        }
+    }
+
+    private estaEnMuyCorto() {
+        return this.lastEstado == SubastaEstado.MUY_CORTO;
+    }
+
+    private async calcularEstadoSubastaActualFetching(): Promise<SubastaEstado> {
+        let response = await fetch(this.link.replace('qry=','qry=asdasdasdasd'));//this filter for a fastest state auction check
+        let subastaHTML = await response.text()
+        let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
+        return this.calcularEstadoSubastaActual(remainingTime);
+    }
+
+    private calcularEstadoSubastaActual(remainingTime:string): SubastaEstado {
+        switch (remainingTime.toLowerCase().trim()){
+            case 'muy corto':
+                return SubastaEstado.MUY_CORTO;
+            case 'corto':
+                return SubastaEstado.CORTO;
+            case 'medio':
+                return SubastaEstado.MEDIO;
+            case 'largo':
+                return SubastaEstado.LARGO;
+            case 'muy largo':
+                return SubastaEstado.MUY_LARGO;
+            default:
+                return SubastaEstado.UNKNOWN;
+        }
+    }
+
+    static getKeysSubasta(): AuctionKey[] {
+        return [new AuctionKey('Ichorus'),new AuctionKey('Antonius'), new AuctionKey('Táliths'),
+            new AuctionKey('Decimus'), new AuctionKey('Lucius'), new AuctionKey('Gaius'),
+            new AuctionKey('Titus'), new AuctionKey('Mateus'),new AuctionKey('Sextus'),
+            new AuctionKey('de la delicadeza'),  new AuctionKey('de asesinato'),new AuctionKey('del Dragon'),
+            new AuctionKey('de la agresión'), new AuctionKey('la eliminación'), new AuctionKey('de la Tierra'),
+            new AuctionKey('del infierno'), new AuctionKey('Marcelo'), new AuctionKey('Constancio'),new AuctionKey('de la amazona'),
+            new AuctionKey('de la soledad'), new AuctionKey('del Amor'), new AuctionKey('del Chacra'), new AuctionKey('del sufrimiento'),
+            new AuctionKey('de la antigüedad')];
+    }
+
+    static getKeysFundicion(): AuctionKey[] {
+        return  ControladorDeFundicion.getFilters().filter(e=>e.query.length > 0).map(e=>new AuctionKey(e.query));
+    }
+
+    static getKeysTiposMercenario(): AuctionKey[] {
+        return  [new AuctionKey('Samnit'), new AuctionKey('Lanza Elite'), new AuctionKey('Gran Maestro'), new AuctionKey('Hombre Medicinal')];
     }
 
 

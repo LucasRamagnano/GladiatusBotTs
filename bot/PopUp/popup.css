@@ -89,7 +89,7 @@
 	width: 80px;
 }
 
-#subasta, #subasta_mercenario {
+.subasta_ouput {
 	grid-column: 1/4;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -105,12 +105,12 @@
 
 
 
-#subasta *, #subasta_mercenario *, #subasta_por_vos *{
+.subasta_ouput *, #subasta_por_vos *{
 
 	margin: 0;
 }
 
-#subasta h3, #subasta_mercenario h3 , #subasta_por_vos h3{
+.subasta_ouput h3 , #subasta_por_vos h3{
 	grid-column: 1/5;
 	text-align: center;
 }
@@ -121,7 +121,7 @@
 }
 
 
-#subasta a, #subasta_mercenario a {
+.subasta_ouput a {
 
 	text-align: left;
 }
@@ -190,10 +190,6 @@ h5 {
 	display: none;
 }
 
-a {
-	color: blue;
-}
-
 .vacio {
 	color: gray;
 }
@@ -205,4 +201,8 @@ a {
 
 #subasta_por_vos p:nth-child(2n) {
 	grid-column: 1/3;
+}
+
+.no_mostrar {
+	display: none;
 }
