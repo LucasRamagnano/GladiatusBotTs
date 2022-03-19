@@ -22,11 +22,12 @@ let auctionItems = [];
 let teamTurmaPersonaje;
 let link_subasta;
 let lastTimeAlive;
-let ctrlSubastaGladiador = new ControladorSubastas(ControladorSubastas.getKeysSubasta(), 'gladiador');
-let ctrlSubastaMercenario = new ControladorSubastas(ControladorSubastas.getKeysSubasta(), 'mercenario');
-let ctrlSubastaFundicion = new ControladorSubastas(ControladorSubastas.getKeysFundicion(), 'fundicionGladiador');
-let ctrlSubastaFundicionMercenario = new ControladorSubastas(ControladorSubastas.getKeysFundicion(), 'fundicionMercenario');
-let ctrlSubastaGuerrerosMercenario = new ControladorSubastas(ControladorSubastas.getKeysTiposMercenario(), 'guerreroMercenario');
+let ctrlSubastaGladiador = new ControladorSubastas(undefined, undefined);
+let ctrlSubastaMercenario = new ControladorSubastas(undefined, undefined);
+let ctrlSubastaFundicion = new ControladorSubastas(undefined, undefined);
+let ctrlSubastaFundicionMercenario = new ControladorSubastas(undefined, undefined);
+let ctrlSubastaGuerrerosMercenario = new ControladorSubastas(undefined, undefined);
+let cmd = new Comandos();
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 chrome.runtime.onInstalled.addListener(function () {
@@ -36,24 +37,30 @@ chrome.runtime.onStartup.addListener(function () {
     loadLastConfig();
 });
 function initBackgroundProcces() {
-    let toSave = {};
-    toSave[Keys.TAREAS] = [];
-    toSave[Keys.TAREAS_BLOQUEADAS] = [];
-    toSave[Keys.TAREAS_CANCELADAS] = [];
-    toSave[Keys.TAREAS_FINALIZADAS] = [];
-    chrome.storage.local.set(toSave);
-    AuctionItem.loadAuctionItems().then((e) => {
-        auctionItems = e;
-        window.setTimeout(runAnalisisSubastaGladiador, 500);
-        window.setTimeout(runAnalisisSubastaMercenario, 500);
-        window.setTimeout(runAnalisisSubastaFundicion, 1500);
-        window.setTimeout(runAnalisisSubastaFundicionMercenario, 1500);
-        window.setTimeout(runAnalisisSubastaGuerreroMercenario, 2000);
-        window.setTimeout(runCheckPluginAlive, 1000);
-        window.setTimeout(runItemsAnalizer, 5000);
+    return __awaiter(this, void 0, void 0, function* () {
+        let toSave = {};
+        toSave[Keys.TAREAS] = [];
+        toSave[Keys.TAREAS_BLOQUEADAS] = [];
+        toSave[Keys.TAREAS_CANCELADAS] = [];
+        toSave[Keys.TAREAS_FINALIZADAS] = [];
+        chrome.storage.local.set(toSave);
+        AuctionItem.loadAuctionItems().then((e) => {
+            auctionItems = e;
+            window.setTimeout(runAnalisisSubastaGladiador, 500);
+            window.setTimeout(runAnalisisSubastaMercenario, 500);
+            window.setTimeout(runAnalisisSubastaFundicion, 1500);
+            window.setTimeout(runAnalisisSubastaFundicionMercenario, 1500);
+            window.setTimeout(runAnalisisSubastaGuerreroMercenario, 2000);
+            window.setTimeout(runCheckPluginAlive, 1000);
+            window.setTimeout(runItemsAnalizer, 5000);
+        });
+        ctrlSubastaGladiador = new ControladorSubastas(ControladorSubastas.getKeysSubasta(), 'gladiador');
+        ctrlSubastaMercenario = new ControladorSubastas(ControladorSubastas.getKeysSubasta(), 'mercenario');
+        ctrlSubastaFundicion = new ControladorSubastas(yield ControladorSubastas.getKeysFundicion(), 'fundicionGladiador');
+        ctrlSubastaFundicionMercenario = new ControladorSubastas(yield ControladorSubastas.getKeysFundicion(), 'fundicionMercenario');
+        ctrlSubastaGuerrerosMercenario = new ControladorSubastas(ControladorSubastas.getKeysTiposMercenario(), 'guerreroMercenario');
+        continuar_analizando = true;
     });
-    //window.setTimeout(runAnalisisFundicion,5000);
-    continuar_analizando = true;
 }
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.header) {
@@ -240,7 +247,7 @@ function loadLastConfig() {
 function subastaAnalizar(linkAllItems, mercenario) {
     return __awaiter(this, void 0, void 0, function* () {
         let allItemsLink = linkAllItems;
-        let response = yield fetch(allItemsLink);
+        let response = yield fetch(allItemsLink, { cache: "no-store" });
         let subastaHTML = yield response.text();
         let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
         let oroActual = 0;

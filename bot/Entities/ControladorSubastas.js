@@ -32,7 +32,7 @@ class ControladorSubastas extends Guardable {
     }
     analizarSubastaBackground() {
         return __awaiter(this, void 0, void 0, function* () {
-            let response = yield fetch(this.link);
+            let response = yield fetch(this.link, { cache: "no-store" });
             let subastaHTML = yield response.text();
             let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
             let tds = $(subastaHTML).find('#auction_table td');
@@ -96,7 +96,7 @@ class ControladorSubastas extends Guardable {
                     if (!descFull.toLocaleLowerCase().includes('ndose: Cura'.toLocaleLowerCase())) {
                         e.encontrado();
                         e.analizarNivel(level);
-                        e.statItems.push(new StatsItems(descFull));
+                        e.statItems.push(new ItemUsable(descFull));
                     }
                 }
             });
@@ -112,7 +112,7 @@ class ControladorSubastas extends Guardable {
     }
     calcularEstadoSubastaActualFetching() {
         return __awaiter(this, void 0, void 0, function* () {
-            let response = yield fetch(this.link.replace('qry=', 'qry=asdasdasdasd')); //this filter for a fastest state auction check
+            let response = yield fetch(this.link.replace('qry=', 'qry=asdasdasdasd'), { cache: "no-store" }); //this filter for a fastest state auction check
             let subastaHTML = yield response.text();
             let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
             return this.calcularEstadoSubastaActual(remainingTime);
@@ -145,7 +145,10 @@ class ControladorSubastas extends Guardable {
             new AuctionKey('de la antigüedad')];
     }
     static getKeysFundicion() {
-        return ControladorDeFundicion.getFilters().filter(e => e.query.length > 0).map(e => new AuctionKey(e.query));
+        return __awaiter(this, void 0, void 0, function* () {
+            let allFilters = yield ControladorDeFundicion.getFilters();
+            return allFilters.filter(e => e.query.length > 0).map(e => new AuctionKey(e.query));
+        });
     }
     static getKeysTiposMercenario() {
         return [new AuctionKey('Samnit'), new AuctionKey('Lanza Elite'), new AuctionKey('Gran Maestro'), new AuctionKey('Hombre Medicinal')];

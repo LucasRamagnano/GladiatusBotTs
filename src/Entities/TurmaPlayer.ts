@@ -24,7 +24,7 @@ class TurmaPlayer {
     }
 
     async loadItemToolTip() {
-        let response = await fetch(this.linkPlayer);
+        let response = await fetch(this.linkPlayer, {cache: "no-store"});
         let paginaPlayer = await response.text();
         let casco = $(paginaPlayer).find('#char div.ui-draggable[data-container-number='+itemContainerNumber.CASCO+']').first().attr('data-tooltip');
         let arma = $(paginaPlayer).find('#char div.ui-draggable[data-container-number='+itemContainerNumber.ARMA+']').first().attr('data-tooltip');
@@ -40,7 +40,7 @@ class TurmaPlayer {
     }
 
     async loadData() {
-        let response = await fetch(this.linkPlayer);
+        let response = await fetch(this.linkPlayer, {cache: "no-store"});
         let paginaPlayer = await response.text();
         this.nivel = Number.parseInt($(paginaPlayer).find('#char_level')[0].textContent);
         this.fuerza = Number.parseInt($(paginaPlayer).find('#char_f0')[0].textContent);

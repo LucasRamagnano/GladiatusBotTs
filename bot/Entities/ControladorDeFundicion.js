@@ -19,7 +19,6 @@ class ControladorDeFundicion {
         this.timed_out_miliseconds = 60000;
         this.indicePagina = -1;
         this.indiceFiltro = -1;
-        this.allFilters = ControladorDeFundicion.getFilters();
         this.filtrosToUse = [];
         this.procesadoTerminado = false;
         this.numeroDeItemsAFundir = numeroItems;
@@ -91,14 +90,6 @@ class ControladorDeFundicion {
     wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-    static lugarDisponibleBackground() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let response = yield fetch('https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=forge&submod=smeltery&sh=202d551151ed895739913f0618b78290');
-            let htmlPage = yield response.text();
-            let lugarDisponible = $(htmlPage).find('.forge_closed').length;
-            return Promise.resolve(lugarDisponible);
-        });
-    }
     filtrarYagarrarItems() {
         return __awaiter(this, void 0, void 0, function* () {
             //&& this.indicePagina == -1
@@ -153,12 +144,13 @@ class ControladorDeFundicion {
                 return;
             Consola.log(this.debuguear, 'Analizando filtros background');
             let toDo = [];
-            for (const e of this.allFilters) {
+            let allFilters = yield ControladorDeFundicion.getFilters();
+            for (const e of allFilters) {
                 toDo.push(this.analizeFilter(e));
             }
             yield Promise.all(toDo);
             Consola.log(this.debuguear, 'Filtros analizados');
-            this.filtrosToUse = this.allFilters.filter(e => e.hayItemsFundibles);
+            this.filtrosToUse = allFilters.filter(e => e.hayItemsFundibles);
             this.procesadoTerminado = true;
         });
     }
@@ -167,6 +159,7 @@ class ControladorDeFundicion {
             let hoja = 0; //cero es la primera
             let resultado;
             let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
+            let allFilters = yield ControladorDeFundicion.getFilters();
             let intentosCambioHoja = 1;
             let itemsToGrab;
             let hayHojas = true;
@@ -179,11 +172,12 @@ class ControladorDeFundicion {
                     hayHojas = false;
                 }
             }
+            let hayFundibles = yield this.hayItemsFundibles();
             if (hayHojas && !$($('.paging_numbers')[0]).children()[this.indicePagina].classList.contains('paging_numbers_current')) { //funciona de pedo, chequear todo
                 Consola.log(this.debuguear, 'Yendo a la pagina numero: ' + this.indicePagina);
                 return Promise.resolve($($('.paging_numbers')[0]).children()[this.indicePagina]);
             }
-            else if (this.hayItemsFundibles()) {
+            else if (hayFundibles) {
                 Consola.log(this.debuguear, 'Comienza agarre de items');
                 while (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current') && intentosCambioHoja <= 5) {
                     Consola.log(this.debuguear, 'Poniendo hoja numero: ' + hoja);
@@ -201,7 +195,7 @@ class ControladorDeFundicion {
                 itemsToGrab = $('#packages_wrapper .ui-draggable').toArray().reverse()
                     .filter((elem, index) => {
                     let hayEspacio = itemsAgarrados + 1 <= (this.numeroDeItemsAFundir - this.itemsAFundir.length);
-                    if (ControladorDeFundicion.esItemFundible(elem) && hayEspacio) {
+                    if (ControladorDeFundicion.esItemFundible(elem, allFilters) && hayEspacio) {
                         itemsAgarrados++;
                         return true;
                     }
@@ -243,7 +237,7 @@ class ControladorDeFundicion {
                     if (goNext && i + 1 == itemsToGrab.length) {
                         moving = false;
                     }
-                    else if (!this.hayItemsFundibles()) {
+                    else if (!hayFundibles) {
                         Consola.log(this.debuguear, 'No hay items a fundir y no hay mas paginas...');
                         //this.estado = tareaEstado.enEspera;
                         this.estado = tareaEstado.finalizada;
@@ -251,7 +245,7 @@ class ControladorDeFundicion {
                     }
                 }
             }
-            if (!this.hayItemsFundibles() && this.indicePagina > 0 && this.numeroDeItemsAFundir != this.itemsAFundir.length && hayHojas) {
+            if (!hayFundibles && this.indicePagina > 0 && this.numeroDeItemsAFundir != this.itemsAFundir.length && hayHojas) {
                 Consola.log(this.debuguear, 'No hay mas items en la pagina pero hay lugar, buscando mas items...');
                 this.indicePagina--;
                 let nextPage = $($('.paging_numbers')[0]).children()[this.indicePagina];
@@ -262,7 +256,7 @@ class ControladorDeFundicion {
                     return this.filtrarYagarrarItems();
                 }
             }
-            else if (!this.hayItemsFundibles() && (this.indicePagina == 0 || !hayHojas) && this.numeroDeItemsAFundir != this.itemsAFundir.length) {
+            else if (!hayFundibles && (this.indicePagina == 0 || !hayHojas) && this.numeroDeItemsAFundir != this.itemsAFundir.length) {
                 Consola.log(this.debuguear, 'No hay items a fundir y no hay mas paginas, viendo si hay mas filtros...');
                 //this.estado = tareaEstado.enEspera;
                 this.indicePagina = -1;
@@ -427,12 +421,15 @@ class ControladorDeFundicion {
         elem.dispatchEvent(event);
     }
     hayItemsFundibles() {
-        return $('#packages_wrapper .ui-draggable').toArray()
-            .some((elem, index) => {
-            return ControladorDeFundicion.esItemFundible(elem);
+        return __awaiter(this, void 0, void 0, function* () {
+            let filtros = yield ControladorDeFundicion.getFilters();
+            return $('#packages_wrapper .ui-draggable').toArray()
+                .some((elem, index) => {
+                return ControladorDeFundicion.esItemFundible(elem, filtros);
+            });
         });
     }
-    static esItemFundible(item) {
+    static esItemFundible(item, filtros) {
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
         let quality = this.getColor(item.getAttribute('data-tooltip'));
         let notToKeep = this.namesNotTuMelt.every((e) => !nameitem.includes(e));
@@ -440,15 +437,15 @@ class ControladorDeFundicion {
         let esFundible = categoria.nombreCategoria == 'Fundible';
         let esJoyaFundible = categoria.subCategoria == 'Joya' &&
             (quality == calidadesItemsPaquetes.PURPURA
-                || this.getFilters().filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase())));
+                || filtros.filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase())));
         return notToKeep && (esFundible || esJoyaFundible);
     }
-    static esItemToWarn(item) {
+    static esItemToWarn(item, filtros) {
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
         let categoria = getItemCategoria(nameitem);
         let ToKeep = this.namesNotTuMelt.some((e) => nameitem.includes(e)) && (categoria.nombreCategoria == 'Fundible' || categoria.subCategoria == 'Joya');
-        let esWaringFundible = categoria.nombreCategoria == 'Fundible' && this.getFilters().filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
-        let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && this.getFilters().filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        let esWaringFundible = categoria.nombreCategoria == 'Fundible' && filtros.filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && filtros.filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
         return ToKeep || esWaringFundible || esWaringJoyaFundible;
     }
     static getColor(rawData) {
@@ -480,33 +477,63 @@ class ControladorDeFundicion {
                 cache: 'no-store'
             });
             let paginaPaquete = yield response.text();
+            let filtros = yield ControladorDeFundicion.getFilters();
             filter.hayItemsFundibles = $(paginaPaquete).find('#packages .ui-draggable').toArray()
                 .some((elem, index) => {
-                return ControladorDeFundicion.esItemFundible(elem);
+                return ControladorDeFundicion.esItemFundible(elem, filtros);
             });
         });
     }
     static getFilters() {
-        return [new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Gaius'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Titus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Manius'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Marcelo'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Quinto'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tellus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Constancio'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Mateus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Dexterus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Servius'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Giganticus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Sentarions'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tantus'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del misterio'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del veneno'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'de la fragmentación'),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del silencio'),
-            new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.getFiltrosFundicionItems();
+        });
+    }
+    static getFiltrosFundicionItems() {
+        return new Promise((resolve) => chrome.storage.local.get(Keys.FILTRO_ITEMS, (result) => {
+            let filtroRaw = result[Keys.FILTRO_ITEMS];
+            let filtros = [];
+            if (filtroRaw === undefined) {
+                filtros = globalFiltros;
+                this.resetFiltrosItems();
+            }
+            else {
+                for (const fraw of filtroRaw) {
+                    filtros.push(new FiltroPaquete(null, null).fromJsonString(fraw));
+                }
+            }
+            resolve(filtros);
+        }));
+    }
+    static resetFiltrosItems() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let toSave = {};
+            toSave[Keys.FILTRO_ITEMS] = globalFiltros;
+            new Promise((resolve) => {
+                chrome.storage.local.set(toSave);
+                resolve(toSave[Keys.FILTRO_ITEMS]);
+            });
+        });
+    }
+    static removerFundicionFiltro(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let filtros = yield this.getFiltrosFundicionItems();
+            let existeFiltro = filtros.some(e => e.query == query);
+            if (existeFiltro) {
+                let toSave = {};
+                toSave[Keys.FILTRO_ITEMS] = filtros.filter(e => e.query.toLowerCase() != query.toLowerCase());
+                return new Promise((resolve => {
+                    chrome.storage.local.set(toSave, () => {
+                        console.log('Removido correctamente.');
+                    });
+                    resolve(toSave[Keys.FILTRO_ITEMS]);
+                }));
+            }
+            else {
+                console.log('No se encontro el filtro.');
+                return filtros;
+            }
+        });
     }
 }
-ControladorDeFundicion.namesNotTuMelt = ['Lucius', 'Antonius'];
+ControladorDeFundicion.namesNotTuMelt = ['Antonius'];

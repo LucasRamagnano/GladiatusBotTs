@@ -2,13 +2,12 @@ class PaginaAnalisis{
     paginaNumero:number;
     linkPagina: string;
 
-    oroPagina:number;
+    paquetes:Item[] =[];
 
 
     constructor(paginaNumero: number, linkPagina: string) {
         this.paginaNumero = paginaNumero;
         this.linkPagina = linkPagina;
-        ControladorDeFundicion.getFilters();
     }
 
     async analizar() {
@@ -16,14 +15,27 @@ class PaginaAnalisis{
             let response = await fetch(this.linkPagina, {cache: 'no-store'});
             let paginaPaquete = await response.text();
             let paquetesOro = $(paginaPaquete).find('#packages .packageItem').toArray();
-            let resultado = paquetesOro.filter(e => e.innerHTML.includes('Oro'))
-                .map((e) => Number.parseInt($(e).find('.ui-draggable').attr('data-price-gold')))
-                .reduce((e1, e2) => e1 + e2,0);
-            this.oroPagina = resultado;
+            this.paquetes = ItemBuilder.createItemFromPackageItem(paquetesOro);
         }catch (e) {
-            this.oroPagina = 0;
+            this.paquetes = [];
             console.log(e);
         }
+    }
+
+    getQtyType(tipoPkt: ItemTypes):number {
+        return this.getPaquetesType(tipoPkt).length;
+    }
+
+    getPaquetesType(tipoPkt: ItemTypes):Item[] {
+        return this.paquetes.filter(e=> e.getTipo() == tipoPkt);
+    }
+
+    getPaquetesDeOro(): ItemOro[] {
+        return this.paquetes.filter(e=> e.getTipo() == ItemTypes.ItemOro).map(e => <ItemOro>e);
+    }
+
+    getValorPaquetesDeOro():number {
+        return this.getPaquetesDeOro().reduce((e1,e2)=>e1 + e2.oroValor,0)
     }
 }
 
@@ -33,7 +45,7 @@ class AnalisisPaquetesBackground {
     debuguear: boolean = true;
 
 
-    constructor(linkBase: string) {
+        constructor(linkBase: string) {
         this.linkBase = linkBase;
     }
 
@@ -51,7 +63,14 @@ class AnalisisPaquetesBackground {
         }
         await Promise.all(toDo);
         Consola.log(this.debuguear,'Paquetes analizados');
-        let oroTotal = paginasToFiler.map(e1=>e1.oroPagina).reduce((e1,e2)=>e1+e2,0);
+        let oroTotal = paginasToFiler.map(e1=>e1.getValorPaquetesDeOro()).reduce((e1,e2)=>e1+e2,0);
+
+        let toAnalyze = [ItemTypes.ItemComida, ItemTypes.ItemPergamino, ItemTypes.ItemUsable, ItemTypes.ItemUnknown, ItemTypes.ItemRecurso];
+        for(let e of toAnalyze) {
+            let itemsTotales = paginasToFiler.map(e1=>e1.getQtyType(e)).reduce((e1,e2)=>e1+e2,0);
+            console.log(e + ': ' + itemsTotales);
+        }
+
         console.log('Oro Total: ' + oroTotal);
     }
     //https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=packages&f=0&fq=-1&qry=&sh=23e80dbf675470c47f33358abfee157b&page=2&page=1

@@ -3,3 +3,7 @@
     border-style: solid;
     background-color: rgba(212, 220, 11, 0.16);
 }
+
+.ItemUnknown {
+    color: red;
+}

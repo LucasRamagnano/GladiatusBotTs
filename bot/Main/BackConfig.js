@@ -47,3 +47,24 @@ const backgroundConfig = {
     circoTipoInput: 'Circo Provinciarum'
 };
 const perfil = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15855';
+const globalFiltros = [new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Gaius'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Titus'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Manius'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Lucius'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Marcelo'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Quinto'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tellus'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Constancio'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Mateus'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Dexterus'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Servius'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Giganticus'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Sentarions'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tantus'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del misterio'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del veneno'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'de la fragmentación'),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del silencio'),
+    new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
+    new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();

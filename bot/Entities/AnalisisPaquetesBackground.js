@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class PaginaAnalisis {
     constructor(paginaNumero, linkPagina) {
+        this.paquetes = [];
         this.paginaNumero = paginaNumero;
         this.linkPagina = linkPagina;
-        ControladorDeFundicion.getFilters();
     }
     analizar() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -19,16 +19,25 @@ class PaginaAnalisis {
                 let response = yield fetch(this.linkPagina, { cache: 'no-store' });
                 let paginaPaquete = yield response.text();
                 let paquetesOro = $(paginaPaquete).find('#packages .packageItem').toArray();
-                let resultado = paquetesOro.filter(e => e.innerHTML.includes('Oro'))
-                    .map((e) => Number.parseInt($(e).find('.ui-draggable').attr('data-price-gold')))
-                    .reduce((e1, e2) => e1 + e2, 0);
-                this.oroPagina = resultado;
+                this.paquetes = ItemBuilder.createItemFromPackageItem(paquetesOro);
             }
             catch (e) {
-                this.oroPagina = 0;
+                this.paquetes = [];
                 console.log(e);
             }
         });
+    }
+    getQtyType(tipoPkt) {
+        return this.getPaquetesType(tipoPkt).length;
+    }
+    getPaquetesType(tipoPkt) {
+        return this.paquetes.filter(e => e.getTipo() == tipoPkt);
+    }
+    getPaquetesDeOro() {
+        return this.paquetes.filter(e => e.getTipo() == ItemTypes.ItemOro).map(e => e);
+    }
+    getValorPaquetesDeOro() {
+        return this.getPaquetesDeOro().reduce((e1, e2) => e1 + e2.oroValor, 0);
     }
 }
 class AnalisisPaquetesBackground {
@@ -50,7 +59,12 @@ class AnalisisPaquetesBackground {
             }
             yield Promise.all(toDo);
             Consola.log(this.debuguear, 'Paquetes analizados');
-            let oroTotal = paginasToFiler.map(e1 => e1.oroPagina).reduce((e1, e2) => e1 + e2, 0);
+            let oroTotal = paginasToFiler.map(e1 => e1.getValorPaquetesDeOro()).reduce((e1, e2) => e1 + e2, 0);
+            let toAnalyze = [ItemTypes.ItemComida, ItemTypes.ItemPergamino, ItemTypes.ItemUsable, ItemTypes.ItemUnknown, ItemTypes.ItemRecurso];
+            for (let e of toAnalyze) {
+                let itemsTotales = paginasToFiler.map(e1 => e1.getQtyType(e)).reduce((e1, e2) => e1 + e2, 0);
+                console.log(e + ': ' + itemsTotales);
+            }
             console.log('Oro Total: ' + oroTotal);
         });
     }

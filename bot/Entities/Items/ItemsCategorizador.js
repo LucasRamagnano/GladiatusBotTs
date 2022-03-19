@@ -33,6 +33,9 @@ function getItemCategoria(name) {
     if (itemsDataName.mercenarios.some(elem => desc.includes(elem))) {
         return new ItemCategoria('No Fundible', 'Mercenario');
     }
+    if (itemsDataName.recursos.some(elem => desc.includes(elem))) {
+        return new ItemCategoria('No Fundible', 'Recursos');
+    }
     return new ItemCategoria('No Fundible', 'Unknown');
 }
 //----------DATA INIT
@@ -50,7 +53,7 @@ const itemsDataName = {
         'Armadura dura de cuero', 'Armadura de cocodrilo'],
     cascos: ['Casco de cuero', 'Gorra de hierro', 'Myrmillo', 'Thracian', 'Casco de gladiador', 'Casco de cráneo',
         'Casco vikingo', 'Centurión', 'Casco de Centurión entero', 'Centurión de latón', 'Casco de cobre',
-        'Casco de púas', 'Casco con visor'],
+        'Casco de púas', 'Casco con visor', 'Casco'],
     guantes: ['Guantes de cuero', 'Muñequeras de cobre', 'Guantes de cobre', 'Guantes de batalla de cuero',
         'Muñequeras de cuero', 'Brazaletes de hierro', 'Guantes con remaches', 'Muñequeras de chapa',
         'Brazaletes de chapa'],
@@ -62,5 +65,14 @@ const itemsDataName = {
     amuletos: ['Pendiente de Oro', 'Collar de plata', 'Pendiente de cornalina', 'Reliquia de plata',
         'Pendiente Sugilith', 'Pendiente de malaquita', 'Talismán de estrella',
         'Pendiente de rubies', 'Ojo de Ra', 'Fíbula'],
-    mercenarios: ['Habilidad: ']
+    mercenarios: ['Habilidad: '],
+    recursos: ['Madera', 'Cobre', 'Cuero', 'Hierro', 'Hilo de lana', 'Bolas de algodón', 'Cáñamo', 'Tiras de gasa', 'Lino', 'Yute',
+        'Tiras de terciopelo', 'Hilo de seda', 'Pelaje', 'Astilla ósea', 'Escama', 'Garra', 'Colmillo', 'Escama de dragón',
+        'Cuerno de toro', 'Glándula venenosa', 'Pelaje de Cerbero', 'Escama de Hidra', 'Pluma de Esfinge', 'Piel de Tifón',
+        'Lapislázuli', 'Amatista', 'Ámbar', 'Aguamarina', 'Zafiro', 'Granate', 'Esmeralda', 'Diamante', 'Jaspe', 'Sugilita',
+        'Veneno de escorpión', 'Tintura de la resistencia', 'Antídoto', 'Adrenalina', 'Tintura de la inspiración',
+        'Poción de la percepción', 'Esencia de los reflejos', 'Frasco de carisma', 'Agua del olvido', 'Esencia de alma',
+        'Sello acuático', 'Runa protectora', 'Grabado terrestre', 'Tótem curativo', 'Talismán de poder', 'Piedra de la suerte',
+        'Pedernal', 'Runa de la tormenta', 'Runa de las sombras', 'Cristal', 'Bronce', 'Obsidiana', 'Plata', 'Azufre', 'Mena de oro',
+        'Cuarzo', 'Platino', 'Almandino', 'Cuprita', 'Piedra infernal']
 };

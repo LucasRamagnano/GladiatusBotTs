@@ -27,7 +27,7 @@ class TurmaEnemigoPickerBackground {
     cargarDatos() {
         return __awaiter(this, void 0, void 0, function* () {
             //console.log(this.link)
-            let response = yield fetch(this.link);
+            let response = yield fetch(this.link, { cache: "no-store" });
             let paginaPlayer = yield response.text();
             $(paginaPlayer).find('#own3 a').toArray().forEach((e, index) => {
                 this.enemigos.push(new TurmaTeam(e.textContent.trim(), 'http://localhost:8080/' + $(e).attr('href'), $('.attack')[index]));

@@ -143,7 +143,7 @@ function estaEnVisionGeneral() {
 }
 
 function lugarEnFundicion() {
-	let disponibles = 0;
+	let disponibles;
 	if($('.advanced_menu_side_icon').length <= 1) { // todo check dis
 		disponibles =  6;
 	} else {
@@ -336,19 +336,23 @@ async function injectPcktWarning() {
 		.attr("type","text/css")
 		.attr("href", path));
 	let wordWarning = ['antonius','lucius'];
-	wordWarning = wordWarning.concat(ControladorDeFundicion.getFilters().filter(e=>e.query.length>0).map(e=>e.query));
+	//wordWarning = wordWarning.concat(ControladorDeFundicion.getFilters().filter(e=>e.query.length>0).map(e=>e.query));
 	let trysToDo = 15;
+	let allFilters = await ControladorDeFundicion.getFilters();
 	while($('.packageItem:not(.yaestanalizado)').length!=0 && trysToDo>0) {
 		$('.packageItem:not(.yaestanalizado)').each((e, v) => {
 
 			try {
 				if($(v).find('.ui-draggable')[0].hasAttribute('data-toolip'))
 					v.classList.add('yaestanalizado');
-				if (ControladorDeFundicion.esItemToWarn($(v).find('.ui-draggable')[0]))
+				if (ControladorDeFundicion.esItemToWarn($(v).find('.ui-draggable')[0],allFilters))
 					v.classList.add('warning')
 			} catch (e) {
 			}
 		})
+
+		let items = ItemBuilder.createItemFromPackageItem($('#packages .packageItem').toArray());
+		items.forEach(e=> e.getHtmlElement().classList.add(e.getTipo()));
 		await wait(200);
 		trysToDo--;
 	}
@@ -406,4 +410,30 @@ function autoOfferItem(ev) {
 
 function wait(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function agarrarTodo() {
+	let items = $($('.packageItem .ui-draggable').get().reverse());
+	for(const item of items) {
+		let doubleClickEvent = new MouseEvent('dblclick', {
+			'view': window,
+			'bubbles': true,
+			'cancelable': true
+		});
+		item.dispatchEvent(doubleClickEvent)
+		await wait(200);
+	}
+}
+
+async function venderTodo() {
+	let items = $('#inv .ui-draggable')
+	for(const item of items) {
+		let doubleClickEvent = new MouseEvent('dblclick', {
+			'view': window,
+			'bubbles': true,
+			'cancelable': true
+		});
+		item.dispatchEvent(doubleClickEvent)
+		await wait(200);
+	}
 }

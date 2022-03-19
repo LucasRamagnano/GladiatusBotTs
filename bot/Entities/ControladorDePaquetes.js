@@ -160,21 +160,27 @@ class ControladorDePaquetes {
                     return tareasControlador.getPronosticoClick();
                 }
                 else {
-                    let intentosPutGridMarket = 0;
-                    while ($('#market_sell').children().first().children().length == 0 && intentosPutGridMarket <= 3) {
-                        let doubleClickEvent = new MouseEvent('dblclick', {
-                            'view': window,
-                            'bubbles': true,
-                            'cancelable': true
-                        });
-                        itemAVender.dispatchEvent(doubleClickEvent);
-                        intentosPutGridMarket++;
-                        yield this.wait(1000 + (1000 * intentosPutGridMarket));
+                    try {
+                        let intentosPutGridMarket = 0;
+                        while ($('#market_sell').children().first().children().length == 0 && intentosPutGridMarket <= 3) {
+                            let doubleClickEvent = new MouseEvent('dblclick', {
+                                'view': window,
+                                'bubbles': true,
+                                'cancelable': true
+                            });
+                            itemAVender.dispatchEvent(doubleClickEvent);
+                            intentosPutGridMarket++;
+                            yield this.wait(1000 + (1000 * intentosPutGridMarket));
+                        }
+                        if ($('#market_sell').children().first().children().length == 0) {
+                            throw 'Error al colocar paquete en el grid del mercado';
+                        }
+                        return yield this.ponerALaVenta();
                     }
-                    if ($('#market_sell').children().first().children().length == 0) {
-                        throw 'Error al colocar paquete en el grid del mercado';
+                    catch (ex) {
+                        this.actualizarEstadoPaquete(paquete_estados.VERIFICAR_DEVOLUCION);
+                        return yield this.ponerALaVenta();
                     }
-                    return yield this.ponerALaVenta();
                 }
             }
         });

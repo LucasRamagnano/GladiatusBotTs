@@ -12,11 +12,12 @@ let auctionItems: AuctionItem[] = [];
 let teamTurmaPersonaje :TurmaTeam;
 let link_subasta;
 let lastTimeAlive: number;
-let ctrlSubastaGladiador: ControladorSubastas = new ControladorSubastas(ControladorSubastas.getKeysSubasta(),'gladiador');
-let ctrlSubastaMercenario: ControladorSubastas = new ControladorSubastas(ControladorSubastas.getKeysSubasta(),'mercenario');
-let ctrlSubastaFundicion: ControladorSubastas = new ControladorSubastas(ControladorSubastas.getKeysFundicion(),'fundicionGladiador');
-let ctrlSubastaFundicionMercenario: ControladorSubastas = new ControladorSubastas(ControladorSubastas.getKeysFundicion(),'fundicionMercenario');
-let ctrlSubastaGuerrerosMercenario: ControladorSubastas = new ControladorSubastas(ControladorSubastas.getKeysTiposMercenario(),'guerreroMercenario');
+let ctrlSubastaGladiador: ControladorSubastas = new ControladorSubastas(undefined,undefined);
+let ctrlSubastaMercenario: ControladorSubastas = new ControladorSubastas(undefined,undefined);
+let ctrlSubastaFundicion: ControladorSubastas = new ControladorSubastas(undefined,undefined);
+let ctrlSubastaFundicionMercenario: ControladorSubastas  = new ControladorSubastas(undefined,undefined);
+let ctrlSubastaGuerrerosMercenario: ControladorSubastas = new ControladorSubastas(undefined,undefined);
+let cmd = new Comandos();
 //CUANDO SE CARGA PONER
 //= loadLastConfig();
 
@@ -28,7 +29,7 @@ chrome.runtime.onStartup.addListener(function() {
 	loadLastConfig();
 });
 
-function initBackgroundProcces() {
+async function initBackgroundProcces() {
 	let toSave = {};
 	toSave[Keys.TAREAS] = [];
 	toSave[Keys.TAREAS_BLOQUEADAS] = [];
@@ -45,7 +46,12 @@ function initBackgroundProcces() {
 		window.setTimeout(runCheckPluginAlive,1000);
 		window.setTimeout(runItemsAnalizer,5000);
 	});
-	//window.setTimeout(runAnalisisFundicion,5000);
+
+	ctrlSubastaGladiador = new ControladorSubastas(ControladorSubastas.getKeysSubasta(),'gladiador');
+	ctrlSubastaMercenario = new ControladorSubastas(ControladorSubastas.getKeysSubasta(),'mercenario');
+	ctrlSubastaFundicion = new ControladorSubastas(await ControladorSubastas.getKeysFundicion(),'fundicionGladiador');
+	ctrlSubastaFundicionMercenario = new ControladorSubastas(await ControladorSubastas.getKeysFundicion(),'fundicionMercenario');
+	ctrlSubastaGuerrerosMercenario = new ControladorSubastas(ControladorSubastas.getKeysTiposMercenario(),'guerreroMercenario');
 	continuar_analizando = true;
 }
 
@@ -245,7 +251,7 @@ function loadLastConfig(): void {
 
 async function subastaAnalizar(linkAllItems:string, mercenario:boolean) {
 	let allItemsLink = linkAllItems;
-	let response = await fetch(allItemsLink)
+	let response = await fetch(allItemsLink, {cache: "no-store"})
 	let subastaHTML = await response.text()
 	let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
 	let oroActual = 0;

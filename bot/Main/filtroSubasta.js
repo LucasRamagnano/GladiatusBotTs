@@ -1,13 +1,13 @@
 function filtrar(evento) {
-    var valoresAMostrar = [];
+    let valoresAMostrar = [];
     $('.filtro_cb:checkbox:checked').toArray().forEach(e => {
         valoresAMostrar = valoresAMostrar.concat(nombreData[e.value]);
     });
-    var clasesColores = $('.filtro_color_cb:checkbox:checked').toArray()
+    let clasesColores = $('.filtro_color_cb:checkbox:checked').toArray()
         .map(e => '.' + e.value + ' ')
         .join();
-    var nivelMinimo = Number.parseInt(toInputArray($('#nivelpick'))[0].value);
-    var tdMostrar = $('#auction_table td').toArray();
+    let nivelMinimo = Number.parseInt(toInputArray($('#nivelpick'))[0].value);
+    let tdMostrar = $('#auction_table td').toArray();
     $('#auction_table tr').css('display', 'none');
     //filtro niveles
     tdMostrar = tdMostrar.filter(elem => {
@@ -16,10 +16,10 @@ function filtrar(evento) {
         return Number.parseInt($(elem).find('form')[0].getAttribute('data-nivel')) >= nivelMinimo;
     });
     //filtro palabras
-    var palabras = $('#palabras')[0].value.trim().split(',');
+    let palabras = $('#palabras')[0].value.trim().split(',');
     tdMostrar = tdMostrar.filter(elem => {
         if ($(elem).find('.auction_item_div .ui-draggable')[0] !== undefined) {
-            var desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
+            let desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
             desc = desc.substring(0, desc.indexOf('icon_gold'));
             desc = desc.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); //saco tildes y otros
             return palabras.some(valor => desc.toLocaleLowerCase().includes(valor.toLocaleLowerCase()));
@@ -33,14 +33,14 @@ function filtrar(evento) {
     //filtro de tipo de elementos
     tdMostrar = tdMostrar.filter(elem => {
         if ($(elem).find('.auction_item_div .ui-draggable')[0] !== undefined) {
-            var desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
+            let desc = $(elem).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
             return valoresAMostrar.some(valor => desc.includes(valor) && !desc.includes('Habilidad: '));
         }
         return false;
     });
     if ( /*agrupar*/true)
         tdMostrar = tdMostrar.sort(compareTipo);
-    var bodyTable = $('#auction_table tbody')[0];
+    let bodyTable = $('#auction_table tbody')[0];
     poblarTablaSubasta(tdMostrar, bodyTable);
     $('#resultados')[0].innerText = tdMostrar.length + ' resultados.';
 }
@@ -59,18 +59,18 @@ function inicializarFiltros() {
     });
 }
 function poblarTablaSubasta(tds, body) {
-    var cantidadTds = tds.length - 1;
-    var contador = 0;
+    let cantidadTds = tds.length - 1;
+    let contador = 0;
     while (contador <= cantidadTds) {
         //creo tr
-        var trNode = document.createElement("TR");
+        let trNode = document.createElement("TR");
         body.appendChild(trNode);
         trNode.appendChild(tds[contador]);
         if (contador + 1 <= cantidadTds) {
             trNode.appendChild(tds[contador + 1]);
         }
         else {
-            var tdNodeVacio = document.createElement("TD");
+            let tdNodeVacio = document.createElement("TD");
             trNode.appendChild(tdNodeVacio);
         }
         contador = contador + 2;
@@ -86,7 +86,7 @@ function compareTipo(tda, tdb) {
     return 0;
 }
 function getTipoNumber(td) {
-    var desc = $(td).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
+    let desc = $(td).find('.auction_item_div .ui-draggable')[0].getAttribute('data-tooltip');
     desc = desc.substring(0, desc.indexOf('icon_gold'));
     if (nombreData.armas.some(elem => desc.includes(elem))) {
         return 1;

@@ -13,7 +13,7 @@ class TurmaPlayer {
     }
     loadItemToolTip() {
         return __awaiter(this, void 0, void 0, function* () {
-            let response = yield fetch(this.linkPlayer);
+            let response = yield fetch(this.linkPlayer, { cache: "no-store" });
             let paginaPlayer = yield response.text();
             let casco = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.CASCO + ']').first().attr('data-tooltip');
             let arma = $(paginaPlayer).find('#char div.ui-draggable[data-container-number=' + itemContainerNumber.ARMA + ']').first().attr('data-tooltip');
@@ -29,7 +29,7 @@ class TurmaPlayer {
     }
     loadData() {
         return __awaiter(this, void 0, void 0, function* () {
-            let response = yield fetch(this.linkPlayer);
+            let response = yield fetch(this.linkPlayer, { cache: "no-store" });
             let paginaPlayer = yield response.text();
             this.nivel = Number.parseInt($(paginaPlayer).find('#char_level')[0].textContent);
             this.fuerza = Number.parseInt($(paginaPlayer).find('#char_f0')[0].textContent);

@@ -19,7 +19,7 @@ class ArenaEnemigoPickerBackground {
     }
 
     async cargarDatos() {
-        let response = await fetch(this.linkArena);
+        let response = await fetch(this.linkArena, {cache: "no-store"});
         let paginaPlayer = await response.text();
         $(paginaPlayer).find('#own2 a').toArray().forEach((e,index)=>{
             let link = $(e).attr('href');

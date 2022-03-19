@@ -2,14 +2,22 @@ enum calidadesItemsPaquetes{
     ESTANDAR = 0, VERDE = 1, AZUL = 2, PURPURA = 3, NARANJA = 4, ROJO =5
 }
 
-class FiltroPaquete{
+class FiltroPaquete implements Guardable{
     calidad: calidadesItemsPaquetes = calidadesItemsPaquetes.ESTANDAR;
     query: string = '';
     hayItemsFundibles: boolean = true;
+    tipo_class: string = 'FiltroPaquete';
 
     constructor(calidad: calidadesItemsPaquetes, query: string) {
         this.calidad = calidad;
         this.query = query;
+    }
+
+    fromJsonString(guardado: any): Guardable {
+        this.calidad = guardado.calidad;
+        this.query = guardado.query;
+        this.hayItemsFundibles = guardado.hayItemsFundibles;
+        return this;
     }
 
     isFilterSeteado() {
@@ -32,5 +40,9 @@ class FiltroPaquete{
     getLastQueryWord() {
         let lastQueryWord = this.query.split(' ');
         return lastQueryWord[lastQueryWord.length-1];
+    }
+
+    toString() {
+        return 'Calidad: ' + this.calidad + ' Query: ' + this.query;
     }
 }

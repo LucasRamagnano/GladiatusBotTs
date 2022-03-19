@@ -36,7 +36,7 @@ class ControladorSubastas extends Guardable{
 
     async analizarSubastaBackground() {
 
-        let response = await fetch(this.link);
+        let response = await fetch(this.link, {cache: "no-store"});
         let subastaHTML = await response.text()
         let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
         let tds = $(subastaHTML).find('#auction_table td');
@@ -107,7 +107,7 @@ class ControladorSubastas extends Guardable{
                     if(!descFull.toLocaleLowerCase().includes('ndose: Cura'.toLocaleLowerCase())) {
                         e.encontrado();
                         e.analizarNivel(level);
-                        e.statItems.push(new StatsItems(descFull));
+                        e.statItems.push(new ItemUsable(descFull));
                     }
                 }
             })
@@ -124,7 +124,7 @@ class ControladorSubastas extends Guardable{
     }
 
     private async calcularEstadoSubastaActualFetching(): Promise<SubastaEstado> {
-        let response = await fetch(this.link.replace('qry=','qry=asdasdasdasd'));//this filter for a fastest state auction check
+        let response = await fetch(this.link.replace('qry=','qry=asdasdasdasd'), {cache: "no-store"});//this filter for a fastest state auction check
         let subastaHTML = await response.text()
         let remainingTime = $(subastaHTML).find('.description_span_right')[0].textContent;
         return this.calcularEstadoSubastaActual(remainingTime);
@@ -158,8 +158,9 @@ class ControladorSubastas extends Guardable{
             new AuctionKey('de la antigüedad')];
     }
 
-    static getKeysFundicion(): AuctionKey[] {
-        return  ControladorDeFundicion.getFilters().filter(e=>e.query.length > 0).map(e=>new AuctionKey(e.query));
+    static async getKeysFundicion(): Promise<AuctionKey[]> {
+        let allFilters = await ControladorDeFundicion.getFilters();
+        return  allFilters.filter(e=>e.query.length > 0).map(e=>new AuctionKey(e.query));
     }
 
     static getKeysTiposMercenario(): AuctionKey[] {

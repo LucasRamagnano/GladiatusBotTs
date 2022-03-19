@@ -10,9 +10,8 @@ class ControladorDeFundicion implements Tarea{
     timed_out_miliseconds = 60000;
     indicePagina = -1;
     indiceFiltro = -1;
-    allFilters = ControladorDeFundicion.getFilters();
     filtrosToUse:FiltroPaquete[] = [];
-    private static namesNotTuMelt = ['Lucius','Antonius']
+    private static namesNotTuMelt = ['Antonius']
     blockTime: number;
     procesadoTerminado: boolean = false;
 
@@ -93,13 +92,6 @@ class ControladorDeFundicion implements Tarea{
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    static async lugarDisponibleBackground() : Promise<number> {
-        let response = await fetch('https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=forge&submod=smeltery&sh=202d551151ed895739913f0618b78290');
-        let htmlPage = await response.text();
-        let lugarDisponible = $(htmlPage).find('.forge_closed').length;
-        return Promise.resolve(lugarDisponible);
-    }
-
     async filtrarYagarrarItems(): Promise<HTMLElement> {
         //&& this.indicePagina == -1
         await this.filtersBackgroundAnalyze();
@@ -148,12 +140,13 @@ class ControladorDeFundicion implements Tarea{
 
         Consola.log(this.debuguear,'Analizando filtros background');
         let toDo: Promise<void>[] = [];
-        for (const e of this.allFilters) {
+        let allFilters = await ControladorDeFundicion.getFilters();
+        for (const e of allFilters) {
             toDo.push(this.analizeFilter(e));
         }
         await Promise.all(toDo);
         Consola.log(this.debuguear,'Filtros analizados');
-        this.filtrosToUse = this.allFilters.filter(e=>e.hayItemsFundibles);
+        this.filtrosToUse = allFilters.filter(e=>e.hayItemsFundibles);
         this.procesadoTerminado = true;
     }
 
@@ -161,6 +154,7 @@ class ControladorDeFundicion implements Tarea{
         let hoja = 0; //cero es la primera
         let resultado : Promise<HTMLElement> ;
         let jQueryResult = $('a.awesome-tabs[data-available*=\"true\"]');
+        let allFilters = await ControladorDeFundicion.getFilters();
         let intentosCambioHoja = 1
         let itemsToGrab: HTMLElement[];
         let hayHojas: boolean = true;
@@ -173,10 +167,11 @@ class ControladorDeFundicion implements Tarea{
                 hayHojas = false;
             }
         }
+        let hayFundibles = await this.hayItemsFundibles();
         if(hayHojas && !$($('.paging_numbers')[0]).children()[this.indicePagina].classList.contains('paging_numbers_current')) {//funciona de pedo, chequear todo
             Consola.log(this.debuguear ,'Yendo a la pagina numero: ' + this.indicePagina);
             return Promise.resolve($($('.paging_numbers')[0]).children()[this.indicePagina]);
-        } else if(this.hayItemsFundibles()) {
+        } else if(hayFundibles) {
             Consola.log(this.debuguear ,'Comienza agarre de items');
             while (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current') && intentosCambioHoja <= 5 ) {
                 Consola.log(this.debuguear, 'Poniendo hoja numero: ' + hoja);
@@ -194,7 +189,7 @@ class ControladorDeFundicion implements Tarea{
             itemsToGrab = $('#packages_wrapper .ui-draggable').toArray().reverse()
                 .filter((elem, index) => {
                 let hayEspacio = itemsAgarrados + 1 <= (this.numeroDeItemsAFundir-this.itemsAFundir.length);
-                if(ControladorDeFundicion.esItemFundible(elem) && hayEspacio) {
+                if(ControladorDeFundicion.esItemFundible(elem, allFilters) && hayEspacio) {
                     itemsAgarrados++;
                     return true;
                 }
@@ -235,7 +230,7 @@ class ControladorDeFundicion implements Tarea{
                 Consola.log(this.debuguear,'Validando si hay mas items...');
                 if(goNext && i+1 == itemsToGrab.length) {
                     moving = false;
-                }else if(!this.hayItemsFundibles()) {
+                }else if(!hayFundibles) {
                     Consola.log(this.debuguear,'No hay items a fundir y no hay mas paginas...');
                     //this.estado = tareaEstado.enEspera;
                     this.estado = tareaEstado.finalizada;
@@ -246,7 +241,7 @@ class ControladorDeFundicion implements Tarea{
         }
 
 
-        if(!this.hayItemsFundibles() && this.indicePagina > 0 && this.numeroDeItemsAFundir != this.itemsAFundir.length && hayHojas) {
+        if(!hayFundibles && this.indicePagina > 0 && this.numeroDeItemsAFundir != this.itemsAFundir.length && hayHojas) {
             Consola.log(this.debuguear,'No hay mas items en la pagina pero hay lugar, buscando mas items...');
             this.indicePagina--;
             let nextPage:any = $($('.paging_numbers')[0]).children()[this.indicePagina];
@@ -256,7 +251,7 @@ class ControladorDeFundicion implements Tarea{
                 this.indicePagina = -1;
                 return this.filtrarYagarrarItems();
             }
-        } else if(!this.hayItemsFundibles() && (this.indicePagina == 0 || !hayHojas) && this.numeroDeItemsAFundir != this.itemsAFundir.length) {
+        } else if(!hayFundibles && (this.indicePagina == 0 || !hayHojas) && this.numeroDeItemsAFundir != this.itemsAFundir.length) {
             Consola.log(this.debuguear,'No hay items a fundir y no hay mas paginas, viendo si hay mas filtros...');
             //this.estado = tareaEstado.enEspera;
             this.indicePagina = -1;
@@ -422,14 +417,15 @@ class ControladorDeFundicion implements Tarea{
         elem.dispatchEvent(event);
     }
 
-    hayItemsFundibles() {
+    async hayItemsFundibles() {
+        let filtros = await ControladorDeFundicion.getFilters();
         return $('#packages_wrapper .ui-draggable').toArray()
             .some((elem, index) => {
-                return ControladorDeFundicion.esItemFundible(elem);
+                return ControladorDeFundicion.esItemFundible(elem, filtros);
             })
     }
 
-    static esItemFundible(item:HTMLElement) {
+    static esItemFundible(item:HTMLElement, filtros:FiltroPaquete[]) {
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
         let quality = this.getColor(item.getAttribute('data-tooltip'));
         let notToKeep = this.namesNotTuMelt.every((e)=>!nameitem.includes(e));
@@ -437,16 +433,16 @@ class ControladorDeFundicion implements Tarea{
         let esFundible = categoria.nombreCategoria == 'Fundible';
         let esJoyaFundible = categoria.subCategoria == 'Joya' &&
                                 (quality == calidadesItemsPaquetes.PURPURA
-                                || this.getFilters().filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase())));
+                                || filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase())));
         return notToKeep && (esFundible || esJoyaFundible);
     }
 
-    static esItemToWarn(item:HTMLElement) {//todo ver donde poner
+    static esItemToWarn(item:HTMLElement, filtros) {//todo ver donde poner
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
         let categoria = getItemCategoria(nameitem);
         let ToKeep = this.namesNotTuMelt.some((e)=>nameitem.includes(e)) && (categoria.nombreCategoria == 'Fundible' || categoria.subCategoria == 'Joya');
-        let esWaringFundible = categoria.nombreCategoria == 'Fundible' && this.getFilters().filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
-        let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && this.getFilters().filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        let esWaringFundible = categoria.nombreCategoria == 'Fundible' && filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
+        let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
         return ToKeep || esWaringFundible || esWaringJoyaFundible;
     }
 
@@ -480,37 +476,56 @@ class ControladorDeFundicion implements Tarea{
             cache: 'no-store'
         });
         let paginaPaquete = await response.text();
+        let filtros = await ControladorDeFundicion.getFilters();
         filter.hayItemsFundibles = $(paginaPaquete).find('#packages .ui-draggable').toArray()
                                     .some((elem, index) => {
-                                        return ControladorDeFundicion.esItemFundible(elem);
+                                        return ControladorDeFundicion.esItemFundible(elem,filtros);
                                     })
     }
 
-    static getFilters() {
-        return [new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Gaius'),//crystal, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Titus'),//crystal, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Manius'),//crystal, antonius
+    static async getFilters() {
+        return await this.getFiltrosFundicionItems();
+    }
 
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Marcelo'),//crystal, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Quinto'),//crystal, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tellus'),//crystal, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Constancio'),//crystal, antonius
+    private static getFiltrosFundicionItems():Promise<FiltroPaquete[]> {
+        return new Promise((resolve) => chrome.storage.local.get(Keys.FILTRO_ITEMS,(result)=>{
+            let filtroRaw = result[Keys.FILTRO_ITEMS];
+            let filtros: FiltroPaquete[] = [];
+            if(filtroRaw===undefined) {
+                filtros = globalFiltros;
+                this.resetFiltrosItems();
+            } else {
+                for(const fraw of filtroRaw) {
+                    filtros.push(<FiltroPaquete>new FiltroPaquete(null,null).fromJsonString(fraw));
+                }
+            }
+            resolve(filtros);
+        }))
+    }
 
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Mateus'),//Amethyst, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Dexterus'),//Amethyst, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Servius'),//Amethyst, antonius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Giganticus'),//Amethyst, antonius
+    static async resetFiltrosItems() {
+        let toSave = {};
+        toSave[Keys.FILTRO_ITEMS] = globalFiltros;
+        new Promise((resolve) => {
+            chrome.storage.local.set(toSave);
+            resolve(toSave[Keys.FILTRO_ITEMS]);
+        })
+    }
 
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Sentarions'),//tint resitencia, lucius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tantus'),//tint resitencia, lucius
-
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del misterio'),//scorpion veneno, assesination
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del veneno'),//scorpion veneno, assesination
-
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'de la fragmentación'),//fortune stone, lucius
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del silencio'),//fortune stone, lucius
-            new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
-            new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse();
+    static async removerFundicionFiltro(query:string):Promise<FiltroPaquete[]> {
+        let filtros = await this.getFiltrosFundicionItems();
+        let existeFiltro = filtros.some(e=>e.query == query);
+        if(existeFiltro) {
+            let toSave = {};
+            toSave[Keys.FILTRO_ITEMS] = filtros.filter(e=>e.query.toLowerCase() != query.toLowerCase());
+            return new Promise((resolve => {
+                chrome.storage.local.set(toSave, ()=> {
+                        console.log('Removido correctamente.')});
+                        resolve(toSave[Keys.FILTRO_ITEMS]);
+            }))
+        }else {
+            console.log('No se encontro el filtro.')
+            return filtros;
+        }
     }
 }

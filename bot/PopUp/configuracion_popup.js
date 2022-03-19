@@ -13,7 +13,7 @@ let linkSubasta = '';
 let resultadosSubasta = { gladiador: null, mercenario: null, fundicionGladiador: null, fundicionMercenario: null, guerreroMercenario: null };
 function debuguear(evento) {
     let stats = resultadosSubasta.gladiador.busquedas[1].statItems;
-    let toShow = stats.sort((e1, e2) => e1.getLevel() > e2.getLevel() ? -1 : 1).map(e => {
+    let toShow = stats.sort((e1, e2) => e1.getNivel() > e2.getNivel() ? -1 : 1).map(e => {
         let contenido = e.getMostrableElement();
         let div = document.createElement('div');
         div.classList.add('item_estadisticas');
@@ -53,15 +53,13 @@ function actualizar() {
 }
 window.onload = function () {
     mandarMensajeBackground({ header: MensajeHeader.POP_UP_SEABRIO }, (respuesta) => {
-        resultadosSubasta.gladiador = new SubastaResultado().fromJsonString(respuesta.subasta);
-        resultadosSubasta.mercenario = new SubastaResultado().fromJsonString(respuesta.subastaMercenario);
-        ;
-        resultadosSubasta.fundicionGladiador = new SubastaResultado().fromJsonString(respuesta.subastaFundicion);
-        ;
-        resultadosSubasta.fundicionMercenario = new SubastaResultado().fromJsonString(respuesta.subastaFundicionMercenario);
-        ;
-        resultadosSubasta.guerreroMercenario = new SubastaResultado().fromJsonString(respuesta.subastaGuerrerosMercenarios);
-        ;
+        if (respuesta.subasta != undefined) {
+            resultadosSubasta.gladiador = new SubastaResultado().fromJsonString(respuesta.subasta);
+            resultadosSubasta.mercenario = new SubastaResultado().fromJsonString(respuesta.subastaMercenario);
+            resultadosSubasta.fundicionGladiador = new SubastaResultado().fromJsonString(respuesta.subastaFundicion);
+            resultadosSubasta.fundicionMercenario = new SubastaResultado().fromJsonString(respuesta.subastaFundicionMercenario);
+            resultadosSubasta.guerreroMercenario = new SubastaResultado().fromJsonString(respuesta.subastaGuerrerosMercenarios);
+        }
         linkSubasta = respuesta.linkSubasta;
         init(respuesta.datos, respuesta.tabIdActiva);
     });
@@ -178,7 +176,7 @@ function preview(e) {
     let tipoSubasta = $(e.currentTarget).attr('data-tipo-subasta');
     let toAnalyze = resultadosSubasta[tipoSubasta];
     let stats = toAnalyze.busquedas.find(e => title.includes(e.key)).statItems;
-    let toShow = stats.sort((e1, e2) => e1.getLevel() > e2.getLevel() ? -1 : 1).map(e => {
+    let toShow = stats.sort((e1, e2) => e1.getNivel() > e2.getNivel() ? -1 : 1).map(e => {
         let contenido = e.getMostrableElement();
         let div = document.createElement('div');
         div.classList.add('item_estadisticas');

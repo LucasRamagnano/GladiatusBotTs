@@ -26,7 +26,7 @@ class ArenaEnemigoPickerBackground {
     }
     cargarDatos() {
         return __awaiter(this, void 0, void 0, function* () {
-            let response = yield fetch(this.linkArena);
+            let response = yield fetch(this.linkArena, { cache: "no-store" });
             let paginaPlayer = yield response.text();
             $(paginaPlayer).find('#own2 a').toArray().forEach((e, index) => {
                 let link = $(e).attr('href');

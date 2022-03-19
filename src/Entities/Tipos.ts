@@ -89,7 +89,7 @@ class AuctionKey {
     key: string;
     contador: number = 0;
     maxLevel: number = 0;
-    statItems: StatsItems[] = [];
+    statItems: ItemUsable[] = [];
 
     constructor(key: string) {
         this.key = key;
@@ -110,16 +110,16 @@ class AuctionKey {
     }
 
     getMaxColor() {
-        if(this.statItems.filter(e=>e.getColor() == 'gold').length > 0) {
+        if(this.statItems.some(e=>e.getCalidad().color == 'gold')) {
             return 'gold';
         }
-        if(this.statItems.filter(e=>e.getColor() == 'purple').length > 0) {
+        if(this.statItems.some(e=>e.getCalidad().color == 'purple')) {
             return 'purple';
         }
-        if(this.statItems.filter(e=>e.getColor() == 'blue').length > 0) {
+        if(this.statItems.some(e=>e.getCalidad().color == 'blue')) {
             return 'blue';
         }
-        if(this.statItems.filter(e=>e.getColor() == 'green').length > 0) {
+        if(this.statItems.some(e=>e.getCalidad().color == 'green')) {
             return 'green';
         }
     }
@@ -210,7 +210,7 @@ class SubastaResultado implements Guardable{
             let tempKey = new AuctionKey(e.key);
             tempKey.maxLevel = e.maxLevel;
             tempKey.contador = e.contador;
-            tempKey.statItems = e.statItems.map(st=> new StatsItems(st.rawData));
+            tempKey.statItems = e.statItems.map(st=> new ItemUsable(st.rawData));
             return tempKey;
         });
         this.busquedaFecha = new Date(guardado.busquedaFecha);
@@ -235,86 +235,26 @@ enum itemContainerNumber {
 }
 
 class ItemsPlayers {
-    casco: StatsItems;
-    arma: StatsItems;
-    armadura: StatsItems;
-    escudo: StatsItems;
-    guante: StatsItems;
-    zapato: StatsItems;
-    anillo_1: StatsItems;
-    anillo_2: StatsItems;
-    amuleto: StatsItems;
+    casco: ItemUsable;
+    arma: ItemUsable;
+    armadura: ItemUsable;
+    escudo: ItemUsable;
+    guante: ItemUsable;
+    zapato: ItemUsable;
+    anillo_1: ItemUsable;
+    anillo_2: ItemUsable;
+    amuleto: ItemUsable;
 
 
     constructor(casco: string, arma: string, armadura: string, escudo: string, guante: string, zapato: string, anillo_1: string, anillo_2: string, amuleto: string) {
-        this.casco = new StatsItems(casco);
-        this.arma = new StatsItems(arma);
-        this.armadura = new StatsItems(armadura);
-        this.escudo = new StatsItems(escudo);
-        this.guante = new StatsItems(guante);
-        this.zapato = new StatsItems(zapato);
-        this.anillo_1 = new StatsItems(anillo_1);
-        this.anillo_2 = new StatsItems(anillo_2);
-        this.amuleto = new StatsItems(amuleto);
-    }
-}
-
-class StatsItems {
-    stasToInclude = ['daño', 'armadura', 'salud', 'fuerza', 'habilidad', 'agilidad', 'constitución', 'carisma', 'inteligencia', 'ataque',
-        'curación', 'bloqueo', 'endurecimiento', 'amenaza', 'nivel']
-    statsFinales = [];
-    rawData :string;
-    //color:string;
-
-    constructor(rawData: string) {
-        this.rawData = rawData;
-    }
-
-    procesarRawData() {
-        if(this.statsFinales.length != 0) return;
-        let estadisticasSinProcesar = this.rawData.split('"');
-        estadisticasSinProcesar = estadisticasSinProcesar.map(e=>{
-                                                                    try {
-                                                                        return decodeURIComponent(JSON.parse('"'+e.replace(/\%/g, 'porcentaje')+'"')).replace('porcentaje', '\%');
-                                                                    } catch(e){
-                                                                        return 'error';
-                                                                    }
-                                                                 }
-                                                             )
-        let name = estadisticasSinProcesar[1];
-        let estadisticas = estadisticasSinProcesar.filter(elem => this.stasToInclude.some(estat => elem.toLocaleLowerCase().includes(estat)))
-        this.statsFinales = [name].concat(estadisticas);
-        let ix = this.statsFinales.findIndex((e)=>e.includes('Nivel'));
-        this.statsFinales = this.statsFinales.slice(0,ix+1)
-    }
-
-    getMostrableElement():HTMLElement[] {
-        try {
-            this.procesarRawData();
-            return this.statsFinales.map((e,ix)=> {
-                let p = document.createElement('p');
-                p.textContent = e;
-                if(ix==0)
-                    p.classList.add(this.getColor());
-                return p;
-            });
-        }catch (e){
-            let p = document.createElement('p');
-            p.textContent = e;
-            return [p];
-        }
-    }
-
-    getLevel():number {
-        this.procesarRawData();
-        return parseInt(this.statsFinales[this.statsFinales.length-1].replace('Nivel','').trim());
-    }
-
-    getColor():string {
-        let colors:{code:string,color:string,index:number}[] = [{code:'lime',color:'green',index:0}, {code:'#5159F7',color:'blue',index:0}, {code:'#E303E0',color:'purple',index:0}, {code:'#FF6A00',color:'gold',index:0}];
-        let colorPick = colors.filter(e=>this.rawData.includes(e.code))
-                .map(e=>{e.index = this.rawData.indexOf(e.code); return e;})
-                .sort((e1,e2)=>e1.index > e2.index ? 1 : -1)[0];
-        return colorPick.color;
+        this.casco = new ItemUsable(casco);
+        this.arma = new ItemUsable(arma);
+        this.armadura = new ItemUsable(armadura);
+        this.escudo = new ItemUsable(escudo);
+        this.guante = new ItemUsable(guante);
+        this.zapato = new ItemUsable(zapato);
+        this.anillo_1 = new ItemUsable(anillo_1);
+        this.anillo_2 = new ItemUsable(anillo_2);
+        this.amuleto = new ItemUsable(amuleto);
     }
 }

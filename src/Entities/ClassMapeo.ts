@@ -1,4 +1,4 @@
-var  guardables: {[id:string] : typeof Guardable} = {};
+let  guardables: {[id:string] : typeof Guardable} = {};
 
 guardables['LuchaExpedicion'] =  LuchaExpedicion;
 guardables['LuchaMazmorra'] = LuchaMazmorra;

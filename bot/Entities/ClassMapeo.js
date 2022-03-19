@@ -1,4 +1,4 @@
-var guardables = {};
+let guardables = {};
 guardables['LuchaExpedicion'] = LuchaExpedicion;
 guardables['LuchaMazmorra'] = LuchaMazmorra;
 guardables['LuchaPVP'] = LuchaPVP;

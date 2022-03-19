@@ -12,8 +12,15 @@ class FiltroPaquete {
         this.calidad = calidadesItemsPaquetes.ESTANDAR;
         this.query = '';
         this.hayItemsFundibles = true;
+        this.tipo_class = 'FiltroPaquete';
         this.calidad = calidad;
         this.query = query;
+    }
+    fromJsonString(guardado) {
+        this.calidad = guardado.calidad;
+        this.query = guardado.query;
+        this.hayItemsFundibles = guardado.hayItemsFundibles;
+        return this;
     }
     isFilterSeteado() {
         return $('select[name="fq"]')[0].selectedIndex == this.calidad
@@ -32,5 +39,8 @@ class FiltroPaquete {
     getLastQueryWord() {
         let lastQueryWord = this.query.split(' ');
         return lastQueryWord[lastQueryWord.length - 1];
+    }
+    toString() {
+        return 'Calidad: ' + this.calidad + ' Query: ' + this.query;
     }
 }
