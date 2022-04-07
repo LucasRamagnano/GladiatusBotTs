@@ -181,7 +181,7 @@ function getItems() {
     });
 }
 window.onload = function () {
-    mandarMensajeBackground({ header: MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO }, injectBot);
+    mandarMensajeBackground({ header: MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO, sh: getSh() }, injectBot);
     chrome.runtime.onMessage.addListener(function (mensaje) {
         switch (mensaje.header) {
             case MensajeHeader.DEBUGUEAR:
@@ -405,4 +405,9 @@ function venderTodo() {
             yield wait(200);
         }
     });
+}
+function getSh() {
+    let url = window.location.href;
+    let sh = url.split('=')[url.split('=').length - 1];
+    return sh;
 }

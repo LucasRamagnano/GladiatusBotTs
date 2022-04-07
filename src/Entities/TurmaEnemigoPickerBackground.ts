@@ -24,7 +24,7 @@ class TurmaEnemigoPickerBackground {
         let response = await fetch(this.link, {cache: "no-store"});
         let paginaPlayer = await response.text();
         $(paginaPlayer).find('#own3 a').toArray().forEach((e,index)=>{
-            this.enemigos.push(new TurmaTeam(e.textContent.trim(),'http://localhost:8080/' +  $(e).attr('href'),$('.attack')[index]))
+            this.enemigos.push(new TurmaTeam(e.textContent.trim(),'' +  $(e).attr('href'),$('.attack')[index]))
         })
         let toDo: Promise<void>[] = [];
         for (const e of this.enemigos) {

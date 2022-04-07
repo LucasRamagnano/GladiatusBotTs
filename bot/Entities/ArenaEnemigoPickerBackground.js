@@ -31,7 +31,7 @@ class ArenaEnemigoPickerBackground {
             $(paginaPlayer).find('#own2 a').toArray().forEach((e, index) => {
                 let link = $(e).attr('href');
                 link = this.insertInString(link, '&doll=1', link.indexOf('&'));
-                this.enemigos.push(new ArenaPlayer('http://localhost:8080/' + link, $('.attack')[index], index));
+                this.enemigos.push(new ArenaPlayer('' + link, $('.attack')[index], index));
             });
             let toDo = [];
             for (const e of this.enemigos) {

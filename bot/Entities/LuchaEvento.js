@@ -28,14 +28,14 @@ class LuchaEvento {
         else {
             this.estado = tareaEstado.finalizada;
             //
-            return Promise.resolve($('.awesome-button.expedition_button:not(.disabled)')[0]);
+            return Promise.resolve($('.awesome-button.expedition_button:not(.disabled)')[1]);
         }
     }
     seCancela() {
         return LuchaEvento.estasEnCooldown();
     }
     estamosEnTuLugar() {
-        return window.location.href.includes('serverQuest');
+        return window.location.href.includes('serverQuest') || window.location.href.includes('wild_farm');
     }
     static estasEnCooldown() {
         return $('#ServerQuestTime span').length <= 1 ||

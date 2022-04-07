@@ -76,6 +76,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
             if (sender.tab.id == tabId) {
                 lastTimeAlive = Date.now().valueOf();
+                estadoEjecucionBjs.sh = request.sh;
                 sendResponse({
                     correr: true,
                     configuracionToSend: datosBackground,
@@ -101,7 +102,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             estadoEjecucionBjs.analisisInicial = true;
             if (tabId == -1) {
                 lastTimeAlive = Date.now().valueOf();
-                getSh().then(initBackgroundProcces);
+                estadoEjecucionBjs.sh = request.sh;
+                initBackgroundProcces();
             }
             break;
         case MensajeHeader.STOP:
@@ -463,17 +465,16 @@ function runAnalisisSubastaGuerreroMercenario() {
         }
     });
 }
-function getSh() {
-    return __awaiter(this, void 0, void 0, function* () {
-        let promise = new Promise((resolve) => chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-            let url = tabs[0].url;
-            estadoEjecucionBjs.sh = url.split('=')[url.split('=').length - 1];
-            console.log(estadoEjecucionBjs.sh);
-            resolve(estadoEjecucionBjs.sh);
-        }));
-        return promise;
-    });
-}
+/*
+async function getSh():Promise<string> {
+    let promise = new Promise<string>((resolve)=>	chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+        let url = tabs[0].url
+        estadoEjecucionBjs.sh = url.split('=')[url.split('=').length-1];
+        console.log(estadoEjecucionBjs.sh);
+        resolve(estadoEjecucionBjs.sh);
+    }));
+    return promise;
+}*/
 function analizarPaquetes() {
     return __awaiter(this, void 0, void 0, function* () {
         let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=packages&f=0&fq=-1&qry=&sh=&page=1';

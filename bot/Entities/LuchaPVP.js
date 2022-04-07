@@ -5,6 +5,8 @@ class LuchaPVP {
         this.analizar_proxima = false;
         this.tipo_class = 'LuchaPVP';
         this.timed_out_miliseconds = 5000;
+        this.puntajeArena = 130;
+        this.puntajeTurma = 80;
         this.lugar = lugar;
         this.selectorBoton = selectorBoton;
     }
@@ -35,7 +37,7 @@ class LuchaPVP {
             this.analizar_proxima = true;
             let resultado;
             if (this.sosArena()) {
-                if (estadoEjecucion.indiceArenaProximo.puntaje > 130) {
+                if (estadoEjecucion.indiceArenaProximo.puntaje > this.puntajeArena) {
                     let indiceToAttack;
                     $('#own2 a').toArray().forEach((e, index) => {
                         if (e.textContent.trim() == estadoEjecucion.indiceArenaProximo.nombre)
@@ -47,7 +49,7 @@ class LuchaPVP {
                     return Promise.resolve($('form .button1')[0]);
             }
             else {
-                if (estadoEjecucion.indiceTurmaProximo.puntaje > 80) {
+                if (estadoEjecucion.indiceTurmaProximo.puntaje > this.puntajeTurma) {
                     let indiceToAttack;
                     $('#own3 a').toArray().forEach((e, index) => {
                         if (e.textContent.trim() == estadoEjecucion.indiceTurmaProximo.nombre)

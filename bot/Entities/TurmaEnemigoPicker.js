@@ -26,7 +26,7 @@ class TurmaEnemigoPicker {
     cargarDatos() {
         return __awaiter(this, void 0, void 0, function* () {
             $('#own3 a').toArray().forEach((e, index) => {
-                this.enemigos.push(new TurmaTeam(e.textContent.trim(), 'http://localhost:8080/' + $(e).attr('href'), $('.attack')[index]));
+                this.enemigos.push(new TurmaTeam(e.textContent.trim(), '' + $(e).attr('href'), $('.attack')[index]));
             });
             let toDo = [];
             for (const e of this.enemigos) {

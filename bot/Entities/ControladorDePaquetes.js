@@ -18,7 +18,7 @@ class ControladorDePaquetes {
         this.minimoPrecioPaquete = 50000;
         this.hojaInvetario = 0;
         this.timeRecheck = 5;
-        this.oroToKeep = 80000;
+        this.oroToKeep = 30000;
     }
     fromJsonString(guardado) {
         this.estado = guardado.estado;
@@ -264,7 +264,7 @@ class ControladorDePaquetes {
                 resultado = this.comprar();
             }
             else if (this.intentosPaquetes == 5) {
-                this.estado = tareaEstado.cancelada;
+                this.estado = tareaEstado.finalizada;
                 resultado = tareasControlador.getPronosticoClick();
             }
             else if (this.estadoPaquete === paquete_estados.VERIFICAR_COMPRA) {
@@ -284,7 +284,7 @@ class ControladorDePaquetes {
                 resultado = yield this.verificarDevolucion();
             }
             else {
-                this.estado = tareaEstado.cancelada;
+                this.estado = tareaEstado.finalizada;
                 resultado = tareasControlador.getPronosticoClick();
             }
             return Promise.resolve(resultado);

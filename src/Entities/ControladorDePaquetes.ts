@@ -10,7 +10,7 @@ class ControladorDePaquetes implements Tarea{
     hojaInvetario = 0;
     timeBlocked: number;
     timeRecheck: number = 5;
-    oroToKeep: number = 80000;
+    oroToKeep: number = 30000;
 
     fromJsonString(guardado: any): Guardable {
         this.estado = guardado.estado;
@@ -248,7 +248,7 @@ class ControladorDePaquetes implements Tarea{
             this.intentosPaquetes = 0;
             resultado = this.comprar();
         }else if(this.intentosPaquetes == 5) {
-            this.estado = tareaEstado.cancelada;
+            this.estado = tareaEstado.finalizada;
             resultado = tareasControlador.getPronosticoClick();
         }else if(this.estadoPaquete === paquete_estados.VERIFICAR_COMPRA) {
             resultado = await this.agarrarPaquete();
@@ -262,7 +262,7 @@ class ControladorDePaquetes implements Tarea{
         }else if(this.estadoPaquete === paquete_estados.VERIFICAR_DEVOLUCION) {
             resultado = await this.verificarDevolucion();
         }else {
-            this.estado = tareaEstado.cancelada;
+            this.estado = tareaEstado.finalizada;
             resultado = tareasControlador.getPronosticoClick();
         }
         return Promise.resolve(resultado);

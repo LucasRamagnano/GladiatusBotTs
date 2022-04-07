@@ -31,7 +31,7 @@ class LuchaEvento implements Tarea{
         }else {
             this.estado = tareaEstado.finalizada;
             //
-            return Promise.resolve($('.awesome-button.expedition_button:not(.disabled)')[0]);
+            return Promise.resolve($('.awesome-button.expedition_button:not(.disabled)')[1]);
         }
     }
 
@@ -40,7 +40,7 @@ class LuchaEvento implements Tarea{
     }
 
     estamosEnTuLugar(): boolean {
-        return window.location.href.includes('serverQuest');
+        return window.location.href.includes('serverQuest') || window.location.href.includes('wild_farm');
     }
 
     static estasEnCooldown() {

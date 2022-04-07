@@ -6,6 +6,8 @@ class LuchaPVP implements Tarea {
     analizar_proxima: boolean = false;
     tipo_class: string = 'LuchaPVP';
     timed_out_miliseconds = 5000;
+    puntajeArena = 130;
+    puntajeTurma = 80;
 
     constructor();
     constructor(lugar: string, selectorBoton: string);
@@ -45,7 +47,7 @@ class LuchaPVP implements Tarea {
             this.analizar_proxima = true;
             let resultado;
             if(this.sosArena()) {
-                if(estadoEjecucion.indiceArenaProximo.puntaje > 130) {
+                if(estadoEjecucion.indiceArenaProximo.puntaje > this.puntajeArena) {
                     let indiceToAttack;
                     $('#own2 a').toArray().forEach((e, index)=>{
                         if(e.textContent.trim() == estadoEjecucion.indiceArenaProximo.nombre)
@@ -56,7 +58,7 @@ class LuchaPVP implements Tarea {
                 else
                     return Promise.resolve($('form .button1')[0]);
             }else {
-                if(estadoEjecucion.indiceTurmaProximo.puntaje > 80) {
+                if(estadoEjecucion.indiceTurmaProximo.puntaje > this.puntajeTurma) {
                     let indiceToAttack;
                     $('#own3 a').toArray().forEach((e, index)=>{
                         if(e.textContent.trim() == estadoEjecucion.indiceTurmaProximo.nombre)

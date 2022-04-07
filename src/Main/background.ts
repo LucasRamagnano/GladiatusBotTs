@@ -70,6 +70,7 @@ chrome.runtime.onMessage.addListener(
 			case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
 				if(sender.tab.id == tabId) {
 					lastTimeAlive = Date.now().valueOf();
+					estadoEjecucionBjs.sh = request.sh;
 					sendResponse({
 						correr:true,
 						configuracionToSend: datosBackground,
@@ -95,7 +96,8 @@ chrome.runtime.onMessage.addListener(
 				estadoEjecucionBjs.analisisInicial = true;
 				if(tabId == -1) {
 					lastTimeAlive = Date.now().valueOf();
-					getSh().then(initBackgroundProcces);
+					estadoEjecucionBjs.sh = request.sh;
+					initBackgroundProcces();
 				}
 				break;
 			case MensajeHeader.STOP:
@@ -450,7 +452,7 @@ async function runAnalisisSubastaGuerreroMercenario() {
 			window.setTimeout(runAnalisisSubastaGuerreroMercenario, time);
 	}
 }
-
+/*
 async function getSh():Promise<string> {
 	let promise = new Promise<string>((resolve)=>	chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
 		let url = tabs[0].url
@@ -459,7 +461,7 @@ async function getSh():Promise<string> {
 		resolve(estadoEjecucionBjs.sh);
 	}));
 	return promise;
-}
+}*/
 
 async function analizarPaquetes() {
 	let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=packages&f=0&fq=-1&qry=&sh=&page=1';

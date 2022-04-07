@@ -21,7 +21,7 @@ class ControladorDeFundicion {
         this.indiceFiltro = -1;
         this.filtrosToUse = [];
         this.procesadoTerminado = false;
-        this.numeroDeItemsAFundir = numeroItems;
+        this.numeroDeItemsAFundir = 1;
         this.estadoFundicion = estadoFundicion;
     }
     ;
@@ -173,6 +173,17 @@ class ControladorDeFundicion {
                 }
             }
             let hayFundibles = yield this.hayItemsFundibles();
+            let continue_cheking = true;
+            let initValue = this.indicePagina;
+            while (continue_cheking && initValue >= 13) {
+                try {
+                    $($('.paging_numbers')[0]).children()[this.indicePagina].classList;
+                    continue_cheking = false;
+                }
+                catch (e) {
+                    this.indicePagina--;
+                }
+            }
             if (hayHojas && !$($('.paging_numbers')[0]).children()[this.indicePagina].classList.contains('paging_numbers_current')) { //funciona de pedo, chequear todo
                 Consola.log(this.debuguear, 'Yendo a la pagina numero: ' + this.indicePagina);
                 return Promise.resolve($($('.paging_numbers')[0]).children()[this.indicePagina]);
@@ -438,7 +449,7 @@ class ControladorDeFundicion {
         let esJoyaFundible = categoria.subCategoria == 'Joya' &&
             (quality == calidadesItemsPaquetes.PURPURA
                 || filtros.filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase())));
-        return notToKeep && (esFundible || esJoyaFundible);
+        return notToKeep && (esFundible /*|| esJoyaFundible*/);
     }
     static esItemToWarn(item, filtros) {
         let nameitem = item.getAttribute('data-tooltip').split('"')[1];
@@ -446,7 +457,7 @@ class ControladorDeFundicion {
         let ToKeep = this.namesNotTuMelt.some((e) => nameitem.includes(e)) && (categoria.nombreCategoria == 'Fundible' || categoria.subCategoria == 'Joya');
         let esWaringFundible = categoria.nombreCategoria == 'Fundible' && filtros.filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
         let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && filtros.filter(e => e.query.length > 0).some(e => nameitem.toLowerCase().includes(e.query.toLowerCase()));
-        return ToKeep || esWaringFundible || esWaringJoyaFundible;
+        return ToKeep || esWaringFundible /*|| esWaringJoyaFundible*/;
     }
     static getColor(rawData) {
         let colors = [{ code: 'lime', color: 'green', index: 0, quality: calidadesItemsPaquetes.VERDE },

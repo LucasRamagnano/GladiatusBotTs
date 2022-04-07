@@ -45,7 +45,22 @@ class LuchaMazmorra implements Tarea {
     }
 
     atacar(): HTMLElement {
-        return $('img[usemap*="#dmap"] + img')[0];
+        if(this.indiceLugar == 2) {
+            if($($('.map_label').toArray()
+                .filter(e=>e.hasAttribute('onclick') && e.getAttribute('onclick').includes('startFight')))
+                .filter((e,elem)=>{return $(elem).text() == 'Jefe'})
+                .first().length>0) {
+                console.log('peleando jefe')
+                return $($('.map_label').toArray()
+                    .filter(e=>e.hasAttribute('onclick') && e.getAttribute('onclick').includes('startFight')))
+                    .filter((e,elem)=>{return $(elem).text() == 'Jefe'})
+                    .first()[0]
+            }
+            let enemigosMazmorra = $('img').toArray().filter(e=>e.hasAttribute('onclick') && e.getAttribute('onclick').includes('startFight'));
+            return enemigosMazmorra[enemigosMazmorra.length-1];
+        }else {
+            return $('img[usemap*="#dmap"] + img')[0];
+        }
     }
 
     estamosEnTuLugar(): boolean {
