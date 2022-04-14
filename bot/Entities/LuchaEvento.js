@@ -28,7 +28,7 @@ class LuchaEvento {
         else {
             this.estado = tareaEstado.finalizada;
             //
-            return Promise.resolve($('.awesome-button.expedition_button:not(.disabled)')[1]);
+            return Promise.resolve($('.awesome-button.expedition_button:not(.disabled)')[2]);
         }
     }
     seCancela() {

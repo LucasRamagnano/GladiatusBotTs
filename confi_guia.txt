@@ -1,0 +1,25 @@
+DEJAR CORRIENDO PARA ARENA:
+ARENA: CORS Adder/cors-anywhere: Correr el siguiente comando en un terminal: node server 
+
+ANTES DE LA INSTALACION:
+CONFIG_INICIAL: Tener gladiatus crazy add on
+CONFIG_INICIAL: bot/Main/BackConfig.js: cambiar link de perfil
+
+CONFIGURACIONES:(Siempre recargar cuando se cambia algo de ak) //NO TOCAR NADA MAS DE LO Q SE INDICA :)
+SUBASTA: cambiar busquedas de subasta en bot/Entities/ControladorSubastas.js, buscar getKeysSubasta y poner/sacar lo q uno quiera
+SUBASTA: cambiar busquedas de luchadores mercenarios en bot/Entities/ControladorSubastas.js, buscar getKeysTiposMercenario y poner/sacar lo q uno quiera
+PAQUETES: para paquetes en bot/Entities/ControladorDePaquetes.ts se puede modificar: this.oroToKeep, this.minimoPrecioPaquete
+ARENA: cambiar puntaje de eleccion de next pvp en bot/Entities/LuchaPVP.js en this.puntajeArena y this.puntajeTurma
+
+KEYS DE SUBASTA SE HACE IN GAME:
+1) Ir al menu de extensiones Ctrl+Shift+E
+2) Apretar 'pagina de fondo' de la extension
+3) Comandos disponibles: query=string de lo q quieras , calidad tiene q ser numero. -> 1 (verde),2 (azul), 3, 4, 5
+	cmd.fundicion.removerFiltro(query)
+	cmd.fundicion.agregarFiltro(query, calidad)
+	cmd.fundicion.agregarFiltro(query) //query ak opcional si no pones nada muestra todo
+
+NOTAS:
+ARENA: Siempre provinciarum, no ta chequeado funcionamiento del otro
+SUBASTA: Aparece boton AutoBid pero saque su funcionamiento asi q ya no hace nada por ahora
+PAQUETES: Necesario tener alianza

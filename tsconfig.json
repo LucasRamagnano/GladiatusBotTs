@@ -6,7 +6,7 @@
       "outDir": "bot",
       "rootDir": "./src",
       "allowJs": true,
-      "types": ["jquery","jqueryui","jsonrepair","sizzle","chrome","filesystem","filewriter","har-format"]
+      "types": ["jquery","jqueryui","sizzle","chrome","filesystem","filewriter","har-format", "jsoneditor"]
     },
   "include": ["src/**/*"]
 }

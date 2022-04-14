@@ -1,4 +1,4 @@
-let tabToFocus = -1
+let tabToFocus = -1;
 let configuracionDuplicada: ConfiguracionStruct;
 let linkSubasta ='';
 let resultadosSubasta: Resultados = {gladiador:null,mercenario:null,fundicionGladiador:null,fundicionMercenario:null,guerreroMercenario:null}
@@ -11,6 +11,27 @@ interface Resultados {
 }
 
 function debuguear(evento) {
+	// create the editor
+	let container = document.createElement("div");
+	let options = {};
+	// @ts-ignore
+	let editor = new JSONEditor(container, options);
+
+	// set json
+	let initialJson = {
+		"Array": [1, 2, 3],
+		"Boolean": true,
+		"Null": null,
+		"Number": 123,
+		"Object": {"a": "b", "c": "d"},
+		"String": "Hello World"
+	}
+	editor.set(initialJson);
+
+	// get json
+	let updatedJson = editor.get();
+	$('#configuracion').after(container);
+	/*
 	let stats = resultadosSubasta.gladiador.busquedas[1].statItems;
 	let toShow = stats.sort((e1,e2)=> e1.getNivel() > e2.getNivel() ? -1 : 1).map(e=>{
 		let contenido = e.getMostrableElement();
@@ -20,7 +41,7 @@ function debuguear(evento) {
 		return div;
 	})
 	$('#item_container_preview').append(toShow);
-	$('#prev_subasta').removeClass('no_mostrar');
+	$('#prev_subasta').removeClass('no_mostrar');*/
 }
 
 function actualizar() {

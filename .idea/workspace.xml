@@ -11,30 +11,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="comandos">
+    <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.rar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ArenaEnemigoPickerBackground.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ArenaEnemigoPickerBackground.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDePaquetes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaMazmorra.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaPVP.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPicker.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPicker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPickerBackground.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/TurmaEnemigoPickerBackground.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/configuracion.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/configuracion.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ArenaEnemigoPickerBackground.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ArenaEnemigoPickerBackground.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDePaquetes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaMazmorra.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaPVP.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPicker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPickerBackground.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/TurmaEnemigoPickerBackground.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,16 +72,19 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Entities/Items" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/PopUp" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="settings.typescriptcompiler" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2021.3.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\src\PopUp" />
       <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\src\Entities\Items" />
       <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\bot\Recursos\ItemsComparison" />
       <recent name="C:\Users\Ezequiel\IdeaProjects\GladiatusBotTs\src\Entities" />
@@ -229,7 +216,10 @@
       <workItem from="1648821742230" duration="13649000" />
       <workItem from="1649076169686" duration="8665000" />
       <workItem from="1649196332157" duration="7650000" />
-      <workItem from="1649346591612" duration="4856000" />
+      <workItem from="1649346591612" duration="6251000" />
+      <workItem from="1649369281308" duration="3717000" />
+      <workItem from="1649430531569" duration="493000" />
+      <workItem from="1649458769290" duration="7476000" />
     </task>
     <task id="LOCAL-00001" summary="too many changes v2">
       <created>1645717461017</created>
@@ -266,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647730348047</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fixes">
+      <created>1649367930637</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1649367930637</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -313,13 +310,28 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="firefox_pase" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
                 </map>
               </option>
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>
@@ -333,7 +345,8 @@
     <MESSAGE value="before transiccion to firefox" />
     <MESSAGE value="pfff a lot" />
     <MESSAGE value="comandos" />
-    <option name="LAST_COMMIT_MESSAGE" value="comandos" />
+    <MESSAGE value="fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
