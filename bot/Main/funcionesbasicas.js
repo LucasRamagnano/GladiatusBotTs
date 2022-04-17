@@ -216,6 +216,12 @@ function injectBot(ans) {
         if (estamosEnPaquetes()) {
             injectPcktWarning();
         }
+        if (('#inventoryPage').length > 0) {
+            let boton = document.createElement('button');
+            boton.textContent = 'VenderTodo';
+            $(boton).on('click', venderTodo);
+            $('.contentItem').append(boton);
+        }
     }
 }
 function reloadPag() {
@@ -308,6 +314,10 @@ function injectItemComparison() {
 }
 function injectPcktWarning() {
     return __awaiter(this, void 0, void 0, function* () {
+        let boton = document.createElement('button');
+        boton.textContent = 'AgarrarTodo';
+        $(boton).on('click', agarrarTodo);
+        $('.package_side_bag').append(boton);
         let path = chrome.extension.getURL('Recursos/Paquete/paquete_warning.css');
         $('head').append($('<link>')
             .attr("rel", "stylesheet")

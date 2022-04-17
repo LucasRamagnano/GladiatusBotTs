@@ -222,6 +222,12 @@ function injectBot(ans: BotInjectMensaje) {
 		if (estamosEnPaquetes()){
 			injectPcktWarning();
 		}
+		if (('#inventoryPage').length > 0){
+			let boton = document.createElement('button');
+			boton.textContent = 'VenderTodo';
+			$(boton).on('click', venderTodo);
+			$('.contentItem').append(boton);
+		}
 	}
 }
 
@@ -330,6 +336,10 @@ function injectItemComparison() {
 }
 
 async function injectPcktWarning() {
+	let boton = document.createElement('button');
+	boton.textContent = 'AgarrarTodo';
+	$(boton).on('click', agarrarTodo);
+	$('.package_side_bag').append(boton);
 	let path = chrome.extension.getURL('Recursos/Paquete/paquete_warning.css');
 	$('head').append($('<link>')
 		.attr("rel","stylesheet")
@@ -356,6 +366,7 @@ async function injectPcktWarning() {
 		await wait(200);
 		trysToDo--;
 	}
+
 }
 
 function injectItemComparisonEstadisticas(elemToSee) {

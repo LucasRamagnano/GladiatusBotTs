@@ -442,9 +442,9 @@ class ControladorDeFundicion implements Tarea{
         let categoria = getItemCategoria(nameitem);
         let esFundible = categoria.nombreCategoria == 'Fundible';
         let esJoyaFundible = categoria.subCategoria == 'Joya' &&
-                                (quality == calidadesItemsPaquetes.PURPURA
-                                || filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase())));
-        return notToKeep && (esFundible /*|| esJoyaFundible*/);
+                                (quality >= calidadesItemsPaquetes.PURPURA
+                                /*|| filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()))*/);
+        return notToKeep && (esFundible || esJoyaFundible);
     }
 
     static esItemToWarn(item:HTMLElement, filtros) {//todo ver donde poner
@@ -453,7 +453,7 @@ class ControladorDeFundicion implements Tarea{
         let ToKeep = this.namesNotTuMelt.some((e)=>nameitem.includes(e)) && (categoria.nombreCategoria == 'Fundible' || categoria.subCategoria == 'Joya');
         let esWaringFundible = categoria.nombreCategoria == 'Fundible' && filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
         let esWaringJoyaFundible = categoria.subCategoria == 'Joya' && filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()));
-        return ToKeep || esWaringFundible /*|| esWaringJoyaFundible*/;
+        return ToKeep || esWaringFundible || esWaringJoyaFundible;
     }
 
     static getColor(rawData:string):calidadesItemsPaquetes {//todo crear entidad Item? extraer a item mensajes
