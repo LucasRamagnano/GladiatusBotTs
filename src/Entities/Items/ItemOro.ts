@@ -31,4 +31,11 @@ class ItemOro implements Item{
         return this.htmlElement;
     }
 
+    esAgarrable(): boolean {
+        return true;
+    }
+
+    getTimeAgarre(): number {
+        return 1000;
+    }
 }

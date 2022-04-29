@@ -1,6 +1,7 @@
 class ItemUnknown {
-    constructor() {
+    constructor(rawData) {
         this.tipo_class = 'ItemUnknown';
+        this.rawData = rawData;
     }
     fromJsonString(guardado) {
         return this;
@@ -16,5 +17,11 @@ class ItemUnknown {
     }
     getHtmlElement() {
         return this.htmlElement;
+    }
+    esAgarrable() {
+        return !this.rawData.includes('Antonius');
+    }
+    getTimeAgarre() {
+        return 200;
     }
 }

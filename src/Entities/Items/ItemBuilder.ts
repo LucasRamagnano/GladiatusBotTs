@@ -24,11 +24,11 @@ class ItemBuilder {
         }else if(getItemCategoria(nombreItem).subCategoria == 'Recursos' && tooltip.split('],[').length == 2) {
             return new ItemRecurso();
         }else if(new RegExp(/ndose: Cura (\w)* de vida/).test(tooltip)) {
-            return new ItemComida();
+            return new ItemComida(tooltip);
         }else if(new RegExp(/Pergaminos/).test(tooltip)) {
             return new ItemPergamino();
         }else {
-            return new ItemUnknown();
+            return new ItemUnknown(tooltip);
         }
     }
 }

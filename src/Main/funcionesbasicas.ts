@@ -33,7 +33,13 @@ async function tomarDecision() {
 		console.log(ctrlTareas.getAllDoableTask());
 		window.setTimeout(()=>reloadPag(),ctrlTareas.tareas[0].timed_out_miliseconds);
 		await ctrlTareas.correrTareaActual();
+		await reAttackPvp();
 	}
+}
+
+async function reAttackPvp() {
+	await this.wait(1000);
+	$('#linkbod')[0].click();
 }
 
 function cerrarPopUps() {
@@ -187,18 +193,18 @@ window.onload = function() {
 	mandarMensajeBackground({header: MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO, sh: getSh()},injectBot);
 	chrome.runtime.onMessage.addListener(
 		function(mensaje: Mensaje) {
-			switch (mensaje.header) {
-				case MensajeHeader.DEBUGUEAR:
-					debugMostrarPaquetes();
-					break;
-				case MensajeHeader.ACTUALIZAR:
-					datosContext = mensaje.globalConfig;
-					break;
-				case MensajeHeader.IR_SUBASTA_ITEM:
-					window.open(mensaje.link,'_self');
-					break;
-			}
-		});
+					switch (mensaje.header) {
+						case MensajeHeader.DEBUGUEAR:
+							debugMostrarPaquetes();
+							break;
+						case MensajeHeader.ACTUALIZAR:
+							datosContext = mensaje.globalConfig;
+							break;
+						case MensajeHeader.IR_SUBASTA_ITEM:
+							window.open(mensaje.link,'_self');
+							break;
+					}
+				});
 	
 };
 
@@ -424,15 +430,17 @@ function wait(ms) {
 }
 
 async function agarrarTodo() {
-	let items = $($('.packageItem .ui-draggable').get().reverse());
+	let items = ItemBuilder.createItemFromPackageItem($('#packages .packageItem').toArray().reverse());//$($('.packageItem .ui-draggable').get().reverse());
 	for(const item of items) {
 		let doubleClickEvent = new MouseEvent('dblclick', {
 			'view': window,
 			'bubbles': true,
 			'cancelable': true
 		});
-		item.dispatchEvent(doubleClickEvent)
-		await wait(200);
+		if(item.esAgarrable()) {
+			$(item.getHtmlElement()).find('.ui-draggable')[0].dispatchEvent(doubleClickEvent);
+		}
+		await wait(item.getTimeAgarre());
 	}
 }
 

@@ -22,4 +22,11 @@ class ItemRecurso implements Item {
         this.htmlElement = elem;
     }
 
+    esAgarrable(): boolean {
+        return true;
+    }
+
+    getTimeAgarre(): number {
+        return 200;
+    }
 }

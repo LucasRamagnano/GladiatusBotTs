@@ -90,5 +90,11 @@ class ItemUsable implements Item{
         return this.htmlElement;
     }
 
+    esAgarrable(): boolean {
+        return !this.rawData.includes('Antonius') && this.getCalidad().qualityColor < QualityColors.PURPLE;
+    }
 
+    getTimeAgarre(): number {
+        return 200;
+    }
 }

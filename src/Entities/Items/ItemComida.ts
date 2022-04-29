@@ -1,6 +1,11 @@
 class ItemComida implements Item {
     tipo_class: string = 'ItemComida';
+    rawData: string;
     private htmlElement;
+
+    constructor(rawData: string) {
+        this.rawData = rawData;
+    }
 
     fromJsonString(guardado: any): Guardable {
         return this;
@@ -22,4 +27,11 @@ class ItemComida implements Item {
         this.htmlElement = elem;
     }
 
+    esAgarrable(): boolean {
+        return !this.rawData.includes('dose: Centuri');
+    }
+
+    getTimeAgarre(): number {
+        return 300;
+    }
 }

@@ -547,4 +547,4 @@ class ControladorDeFundicion {
         });
     }
 }
-ControladorDeFundicion.namesNotTuMelt = ['Antonius'];
+ControladorDeFundicion.namesNotTuMelt = ['antonius'];

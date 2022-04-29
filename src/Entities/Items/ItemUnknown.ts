@@ -1,6 +1,11 @@
 class ItemUnknown implements Item{
     tipo_class: string = 'ItemUnknown';
     htmlElement: HTMLElement;
+    rawData: string;
+
+    constructor(rawData: string) {
+        this.rawData = rawData;
+    }
 
     fromJsonString(guardado: any): Guardable {
         return this;
@@ -20,6 +25,14 @@ class ItemUnknown implements Item{
 
     getHtmlElement(): HTMLElement {
         return this.htmlElement;
+    }
+
+    esAgarrable(): boolean {
+        return !this.rawData.includes('Antonius');
+    }
+
+    getTimeAgarre(): number {
+        return 200;
     }
 
 

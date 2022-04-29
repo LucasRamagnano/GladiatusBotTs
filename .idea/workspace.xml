@@ -11,15 +11,27 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="fixes">
+    <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="lastest changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/LuchaEvento.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/PopUp/configuracion.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/configuracion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/LuchaEvento.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemComida.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemComida.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemOro.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemOro.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemPergamino.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemPergamino.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemRecurso.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemRecurso.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemUnknown.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemUnknown.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemUsable.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemUsable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/Item.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/Item.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemComida.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemComida.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemOro.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemOro.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemPergamino.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemPergamino.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemRecurso.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemRecurso.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemUnknown.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemUnknown.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemUsable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemUsable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,6 +232,12 @@
       <workItem from="1649369281308" duration="3717000" />
       <workItem from="1649430531569" duration="493000" />
       <workItem from="1649458769290" duration="7476000" />
+      <workItem from="1649948226757" duration="668000" />
+      <workItem from="1650211429347" duration="5342000" />
+      <workItem from="1650384711370" duration="1791000" />
+      <workItem from="1650591604707" duration="922000" />
+      <workItem from="1650757250839" duration="1908000" />
+      <workItem from="1651068990916" duration="5086000" />
     </task>
     <task id="LOCAL-00001" summary="too many changes v2">
       <created>1645717461017</created>
@@ -263,7 +281,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649367930637</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="lastest changes">
+      <created>1649948297210</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1649948297210</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -346,7 +371,8 @@
     <MESSAGE value="pfff a lot" />
     <MESSAGE value="comandos" />
     <MESSAGE value="fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
+    <MESSAGE value="lastest changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="lastest changes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -17,4 +17,10 @@ class ItemPergamino {
     setHtmlElement(elem) {
         this.htmlElement = elem;
     }
+    esAgarrable() {
+        return true;
+    }
+    getTimeAgarre() {
+        return 200;
+    }
 }

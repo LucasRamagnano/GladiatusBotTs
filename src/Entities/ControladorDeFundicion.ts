@@ -11,7 +11,7 @@ class ControladorDeFundicion implements Tarea{
     indicePagina = -1;
     indiceFiltro = -1;
     filtrosToUse:FiltroPaquete[] = [];
-    private static namesNotTuMelt = ['Antonius']
+    private static namesNotTuMelt = ['antonius']
     blockTime: number;
     procesadoTerminado: boolean = false;
 

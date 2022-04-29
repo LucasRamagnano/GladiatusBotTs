@@ -44,7 +44,14 @@ function tomarDecision() {
             console.log(ctrlTareas.getAllDoableTask());
             window.setTimeout(() => reloadPag(), ctrlTareas.tareas[0].timed_out_miliseconds);
             yield ctrlTareas.correrTareaActual();
+            yield reAttackPvp();
         }
+    });
+}
+function reAttackPvp() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield this.wait(1000);
+        $('#linkbod')[0].click();
     });
 }
 function cerrarPopUps() {
@@ -390,15 +397,17 @@ function wait(ms) {
 }
 function agarrarTodo() {
     return __awaiter(this, void 0, void 0, function* () {
-        let items = $($('.packageItem .ui-draggable').get().reverse());
+        let items = ItemBuilder.createItemFromPackageItem($('#packages .packageItem').toArray().reverse()); //$($('.packageItem .ui-draggable').get().reverse());
         for (const item of items) {
             let doubleClickEvent = new MouseEvent('dblclick', {
                 'view': window,
                 'bubbles': true,
                 'cancelable': true
             });
-            item.dispatchEvent(doubleClickEvent);
-            yield wait(200);
+            if (item.esAgarrable()) {
+                $(item.getHtmlElement()).find('.ui-draggable')[0].dispatchEvent(doubleClickEvent);
+            }
+            yield wait(item.getTimeAgarre());
         }
     });
 }

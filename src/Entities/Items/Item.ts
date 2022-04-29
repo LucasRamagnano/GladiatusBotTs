@@ -3,4 +3,6 @@ interface Item extends Guardable {
     getHtmlElement():HTMLElement;
     getCalidad():QualityItem;
     getTipo():ItemTypes;
+    esAgarrable():boolean;
+    getTimeAgarre():number;
 }

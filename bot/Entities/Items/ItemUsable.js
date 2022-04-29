@@ -77,4 +77,10 @@ class ItemUsable {
     getHtmlElement() {
         return this.htmlElement;
     }
+    esAgarrable() {
+        return !this.rawData.includes('Antonius') && this.getCalidad().qualityColor < QualityColors.PURPLE;
+    }
+    getTimeAgarre() {
+        return 200;
+    }
 }

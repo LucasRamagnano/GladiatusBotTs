@@ -20,4 +20,10 @@ class ItemOro {
     getHtmlElement() {
         return this.htmlElement;
     }
+    esAgarrable() {
+        return true;
+    }
+    getTimeAgarre() {
+        return 1000;
+    }
 }
