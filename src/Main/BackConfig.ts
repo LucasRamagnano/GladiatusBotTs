@@ -57,28 +57,28 @@ const backgroundConfig: ConfiguracionStruct = {
 }
 
 const perfil: string = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=player&p=15855';
-const globalFiltros: FiltroPaquete[] = [new FiltroPaquete(calidadesItemsPaquetes.PURPURA, ''),
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Gaius'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Titus'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Manius'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Lucius'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Marcelo'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Quinto'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tellus'),//crystal, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Constancio'),//crystal, antonius
+const globalFiltros: FiltroPaquete[] = [new FiltroPaquete(QualityColors.PURPLE, ''),
+    new FiltroPaquete(QualityColors.BLUE, 'Gaius'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Titus'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Manius'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Lucius'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Marcelo'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Quinto'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Tellus'),//crystal, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Constancio'),//crystal, antonius
 
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Mateus'),//Amethyst, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Dexterus'),//Amethyst, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Servius'),//Amethyst, antonius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Giganticus'),//Amethyst, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Mateus'),//Amethyst, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Dexterus'),//Amethyst, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Servius'),//Amethyst, antonius
+    new FiltroPaquete(QualityColors.BLUE, 'Giganticus'),//Amethyst, antonius
 
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Sentarions'),//tint resitencia, lucius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'Tantus'),//tint resitencia, lucius
+    new FiltroPaquete(QualityColors.BLUE, 'Sentarions'),//tint resitencia, lucius
+    new FiltroPaquete(QualityColors.BLUE, 'Tantus'),//tint resitencia, lucius
 
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del misterio'),//scorpion veneno, assesination
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del veneno'),//scorpion veneno, assesination
+    new FiltroPaquete(QualityColors.BLUE, 'del misterio'),//scorpion veneno, assesination
+    new FiltroPaquete(QualityColors.BLUE, 'del veneno'),//scorpion veneno, assesination
 
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'de la fragmentación'),//fortune stone, lucius
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, 'del silencio'),//fortune stone, lucius
-    new FiltroPaquete(calidadesItemsPaquetes.AZUL, ''),
-    new FiltroPaquete(calidadesItemsPaquetes.VERDE, '')].reverse()
+    new FiltroPaquete(QualityColors.BLUE, 'de la fragmentación'),//fortune stone, lucius
+    new FiltroPaquete(QualityColors.BLUE, 'del silencio'),//fortune stone, lucius
+    new FiltroPaquete(QualityColors.BLUE, ''),
+    new FiltroPaquete(QualityColors.GREEN, '')].reverse()

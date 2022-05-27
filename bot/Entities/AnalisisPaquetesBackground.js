@@ -47,26 +47,34 @@ class AnalisisPaquetesBackground {
     }
     analizarPaquetes() {
         return __awaiter(this, void 0, void 0, function* () {
-            let paginasToFiler;
             let response = yield fetch(this.linkBase, { cache: 'no-store' });
             let paginaPaquete = yield response.text();
             let totalPaginas = parseInt($($(paginaPaquete).find('.paging')[0]).find('.paging_numbers a').last().text());
-            paginasToFiler = this.inicializarPaginas(totalPaginas);
+            this.paginasToFiler = this.inicializarPaginas(totalPaginas);
             Consola.log(this.debuguear, 'Analizando paquetes background');
             let toDo = [];
-            for (const e of paginasToFiler) {
+            for (const e of this.paginasToFiler) {
                 toDo.push(e.analizar());
             }
             yield Promise.all(toDo);
             Consola.log(this.debuguear, 'Paquetes analizados');
-            let oroTotal = paginasToFiler.map(e1 => e1.getValorPaquetesDeOro()).reduce((e1, e2) => e1 + e2, 0);
+            let oroTotal = this.paginasToFiler.map(e1 => e1.getValorPaquetesDeOro()).reduce((e1, e2) => e1 + e2, 0);
             let toAnalyze = [ItemTypes.ItemComida, ItemTypes.ItemPergamino, ItemTypes.ItemUsable, ItemTypes.ItemUnknown, ItemTypes.ItemRecurso];
             for (let e of toAnalyze) {
-                let itemsTotales = paginasToFiler.map(e1 => e1.getQtyType(e)).reduce((e1, e2) => e1 + e2, 0);
+                let itemsTotales = this.paginasToFiler.map(e1 => e1.getQtyType(e)).reduce((e1, e2) => e1 + e2, 0);
                 console.log(e + ': ' + itemsTotales);
             }
             console.log('Oro Total: ' + oroTotal);
+            return oroTotal;
         });
+    }
+    getItemsUsables() {
+        let items = [];
+        this.paginasToFiler
+            .forEach((e) => {
+            items = items.concat(e.getPaquetesType(ItemTypes.ItemUsable));
+        });
+        return items.map(e => { return e; });
     }
     //https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=packages&f=0&fq=-1&qry=&sh=23e80dbf675470c47f33358abfee157b&page=2&page=1
     inicializarPaginas(numerosDePaginas) {

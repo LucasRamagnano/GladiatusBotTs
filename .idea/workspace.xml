@@ -13,24 +13,29 @@
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="lastest changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/AnalisisPaquetesBackground.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/AnalisisPaquetesBackground.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemComida.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemComida.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemOro.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemOro.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemPergamino.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemPergamino.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemRecurso.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemRecurso.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemUnknown.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemUnknown.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemUsable.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemUsable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/QualityItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/QualityItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/AnalisisPaquetesBackground.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/AnalisisPaquetesBackground.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/Item.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/Item.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemComida.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemComida.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemOro.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemOro.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemPergamino.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemPergamino.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemRecurso.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemRecurso.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemUnknown.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemUnknown.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemUsable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemUsable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/QualityItem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/QualityItem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -238,6 +243,14 @@
       <workItem from="1650591604707" duration="922000" />
       <workItem from="1650757250839" duration="1908000" />
       <workItem from="1651068990916" duration="5086000" />
+      <workItem from="1651271976568" duration="50000" />
+      <workItem from="1652330821240" duration="16000" />
+      <workItem from="1652330960890" duration="680000" />
+      <workItem from="1652654902071" duration="876000" />
+      <workItem from="1653257977670" duration="7761000" />
+      <workItem from="1653267779438" duration="6763000" />
+      <workItem from="1653363893973" duration="1165000" />
+      <workItem from="1653600673811" duration="9849000" />
     </task>
     <task id="LOCAL-00001" summary="too many changes v2">
       <created>1645717461017</created>
@@ -288,7 +301,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649948297210</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="lastest changes">
+      <created>1651272001486</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1651272001486</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

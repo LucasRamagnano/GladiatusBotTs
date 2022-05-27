@@ -11,6 +11,9 @@ class ItemUsable {
         this.rawData = guardado.rawData;
         return this;
     }
+    getName() {
+        return this.getStats()[0];
+    }
     getCalidad() {
         return QualityItemControler.getColorFromRaw(this.rawData);
     }
@@ -78,7 +81,7 @@ class ItemUsable {
         return this.htmlElement;
     }
     esAgarrable() {
-        return !this.rawData.includes('Antonius') && this.getCalidad().qualityColor < QualityColors.PURPLE;
+        return this.getCalidad().qualityColor < QualityColors.PURPLE;
     }
     getTimeAgarre() {
         return 200;

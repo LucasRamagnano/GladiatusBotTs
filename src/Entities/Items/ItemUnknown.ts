@@ -28,7 +28,7 @@ class ItemUnknown implements Item{
     }
 
     esAgarrable(): boolean {
-        return !this.rawData.includes('Antonius');
+        return true;//!this.rawData.includes('Antonius');
     }
 
     getTimeAgarre(): number {

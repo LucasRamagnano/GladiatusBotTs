@@ -1,7 +1,9 @@
 let datosContext: ConfiguracionStruct = backgroundConfig;
 let estadoEjecucion: EjecucionEstado = {
 	indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
-	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999}, analisisInicial : false, lugarFundicionDisponible: 0, sh:''};
+	indiceTurmaProximo: {nombre: 'nada', puntaje: 999999},
+	analisisInicial : false, lugarFundicionDisponible: 0,
+	sh:'', oroTotalEmpaquetado:0};
 let relojes = {
 	relojArena: new Reloj('cooldown_bar_text_arena'),
 	relojTurma: new Reloj('cooldown_bar_text_ct'),
@@ -99,7 +101,7 @@ function hacerMisiones() {
 function hacerPaquete() {
 	let hayOroParaPaquete = getOroActualFB() > datosContext.personaje.oroBaseParaPaquete;
 	return datosContext.modulos.correrPaquetes &&  hayOroParaPaquete &&
-			!tareasControlador.tiene(new ControladorDePaquetes())
+			!tareasControlador.tiene(new ControladorDePaquetes()) && isGcaOk()
 }
 
 function sePuedeCorrerExpedicion(): boolean {
@@ -135,7 +137,7 @@ function sePuedeCorrerFundicion(): boolean {
 	let ldispo = lugarEnFundicion();
 	return datosContext.modulos.correrFundicion  &&
 		ldispo > 0 &&
-		!tareasControlador.tiene(new ControladorDeFundicion())
+		!tareasControlador.tiene(new ControladorDeFundicion()) && isGcaOk()
 }
 
 function sePuedeCorrerEvento(): boolean {
@@ -280,6 +282,7 @@ function initEstadisticasGenerales() {
 	$('#oro_para_paquete')[0].innerText = 'Paquete despues de ' + datosContext.personaje.oroBaseParaPaquete;
 	$('#lugar_expedicion')[0].innerText = datosContext.expedicion.lugar;
 	$('#enemigo_expedicion')[0].innerText = datosContext.expedicion.enemigo;
+	$('#oro_empaquetado')[0].innerText = 'Oro Pkts: ' + estadoEjecucion.oroTotalEmpaquetado;
 
 	let paquete = controladorPaquetes === undefined ? null : controladorPaquetes.paqueteComprado;
 	if(paquete != null) {
@@ -461,4 +464,8 @@ function getSh():string {
 	let url = window.location.href;
 	let sh = url.split('=')[url.split('=').length-1];
 	return sh;
+}
+
+function isGcaOk():boolean {
+	return $('#gca_shortcuts_bar .icon-out').length > 8;
 }

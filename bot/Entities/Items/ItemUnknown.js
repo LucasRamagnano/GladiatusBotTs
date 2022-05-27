@@ -19,7 +19,7 @@ class ItemUnknown {
         return this.htmlElement;
     }
     esAgarrable() {
-        return !this.rawData.includes('Antonius');
+        return true; //!this.rawData.includes('Antonius');
     }
     getTimeAgarre() {
         return 200;

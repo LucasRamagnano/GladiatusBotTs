@@ -1,13 +1,13 @@
 var _a;
 var QualityColors;
 (function (QualityColors) {
-    QualityColors[QualityColors["UNKWNOWN"] = -1] = "UNKWNOWN";
-    QualityColors[QualityColors["WHITE"] = 0] = "WHITE";
-    QualityColors[QualityColors["GREEN"] = 1] = "GREEN";
-    QualityColors[QualityColors["BLUE"] = 2] = "BLUE";
-    QualityColors[QualityColors["PURPLE"] = 3] = "PURPLE";
-    QualityColors[QualityColors["ORANGE"] = 4] = "ORANGE";
-    QualityColors[QualityColors["RED"] = 5] = "RED";
+    QualityColors[QualityColors["UNKWNOWN"] = -99] = "UNKWNOWN";
+    QualityColors[QualityColors["WHITE"] = -1] = "WHITE";
+    QualityColors[QualityColors["GREEN"] = 0] = "GREEN";
+    QualityColors[QualityColors["BLUE"] = 1] = "BLUE";
+    QualityColors[QualityColors["PURPLE"] = 2] = "PURPLE";
+    QualityColors[QualityColors["ORANGE"] = 3] = "ORANGE";
+    QualityColors[QualityColors["RED"] = 4] = "RED";
 })(QualityColors || (QualityColors = {}));
 class QualityItem {
     constructor(code, color, qualityColor) {

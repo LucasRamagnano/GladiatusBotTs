@@ -7,7 +7,9 @@ let oroJugador = 0;
 let datosBackground: ConfiguracionStruct ;
 let estadoEjecucionBjs: EjecucionEstado = {
 			indiceArenaProximo: { nombre: 'nada', puntaje: 999999},
-			indiceTurmaProximo:{ nombre: 'nada', puntaje: 999999}, analisisInicial: false, lugarFundicionDisponible: 0, sh:''};
+			indiceTurmaProximo:{ nombre: 'nada', puntaje: 999999},
+			analisisInicial: false, lugarFundicionDisponible: 0,
+			sh:'', oroTotalEmpaquetado:0};
 let auctionItems: AuctionItem[] = [];
 let teamTurmaPersonaje :TurmaTeam;
 let link_subasta;
@@ -57,93 +59,96 @@ async function initBackgroundProcces() {
 
 chrome.runtime.onMessage.addListener(
 	function (request: Mensaje, sender,sendResponse) {
-		switch (request.header) {
-			case MensajeHeader.POP_UP_SEABRIO:
-				sendResponse({datos:datosBackground, tabIdActiva:tabId,
-										subasta:ctrlSubastaGladiador.lastResult,
-										subastaMercenario:ctrlSubastaMercenario.lastResult,
-										subastaFundicion:ctrlSubastaFundicion.lastResult,
-										subastaFundicionMercenario:ctrlSubastaFundicionMercenario.lastResult,
-										subastaGuerrerosMercenarios:ctrlSubastaGuerrerosMercenario.lastResult,
-										linkSubasta:link_subasta});
-				break;
-			case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
-				if(sender.tab.id == tabId) {
-					lastTimeAlive = Date.now().valueOf();
-					estadoEjecucionBjs.sh = request.sh;
-					sendResponse({
-						correr:true,
-						configuracionToSend: datosBackground,
-						header: MensajeHeader.RESPUESTA,
-						estadoEjecucion:estadoEjecucionBjs
-					}  as BotInjectMensaje);
+				switch (request.header) {
+					case MensajeHeader.POP_UP_SEABRIO:
+						sendResponse({datos:datosBackground, tabIdActiva:tabId,
+												subasta:ctrlSubastaGladiador.lastResult,
+												subastaMercenario:ctrlSubastaMercenario.lastResult,
+												subastaFundicion:ctrlSubastaFundicion.lastResult,
+												subastaFundicionMercenario:ctrlSubastaFundicionMercenario.lastResult,
+												subastaGuerrerosMercenarios:ctrlSubastaGuerrerosMercenario.lastResult,
+												linkSubasta:link_subasta});
+						break;
+					case MensajeHeader.CONTENT_SCRIPT_ASK_EMPIEZO:
+						if(sender.tab.id == tabId) {
+							lastTimeAlive = Date.now().valueOf();
+							estadoEjecucionBjs.sh = request.sh;
+							sendResponse({
+								correr:true,
+								configuracionToSend: datosBackground,
+								header: MensajeHeader.RESPUESTA,
+								estadoEjecucion:estadoEjecucionBjs
+							}  as BotInjectMensaje);
+						}
+						else {
+							sendResponse({correr:false});
+						}
+						break;
+					case MensajeHeader.DEBUGUEAR:
+						mandarDebug();
+						break;
+					case MensajeHeader.ACTUALIZAR:
+						actualizarConfig(request.configuracionToSend);
+						break;
+					case MensajeHeader.CAMBIO_ORO:
+						actualizarOro(request.oro)
+						break;
+					case MensajeHeader.ACTIVAR_AK:
+						setTabId();
+						estadoEjecucionBjs.analisisInicial = true;
+						if(tabId == -1) {
+							lastTimeAlive = Date.now().valueOf();
+							estadoEjecucionBjs.sh = request.sh;
+							initBackgroundProcces();
+						}
+						break;
+					case MensajeHeader.STOP:
+						tabId = -1
+						continuar_analizando = false;
+						break;
+					case MensajeHeader.ACTUALIZAR_EXPEDICION:
+						datosBackground.expedicion.lugar = request.lugar;
+						datosBackground.expedicion.enemigo = request.enemigo;
+						let aGuardar = {};
+						aGuardar[Keys.CONFIGURACION] = datosBackground
+						chrome.storage.local.set(aGuardar);
+						break;
+					case MensajeHeader.LOG_IN:
+						window.setTimeout(()=>{actualizarTabId();},400);
+						break;
+					case MensajeHeader.ANALIZAR_ARENA:
+						let a = request.link;
+						let sh = a.split('=')[a.split('=').length-1]
+						let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=2&sh='+sh;
+						analizarArena(link);
+						break;
+					case MensajeHeader.ANALIZAR_TURMA:
+						let b = request.linkTurma;
+						let shb = b.split('=')[b.split('=').length-1]
+						let linkTurma = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=3&sh='+shb;
+						analizarTurma(linkTurma);
+						break;
+					case MensajeHeader.AUTOOFFER:
+						AuctionItem.loadAuctionItems().then((e) => auctionItems = e);
+						break;
+					case MensajeHeader.ANALISIS_INICIAL_MANDADO:
+						estadoEjecucionBjs.analisisInicial = false;
+						break;
+					case MensajeHeader.LINK_SUBASTA:
+						link_subasta = request.subasta_link;
+						break;
+					case MensajeHeader.ITEMS_ANALIZER:
+						sendResponse({
+							items:teamTurmaPersonaje
+						})
+						break;
+					case MensajeHeader.ACTUALIZAR_OROPKTS:
+						estadoEjecucionBjs.oroTotalEmpaquetado = request.oroPkt;
+						break;
+					default:
+						break;
 				}
-				else {
-					sendResponse({correr:false});
-				}
-				break;
-			case MensajeHeader.DEBUGUEAR:
-				mandarDebug();
-				break;
-			case MensajeHeader.ACTUALIZAR:
-				actualizarConfig(request.configuracionToSend);
-				break;
-			case MensajeHeader.CAMBIO_ORO:
-				actualizarOro(request.oro)
-				break;
-			case MensajeHeader.ACTIVAR_AK:
-				setTabId();
-				estadoEjecucionBjs.analisisInicial = true;
-				if(tabId == -1) {
-					lastTimeAlive = Date.now().valueOf();
-					estadoEjecucionBjs.sh = request.sh;
-					initBackgroundProcces();
-				}
-				break;
-			case MensajeHeader.STOP:
-				tabId = -1
-				continuar_analizando = false;
-				break;
-			case MensajeHeader.ACTUALIZAR_EXPEDICION:
-				datosBackground.expedicion.lugar = request.lugar;
-				datosBackground.expedicion.enemigo = request.enemigo;
-				let aGuardar = {};
-				aGuardar[Keys.CONFIGURACION] = datosBackground
-				chrome.storage.local.set(aGuardar);
-				break;
-			case MensajeHeader.LOG_IN:
-				window.setTimeout(()=>{actualizarTabId();},400);
-				break;
-			case MensajeHeader.ANALIZAR_ARENA:
-				let a = request.link;
-				let sh = a.split('=')[a.split('=').length-1]
-				let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=2&sh='+sh;
-				analizarArena(link);
-				break;
-			case MensajeHeader.ANALIZAR_TURMA:
-				let b = request.linkTurma;
-				let shb = b.split('=')[b.split('=').length-1]
-				let linkTurma = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=arena&submod=serverArena&aType=3&sh='+shb;
-				analizarTurma(linkTurma);
-				break;
-			case MensajeHeader.AUTOOFFER:
-				AuctionItem.loadAuctionItems().then((e) => auctionItems = e);
-				break;
-			case MensajeHeader.ANALISIS_INICIAL_MANDADO:
-				estadoEjecucionBjs.analisisInicial = false;
-				break;
-			case MensajeHeader.LINK_SUBASTA:
-				link_subasta = request.subasta_link;
-				break;
-			case MensajeHeader.ITEMS_ANALIZER:
-				sendResponse({
-					items:teamTurmaPersonaje
-				})
-				break;
-			default:
-				break;
-		}
-	}
+			}
 );
 
 function analizarTurma(link: string) {

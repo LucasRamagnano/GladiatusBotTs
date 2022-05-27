@@ -18,6 +18,10 @@ class ItemUsable implements Item{
         return this;
     }
 
+    getName(): string {
+        return this.getStats()[0];
+    }
+
     getCalidad(): QualityItem {
         return QualityItemControler.getColorFromRaw(this.rawData);
     }
@@ -91,7 +95,7 @@ class ItemUsable implements Item{
     }
 
     esAgarrable(): boolean {
-        return !this.rawData.includes('Antonius') && this.getCalidad().qualityColor < QualityColors.PURPLE;
+        return this.getCalidad().qualityColor < QualityColors.PURPLE;
     }
 
     getTimeAgarre(): number {

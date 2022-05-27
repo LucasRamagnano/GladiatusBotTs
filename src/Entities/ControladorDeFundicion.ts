@@ -11,14 +11,14 @@ class ControladorDeFundicion implements Tarea{
     indicePagina = -1;
     indiceFiltro = -1;
     filtrosToUse:FiltroPaquete[] = [];
-    private static namesNotTuMelt = ['antonius']
+    static namesNotTuMelt = []
     blockTime: number;
     procesadoTerminado: boolean = false;
 
     constructor()
     constructor(numeroItems:number, estadoFundicion: fundicionEstados)
     constructor(numeroItems?:number, estadoFundicion?: fundicionEstados) {
-        this.numeroDeItemsAFundir = 1;
+        this.numeroDeItemsAFundir = numeroItems;
         this.estadoFundicion = estadoFundicion;
     };
 
@@ -33,6 +33,13 @@ class ControladorDeFundicion implements Tarea{
         this.blockTime = jsonGuardado.blockTime;
         this.procesadoTerminado = jsonGuardado.procesadoTerminado;
         this.filtrosToUse = jsonGuardado.filtrosToUse.map(e=>new FiltroPaquete(e.calidad,e.query));
+        this.filtrosToUse = this.filtrosToUse.sort((e1,e2)=> {
+                                                        if(e1.calidad > e2.calidad) {
+                                                            return 1;
+                                                        }else if(e1.query.length != 0 && e2.query.length == 0){
+                                                            return 1;
+                                                        }
+                                                    });
         return this;
     }
 
@@ -126,8 +133,8 @@ class ControladorDeFundicion implements Tarea{
                 this.blockTime = Date.now().valueOf();
                 return tareasControlador.getPronosticoClick();
             }
-        }else {
-            Consola.log(this.debuguear, 'Entro else');
+        } else {
+            Consola.log(this.debuguear, 'Entro else agarre');
             this.estado = tareaEstado.finalizada;
             return tareasControlador.getPronosticoClick();
         }
@@ -138,16 +145,25 @@ class ControladorDeFundicion implements Tarea{
         if(this.procesadoTerminado)
             return;
 
+        let link = 'https://s36-ar.gladiatus.gameforge.com/game/index.php?mod=packages&f=0&fq=-1&qry=&sh=&page=1';
+        link = link.replace('sh=','sh='+estadoEjecucion.sh);
+        let analizador = new AnalisisPaquetesBackground(link);
+        let oroEmpaquetado = await analizador.analizarPaquetes();
+        let itemsUsables : ItemUsable[] = analizador.getItemsUsables();
+
         Consola.log(this.debuguear,'Analizando filtros background');
-        let toDo: Promise<void>[] = [];
         let allFilters = await ControladorDeFundicion.getFilters();
-        for (const e of allFilters) {
-            toDo.push(this.analizeFilter(e));
-        }
-        await Promise.all(toDo);
+        allFilters.forEach(e=>e.hayItemsFundibles = e.hayItemsUsablesFundibles(itemsUsables))
         Consola.log(this.debuguear,'Filtros analizados');
-        this.filtrosToUse = allFilters.filter(e=>e.hayItemsFundibles);
+        this.filtrosToUse = allFilters.filter(e=>e.hayItemsFundibles).sort((e1,e2)=> {
+                                                                                if(e1.calidad > e2.calidad) {
+                                                                                    return 1;
+                                                                                }else if(e1.query.length != 0 && e2.query.length == 0){
+                                                                                    return 1;
+                                                                                }
+                                                                            }).reverse();
         this.procesadoTerminado = true;
+        mandarMensajeBackground({header: MensajeHeader.ACTUALIZAR_OROPKTS, oroPkt: oroEmpaquetado})
     }
 
     async agarrarItems(): Promise<HTMLElement> {
@@ -167,7 +183,7 @@ class ControladorDeFundicion implements Tarea{
                 hayHojas = false;
             }
         }
-        let hayFundibles = await this.hayItemsFundibles();
+
         let continue_cheking = true;
         let initValue = this.indicePagina
         while(continue_cheking && initValue >= 13) {
@@ -181,7 +197,7 @@ class ControladorDeFundicion implements Tarea{
         if(hayHojas && !$($('.paging_numbers')[0]).children()[this.indicePagina].classList.contains('paging_numbers_current')) {//funciona de pedo, chequear todo
             Consola.log(this.debuguear ,'Yendo a la pagina numero: ' + this.indicePagina);
             return Promise.resolve($($('.paging_numbers')[0]).children()[this.indicePagina]);
-        } else if(hayFundibles) {
+        } else if(await this.hayItemsFundiblesNow()) {
             Consola.log(this.debuguear ,'Comienza agarre de items');
             while (jQueryResult.length >= hoja + 1 && !jQueryResult[hoja].classList.contains('current') && intentosCambioHoja <= 5 ) {
                 Consola.log(this.debuguear, 'Poniendo hoja numero: ' + hoja);
@@ -196,16 +212,17 @@ class ControladorDeFundicion implements Tarea{
             }
             //await this.wait(1000);--already check arriba, nothing to wait
             let itemsAgarrados = 0;
-            itemsToGrab = $('#packages_wrapper .ui-draggable').toArray().reverse()
-                .filter((elem, index) => {
-                let hayEspacio = itemsAgarrados + 1 <= (this.numeroDeItemsAFundir-this.itemsAFundir.length);
-                if(ControladorDeFundicion.esItemFundible(elem, allFilters) && hayEspacio) {
-                    itemsAgarrados++;
-                    return true;
-                }
-                return false;
-            })
-
+            let itemsToGrab = ItemBuilder.createItemFromPackageItem($('#packages .packageItem').toArray().reverse())
+                                    .filter(e=>e.getTipo()==ItemTypes.ItemUsable)
+                                    .map(e=>{return <ItemUsable>e})
+                                    .filter((elem, index) => {
+                                            let hayEspacio = itemsAgarrados + 1 <= (this.numeroDeItemsAFundir-this.itemsAFundir.length);
+                                            if(this.filtrosToUse[this.indiceFiltro].puedoFundirItem(elem) && hayEspacio) {
+                                                itemsAgarrados++;
+                                                return true;
+                                            }
+                                            return false;
+                                    });
             let moving = true;
             let goNext = false;
             let i = 0;
@@ -215,18 +232,18 @@ class ControladorDeFundicion implements Tarea{
                 Consola.log(this.debuguear,'Moviendo item numero: ' + itemsToGrab.length + ' intento: ' + tries);
                 goNext ? i++ : i;
                 goNext = false;
-                let elemToMove = itemsToGrab[i]
-                let nameItem = elemToMove.getAttribute('data-tooltip').split('"')[1];
+                let elemToMove = itemsToGrab[i];
+                let nameItem = elemToMove.getName();
                 let doubleClickEvent = new MouseEvent('dblclick', {
                     'view': window,
                     'bubbles': true,
                     'cancelable': true
                 });
-                let result = elemToMove.dispatchEvent(doubleClickEvent)
+                let result = $(elemToMove.getHtmlElement()).find('.ui-draggable')[0].dispatchEvent(doubleClickEvent)
                 Consola.log(this.debuguear,'Resultado dispatch: ' + result);
                 tries++;
-                await this.wait(1500);
-                if(!elemToMove.classList.contains('ui-draggable')) {//se movio el item?
+                await this.wait(2000);
+                if($('#inv')[0].innerHTML.includes(nameItem)) {//se movio el item?
                     Consola.log(this.debuguear,'Se agarro correctamente el item: ' + nameItem);
                     goNext = true;
                     tries = 0;
@@ -240,7 +257,7 @@ class ControladorDeFundicion implements Tarea{
                 Consola.log(this.debuguear,'Validando si hay mas items...');
                 if(goNext && i+1 == itemsToGrab.length) {
                     moving = false;
-                }else if(!hayFundibles) {
+                }else if(!await this.hayItemsFundiblesNow()) {
                     Consola.log(this.debuguear,'No hay items a fundir y no hay mas paginas...');
                     //this.estado = tareaEstado.enEspera;
                     this.estado = tareaEstado.finalizada;
@@ -251,7 +268,7 @@ class ControladorDeFundicion implements Tarea{
         }
 
 
-        if(!hayFundibles && this.indicePagina > 0 && this.numeroDeItemsAFundir != this.itemsAFundir.length && hayHojas) {
+        if(!await this.hayItemsFundiblesNow() && this.indicePagina > 0 && this.numeroDeItemsAFundir != this.itemsAFundir.length && hayHojas) {
             Consola.log(this.debuguear,'No hay mas items en la pagina pero hay lugar, buscando mas items...');
             this.indicePagina--;
             let nextPage:any = $($('.paging_numbers')[0]).children()[this.indicePagina];
@@ -261,7 +278,7 @@ class ControladorDeFundicion implements Tarea{
                 this.indicePagina = -1;
                 return this.filtrarYagarrarItems();
             }
-        } else if(!hayFundibles && (this.indicePagina == 0 || !hayHojas) && this.numeroDeItemsAFundir != this.itemsAFundir.length) {
+        } else if(!await this.hayItemsFundiblesNow() && (this.indicePagina == 0 || !hayHojas) && this.numeroDeItemsAFundir != this.itemsAFundir.length) {
             Consola.log(this.debuguear,'No hay items a fundir y no hay mas paginas, viendo si hay mas filtros...');
             //this.estado = tareaEstado.enEspera;
             this.indicePagina = -1;
@@ -427,24 +444,11 @@ class ControladorDeFundicion implements Tarea{
         elem.dispatchEvent(event);
     }
 
-    async hayItemsFundibles() {
-        let filtros = await ControladorDeFundicion.getFilters();
-        return $('#packages_wrapper .ui-draggable').toArray()
-            .some((elem, index) => {
-                return ControladorDeFundicion.esItemFundible(elem, filtros);
-            })
-    }
-
-    static esItemFundible(item:HTMLElement, filtros:FiltroPaquete[]) {
-        let nameitem = item.getAttribute('data-tooltip').split('"')[1];
-        let quality = this.getColor(item.getAttribute('data-tooltip'));
-        let notToKeep = this.namesNotTuMelt.every((e)=>!nameitem.includes(e));
-        let categoria = getItemCategoria(nameitem);
-        let esFundible = categoria.nombreCategoria == 'Fundible';
-        let esJoyaFundible = categoria.subCategoria == 'Joya' &&
-                                (quality >= calidadesItemsPaquetes.PURPURA
-                                /*|| filtros.filter(e=>e.query.length>0).some(e=>nameitem.toLowerCase().includes(e.query.toLowerCase()))*/);
-        return notToKeep && (esFundible || esJoyaFundible);
+    async hayItemsFundiblesNow():Promise<boolean> {
+        let filtroActual = this.filtrosToUse[this.indiceFiltro];
+        let paquetesTd = $('#packages .packageItem').toArray();
+        let items = ItemBuilder.createItemFromPackageItem(paquetesTd).filter(e=>e.getTipo()==ItemTypes.ItemUsable).map(e=>{return <ItemUsable>e});
+        return filtroActual.hayItemsUsablesFundibles(items)
     }
 
     static esItemToWarn(item:HTMLElement, filtros) {//todo ver donde poner
@@ -456,45 +460,22 @@ class ControladorDeFundicion implements Tarea{
         return ToKeep || esWaringFundible || esWaringJoyaFundible;
     }
 
-    static getColor(rawData:string):calidadesItemsPaquetes {//todo crear entidad Item? extraer a item mensajes
-        let colors:{code:string,color:string,index:number,quality:calidadesItemsPaquetes}[] =
-                [{code:'lime',color:'green',index:0, quality:calidadesItemsPaquetes.VERDE},
-                    {code:'#5159F7',color:'blue',index:0, quality:calidadesItemsPaquetes.AZUL},
-                    {code:'#E303E0',color:'purple',index:0, quality:calidadesItemsPaquetes.PURPURA},
-                    {code:'#FF6A00',color:'gold',index:0, quality:calidadesItemsPaquetes.NARANJA}];
-        try {
-            let colorPick = colors.filter(e => rawData.includes(e.code))
-                .map(e => {
-                    e.index = rawData.indexOf(e.code);
-                    return e;
-                })
-                .sort((e1, e2) => e1.index > e2.index ? 1 : -1)[0];
-            return colorPick.quality;
-        }catch (e){
-            return calidadesItemsPaquetes.ESTANDAR;
-        }
-    }
-
     puedeDesbloquearse(): boolean {
         let milisecondsNow = Date.now().valueOf();
         let dif = milisecondsNow - this.blockTime;
         return Math.floor(dif/60000) >= 10;
     }
 
-    async analizeFilter(filter: FiltroPaquete) {
-        let response = await fetch(filter.getLink(), {
-            cache: 'no-store'
-        });
-        let paginaPaquete = await response.text();
-        let filtros = await ControladorDeFundicion.getFilters();
-        filter.hayItemsFundibles = $(paginaPaquete).find('#packages .ui-draggable').toArray()
-                                    .some((elem, index) => {
-                                        return ControladorDeFundicion.esItemFundible(elem,filtros);
-                                    })
-    }
-
     static async getFilters() {
-        return await this.getFiltrosFundicionItems();
+        let filtros = await this.getFiltrosFundicionItems();
+        filtros = filtros.sort((e1,e2)=> {
+            if(e1.calidad > e2.calidad) {
+                return 1;
+            }else if(e1.query.length != 0 && e2.query.length == 0){
+                return 1;
+            }
+        }).reverse();
+        return filtros;
     }
 
     private static getFiltrosFundicionItems():Promise<FiltroPaquete[]> {

@@ -16,7 +16,9 @@ let oroJugador = 0;
 let datosBackground;
 let estadoEjecucionBjs = {
     indiceArenaProximo: { nombre: 'nada', puntaje: 999999 },
-    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 }, analisisInicial: false, lugarFundicionDisponible: 0, sh: ''
+    indiceTurmaProximo: { nombre: 'nada', puntaje: 999999 },
+    analisisInicial: false, lugarFundicionDisponible: 0,
+    sh: '', oroTotalEmpaquetado: 0
 };
 let auctionItems = [];
 let teamTurmaPersonaje;
@@ -145,6 +147,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             sendResponse({
                 items: teamTurmaPersonaje
             });
+            break;
+        case MensajeHeader.ACTUALIZAR_OROPKTS:
+            estadoEjecucionBjs.oroTotalEmpaquetado = request.oroPkt;
             break;
         default:
             break;

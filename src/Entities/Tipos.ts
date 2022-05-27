@@ -26,7 +26,8 @@ interface EjecucionEstado {
     indiceTurmaProximo: ResultadoAnalisisPvP,
     analisisInicial: boolean,
     lugarFundicionDisponible: number,
-    sh: string
+    sh: string,
+    oroTotalEmpaquetado: number
 }
 
 interface ModulosEstados {

@@ -1,14 +1,10 @@
-enum calidadesItemsPaquetes{
-    ESTANDAR = 0, VERDE = 1, AZUL = 2, PURPURA = 3, NARANJA = 4, ROJO =5
-}
-
 class FiltroPaquete implements Guardable{
-    calidad: calidadesItemsPaquetes = calidadesItemsPaquetes.ESTANDAR;
+    calidad: QualityColors;
     query: string = '';
     hayItemsFundibles: boolean = true;
     tipo_class: string = 'FiltroPaquete';
 
-    constructor(calidad: calidadesItemsPaquetes, query: string) {
+    constructor(calidad: QualityColors, query: string) {
         this.calidad = calidad;
         this.query = query;
     }
@@ -21,13 +17,28 @@ class FiltroPaquete implements Guardable{
     }
 
     isFilterSeteado() {
-        return (<HTMLSelectElement>$('select[name="fq"]')[0]).selectedIndex == this.calidad
+        return (<HTMLSelectElement>$('select[name="fq"]')[0]).selectedIndex == this.calidad+1
                 && $('input[name="qry"]')[0].getAttribute('value') == this.getLastQueryWord();
     }
 
     setearFiltro() {
-        (<HTMLSelectElement>$('select[name="fq"]')[0]).selectedIndex = this.calidad;
+        (<HTMLSelectElement>$('select[name="fq"]')[0]).selectedIndex = this.calidad+1;
         $('input[name="qry"]')[0].setAttribute('value',this.getLastQueryWord());
+    }
+
+    hayItemsUsablesFundibles(items:ItemUsable[]) {
+        return items.some(e=> this.puedoFundirItem(e));
+    }
+
+    puedoFundirItem(item:ItemUsable) {
+        let nameitem = item.getName();
+        let quality = item.getCalidad().qualityColor;
+        let notToKeep = ControladorDeFundicion.namesNotTuMelt.every((e)=>!nameitem.includes(e));
+        let categoria = getItemCategoria(nameitem);
+        let esFiltroItems = nameitem.toLowerCase().includes(this.query.toLowerCase());
+        let esFundible = categoria.nombreCategoria == 'Fundible' && item.getCalidad().qualityColor >= this.calidad;
+        let esJoyaFundible = categoria.subCategoria == 'Joya' && quality >= QualityColors.PURPLE
+        return notToKeep && esFiltroItems && (esFundible || esJoyaFundible);
     }
 
     getLink() {

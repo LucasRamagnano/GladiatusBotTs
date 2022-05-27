@@ -25,4 +25,5 @@ var MensajeHeader;
     MensajeHeader["LINK_SUBASTA"] = "LINK_SUBASTA";
     MensajeHeader["IR_SUBASTA_ITEM"] = "IR_SUBASTA_ITEM";
     MensajeHeader["ITEMS_ANALIZER"] = "ITEMS_ANALIZER";
+    MensajeHeader["ACTUALIZAR_OROPKTS"] = "ACTUALIZAR_OROPKTS";
 })(MensajeHeader || (MensajeHeader = {}));

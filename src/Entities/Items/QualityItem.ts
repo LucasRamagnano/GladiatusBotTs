@@ -1,5 +1,5 @@
 enum QualityColors{
-    UNKWNOWN = -1, WHITE = 0, GREEN = 1, BLUE = 2, PURPLE = 3, ORANGE = 4, RED =5
+    UNKWNOWN = -99, WHITE = -1, GREEN = 0, BLUE = 1, PURPLE = 2, ORANGE = 3, RED = 4
 }
 
 class QualityItem implements Guardable{
