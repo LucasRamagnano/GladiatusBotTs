@@ -27,7 +27,8 @@ const moduloInfo: ModulosEstados = {
     correrTurma: false,
     correrEvento: false,
     analizarSubasta: false,
-    correrFundicion: false
+    correrFundicion: false,
+    correrRefinamiento: false
 }
 
 const prioridadesInfo: PrioridadesConfig = {
@@ -40,6 +41,7 @@ const prioridadesInfo: PrioridadesConfig = {
     paquete: tareaPrioridad.NORMAL,
     evento: tareaPrioridad.NORMAL,
     fundicion: tareaPrioridad.ALTA,
+    refinamiento: tareaPrioridad.ALTA
 }
 
 const backgroundConfig: ConfiguracionStruct = {

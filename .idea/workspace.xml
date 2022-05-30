@@ -12,31 +12,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="141ae4a7-c6b8-4fac-9bf8-870b8770d400" name="Default Changelist" comment="lastest changes">
+      <change afterPath="$PROJECT_DIR$/src/Entities/Refinamiento/ControladorDeRefinamiento.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/Refinamiento/EstadosRefinamiento.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/Utils/GenericUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entities/Utils/ItemUtils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/AnalisisPaquetesBackground.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/AnalisisPaquetesBackground.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ClassMapeo.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ClassMapeo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorDeFundicion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/FiltroPaquete.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/ControladorTareas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemComida.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemComida.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemOro.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemOro.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemPergamino.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemPergamino.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemRecurso.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemRecurso.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemUnknown.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemUnknown.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Entities/Items/ItemUsable.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/ItemUsable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Items/QualityItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Items/QualityItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Entities/Mensajes.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Entities/Mensajes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/BackConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/BackConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Main/background.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Main/funcionesbasicas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/Recursos/ConsolaVisible/estadisticas_generales.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/configuracion.html" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/configuracion.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot/PopUp/configuracion_popup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/bot/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/AnalisisPaquetesBackground.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/AnalisisPaquetesBackground.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ClassMapeo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ClassMapeo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorDeFundicion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/FiltroPaquete.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ControladorTareas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/Item.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/Item.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemComida.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemComida.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemOro.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemOro.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemPergamino.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemPergamino.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemRecurso.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemRecurso.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemUnknown.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemUnknown.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Items/ItemUsable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/ItemUsable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Items/QualityItem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Items/QualityItem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Mensajes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Mensajes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entities/Tipos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Tipos.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/BackConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/BackConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/background.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/background.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/funcionesbasicas.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/PopUp/configuracion_popup.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +115,7 @@
       <recent name="C:\Users\Ezequiel\IdeaProjects\GladiatusBotTs\src\Entities" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ezequiel\Documents\GitHub\src\Entities\Refinamiento" />
       <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\src\Entities\Items" />
       <recent name="C:\Users\Ezequiel\Workspace\GladiatusBotTs\bot\Recursos\AutoOfertar" />
     </key>
@@ -251,6 +260,7 @@
       <workItem from="1653267779438" duration="6763000" />
       <workItem from="1653363893973" duration="1165000" />
       <workItem from="1653600673811" duration="9849000" />
+      <workItem from="1653773946937" duration="18245000" />
     </task>
     <task id="LOCAL-00001" summary="too many changes v2">
       <created>1645717461017</created>
@@ -392,7 +402,8 @@
     <MESSAGE value="comandos" />
     <MESSAGE value="fixes" />
     <MESSAGE value="lastest changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="lastest changes" />
+    <MESSAGE value="added botonagarrar todo vender todo" />
+    <option name="LAST_COMMIT_MESSAGE" value="added botonagarrar todo vender todo" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

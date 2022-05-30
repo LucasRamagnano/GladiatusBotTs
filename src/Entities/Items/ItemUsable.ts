@@ -13,7 +13,6 @@ class ItemUsable implements Item{
     }
 
     fromJsonString(guardado: any): Guardable {
-        this.stats = guardado.stats;
         this.rawData = guardado.rawData;
         return this;
     }

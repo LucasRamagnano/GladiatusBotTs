@@ -86,6 +86,9 @@ function calcularTareas(tareasCtrl: ControladorTareas) {
 	if(hacerMisiones()) {
 		tareasCtrl.appendTarea(new ControladorDeMisiones());
 	}
+	if(sePuedeCorrerRefinamiento()) {
+		tareasCtrl.appendTarea(new ControladorDeRefinamiento())
+	}
 	return tareasCtrl;
 }
 
@@ -144,6 +147,10 @@ function sePuedeCorrerEvento(): boolean {
 	return datosContext.modulos.correrEvento  &&
 		!LuchaEvento.estasEnCooldown() &&
 		!tareasControlador.tiene(new LuchaEvento())
+}
+
+function sePuedeCorrerRefinamiento():boolean {
+	return datosContext.modulos.correrRefinamiento && !tareasControlador.tiene(new ControladorDeRefinamiento());
 }
 
 function estaEnVisionGeneral() {

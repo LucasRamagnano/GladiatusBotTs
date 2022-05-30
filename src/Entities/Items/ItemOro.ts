@@ -38,4 +38,8 @@ class ItemOro implements Item{
     getTimeAgarre(): number {
         return 1000;
     }
+
+    getName(): string {
+        return this.tipo_class;
+    }
 }

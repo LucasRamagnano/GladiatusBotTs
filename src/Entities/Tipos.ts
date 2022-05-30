@@ -10,6 +10,7 @@ interface ConfiguracionStruct {
 }
 
 interface PrioridadesConfig {
+    refinamiento: tareaPrioridad;
     curar: tareaPrioridad,
     misiones: tareaPrioridad,
     arena: tareaPrioridad,
@@ -39,7 +40,8 @@ interface ModulosEstados {
     correrMisiones: boolean,
     correrEvento: boolean,
     analizarSubasta: boolean,
-    correrFundicion:boolean
+    correrFundicion:boolean,
+    correrRefinamiento: boolean
 }
 
 interface  ExpedicionStruct {

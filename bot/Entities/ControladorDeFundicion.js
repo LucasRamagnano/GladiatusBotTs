@@ -21,7 +21,7 @@ class ControladorDeFundicion {
         this.indiceFiltro = -1;
         this.filtrosToUse = [];
         this.procesadoTerminado = false;
-        this.numeroDeItemsAFundir = 1;
+        this.numeroDeItemsAFundir = numeroItems;
         this.estadoFundicion = estadoFundicion;
     }
     ;

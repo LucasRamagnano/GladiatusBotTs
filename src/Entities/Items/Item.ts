@@ -5,4 +5,5 @@ interface Item extends Guardable {
     getTipo():ItemTypes;
     esAgarrable():boolean;
     getTimeAgarre():number;
+    getName(): string;
 }

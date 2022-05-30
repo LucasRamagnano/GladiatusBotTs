@@ -24,4 +24,7 @@ class ItemComida {
     getTimeAgarre() {
         return 300;
     }
+    getName() {
+        return this.tipo_class;
+    }
 }

@@ -29,4 +29,9 @@ class ItemRecurso implements Item {
     getTimeAgarre(): number {
         return 200;
     }
+
+    getName(): string {
+        return this.tipo_class;
+    }
+
 }

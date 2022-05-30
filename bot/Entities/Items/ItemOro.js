@@ -26,4 +26,7 @@ class ItemOro {
     getTimeAgarre() {
         return 1000;
     }
+    getName() {
+        return this.tipo_class;
+    }
 }

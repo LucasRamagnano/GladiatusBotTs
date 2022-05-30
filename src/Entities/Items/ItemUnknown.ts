@@ -35,5 +35,7 @@ class ItemUnknown implements Item{
         return 200;
     }
 
-
+    getName(): string {
+        return this.tipo_class;
+    }
 }

@@ -24,7 +24,8 @@ const moduloInfo = {
     correrTurma: false,
     correrEvento: false,
     analizarSubasta: false,
-    correrFundicion: false
+    correrFundicion: false,
+    correrRefinamiento: false
 };
 const prioridadesInfo = {
     arena: tareaPrioridad.NORMAL,
@@ -36,6 +37,7 @@ const prioridadesInfo = {
     paquete: tareaPrioridad.NORMAL,
     evento: tareaPrioridad.NORMAL,
     fundicion: tareaPrioridad.ALTA,
+    refinamiento: tareaPrioridad.ALTA
 };
 const backgroundConfig = {
     personaje: personajeInfo,

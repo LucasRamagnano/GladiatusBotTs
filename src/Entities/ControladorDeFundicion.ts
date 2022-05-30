@@ -398,7 +398,7 @@ class ControladorDeFundicion implements Tarea{
         return agarrarRecursosElement.length != 0;
     }
 
-    moverItemAFundidora(item) {
+    moverItemAFundidora(item: HTMLElement) {
         let spot = {
             parent : $('#itembox'),
             x : ($('#itembox').offset().left + ($('#itembox').width() / 2)),

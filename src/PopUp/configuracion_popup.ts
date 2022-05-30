@@ -54,6 +54,7 @@ function actualizar() {
 	configuracionDuplicada.modulos.correrEvento = toInputArray($('#evento_cb'))[0].checked;
 	configuracionDuplicada.modulos.correrPaquetes = toInputArray($('#paquetes_cb'))[0].checked;
 	configuracionDuplicada.modulos.correrFundicion = toInputArray($('#fundicion_cb'))[0].checked;
+	configuracionDuplicada.modulos.correrRefinamiento = toInputArray($('#refinamiento_cb'))[0].checked;
 	//Centro
 	configuracionDuplicada.personaje.nombre = toInputArray($('#nombre_input'))[0].value;
 	configuracionDuplicada.personaje.oroBaseParaPaquete = Number.parseInt(toInputArray($('#oro_input'))[0].value);
@@ -154,6 +155,7 @@ function initIzquierda() {
 	toInputArray($('#paquetes_cb'))[0].checked = configuracionDuplicada.modulos.correrPaquetes;
 	toInputArray($('#evento_cb'))[0].checked = configuracionDuplicada.modulos.correrEvento;
 	toInputArray($('#fundicion_cb'))[0].checked = configuracionDuplicada.modulos.correrFundicion;
+	toInputArray($('#refinamiento_cb'))[0].checked = configuracionDuplicada.modulos.correrRefinamiento;
 	$('#debugear').on('click',debuguear);
 	$('#activar').on('click',() => {
 		mandarMensajeBackground({header:MensajeHeader.ACTIVAR_AK});

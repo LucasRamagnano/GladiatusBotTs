@@ -23,4 +23,7 @@ class ItemRecurso {
     getTimeAgarre() {
         return 200;
     }
+    getName() {
+        return this.tipo_class;
+    }
 }

@@ -95,6 +95,9 @@ function calcularTareas(tareasCtrl) {
     if (hacerMisiones()) {
         tareasCtrl.appendTarea(new ControladorDeMisiones());
     }
+    if (sePuedeCorrerRefinamiento()) {
+        tareasCtrl.appendTarea(new ControladorDeRefinamiento());
+    }
     return tareasCtrl;
 }
 function hayQueCurar() {
@@ -144,6 +147,9 @@ function sePuedeCorrerEvento() {
     return datosContext.modulos.correrEvento &&
         !LuchaEvento.estasEnCooldown() &&
         !tareasControlador.tiene(new LuchaEvento());
+}
+function sePuedeCorrerRefinamiento() {
+    return datosContext.modulos.correrRefinamiento && !tareasControlador.tiene(new ControladorDeRefinamiento());
 }
 function estaEnVisionGeneral() {
     return $('#overviewPage #avatar').length == 1;

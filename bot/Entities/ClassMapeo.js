@@ -9,3 +9,4 @@ guardables['ControladorSubastas'] = ControladorSubastas;
 guardables['LuchaEvento'] = LuchaEvento;
 guardables['AuctionItem'] = AuctionItem;
 guardables['ControladorDeFundicion'] = ControladorDeFundicion;
+guardables['ControladorDeRefinamiento'] = ControladorDeRefinamiento;

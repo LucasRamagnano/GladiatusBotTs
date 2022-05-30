@@ -1,0 +1,5 @@
+enum EstadoRefinamiento {
+    REFINAR = 'REFINAR',
+    PONER_RECURSOS = 'PONER_RECURSOS',
+    ENVIAR_A_PAQUETES = 'ENVIAR_A_PAQUETES'
+}

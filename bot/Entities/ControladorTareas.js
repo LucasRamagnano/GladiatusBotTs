@@ -13,8 +13,8 @@ class ControladorTareas {
         this.tareasFinalizadas = [];
         this.tareasCanceladas = [];
         this.tareasBloqueadas = [];
-        this.delayPostTask = 500;
-        this.delayPreTask = 500;
+        this.delayPostTask = 1000;
+        this.delayPreTask = 1000;
         this.tareas = tareas;
     }
     getPronosticoClick() {

@@ -34,4 +34,8 @@ class ItemComida implements Item {
     getTimeAgarre(): number {
         return 300;
     }
+
+    getName(): string {
+        return this.tipo_class;
+    }
 }

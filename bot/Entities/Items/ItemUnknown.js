@@ -24,4 +24,7 @@ class ItemUnknown {
     getTimeAgarre() {
         return 200;
     }
+    getName() {
+        return this.tipo_class;
+    }
 }

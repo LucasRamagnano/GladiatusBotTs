@@ -7,7 +7,6 @@ class ItemUsable {
         this.rawData = raw_data;
     }
     fromJsonString(guardado) {
-        this.stats = guardado.stats;
         this.rawData = guardado.rawData;
         return this;
     }

@@ -3,8 +3,8 @@ class ControladorTareas {
     tareasFinalizadas: Tarea[] = [];
     tareasCanceladas: Tarea[] = [];
     tareasBloqueadas: Tarea[] = [];
-    delayPostTask = 500;
-    delayPreTask = 500;
+    delayPostTask = 1000;
+    delayPreTask = 1000;
     constructor();
     constructor(tareas?:Tarea[]) {
         this.tareas = tareas;
